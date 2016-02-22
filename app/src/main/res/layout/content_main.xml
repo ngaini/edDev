@@ -88,7 +88,8 @@
         android:id="@+id/main_Confirm"
         android:layout_below="@+id/main_ConfirmPassword"
         android:layout_marginTop="14dp"
-        android:layout_toStartOf="@+id/main_Back" />
+        android:layout_toStartOf="@+id/main_Back"
+        android:onClick="moveToDetailsActivity"/>
 
     <Button
         android:layout_width="wrap_content"
@@ -97,7 +98,8 @@
         android:id="@+id/main_Back"
         android:layout_marginEnd="36dp"
         android:layout_alignTop="@+id/main_Confirm"
-        android:layout_alignEnd="@+id/main_ConfirmPassword" />
+        android:layout_alignEnd="@+id/main_ConfirmPassword"
+        android:onClick="moveToLoginActivity"/>
 
 
 
