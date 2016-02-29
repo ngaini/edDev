@@ -4,6 +4,10 @@
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission
+        android:name="android.permission.CAMERA"
+        android:required="true" />
 
     <application
         android:allowBackup="true"
@@ -19,6 +23,20 @@
             android:name=".Login"
             android:label="@string/title_activity_login"
             android:theme="@style/AppTheme.NoActionBar">
+<<<<<<< HEAD
+=======
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
+        </activity>
+        <activity
+            android:name=".DetailsActivity"
+            android:label="@string/title_activity_details">
+>>>>>>> 44f517b905af4304a01a3531a83c7cb23d49bcdb
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,6 +44,7 @@
             </intent-filter>
         </activity>
         <activity
+<<<<<<< HEAD
             android:name=".ListAndOptionPage"
             android:label="@string/title_activity_user_options"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -37,6 +56,10 @@
             android:name=".SignUpPage2"
             android:label="@string/title_activity_sign_up_page2"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+=======
+            android:name=".LocationActivity"
+            android:label="@string/title_activity_location"></activity>
+>>>>>>> 44f517b905af4304a01a3531a83c7cb23d49bcdb
     </application>
 
 </manifest>

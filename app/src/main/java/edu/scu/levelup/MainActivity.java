@@ -173,4 +173,16 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    public void moveToDetailsActivity(View view)
+    {
+        Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
+        startActivity(intent);
+    }
+
+    public void moveToLoginActivity(View view)
+    {
+        Intent intent = new Intent(MainActivity.this, Login.class);
+        startActivity(intent);
+    }
 }
