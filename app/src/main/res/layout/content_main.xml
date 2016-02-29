@@ -26,11 +26,12 @@
     <EditText
         android:layout_width="250dp"
         android:layout_height="wrap_content"
+        android:inputType="date"
+        android:ems="10"
         android:id="@+id/main_Age"
         android:layout_below="@+id/main_FullName"
         android:layout_alignParentStart="true"
         android:layout_marginTop="14dp"
-        android:inputType="number"
         android:hint="Enter Your Age" />
 
     <EditText
@@ -84,21 +85,39 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="CONFIRM"
-        android:id="@+id/main_Confirm"
+        android:text="BACK"
+        android:id="@+id/main_Back"
         android:layout_below="@+id/main_ConfirmPassword"
         android:layout_marginTop="14dp"
-        android:layout_toStartOf="@+id/main_Back" />
+        android:layout_toStartOf="@+id/main_Next" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="BACK"
-        android:id="@+id/main_Back"
+        android:text="NEXT"
+        android:id="@+id/main_Next"
         android:layout_marginEnd="36dp"
-        android:layout_alignTop="@+id/main_Confirm"
+        android:layout_alignTop="@+id/main_Back"
         android:layout_alignEnd="@+id/main_ConfirmPassword" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Welcome,"
+        android:id="@+id/textView2"
+        android:layout_alignParentTop="true"
+        android:layout_toStartOf="@+id/main_Next" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="  Student"
+        android:id="@+id/txt_userrole"
+        android:textStyle="bold|italic"
+        android:layout_alignBottom="@+id/textView2"
+        android:layout_toEndOf="@+id/main_Back" />
 
 
 </RelativeLayout>

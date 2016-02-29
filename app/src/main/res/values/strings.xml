@@ -2,4 +2,11 @@
     <string name="app_name">LevelUp</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_login">Login</string>
+    <string name="title_activity_students_list">StudentsList</string>
+    <string name="title_activity_user_options">UserOptions</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="title_activity_role_choice">RoleChoice</string>
+    <string name="title_activity_sign_up_page2">SignUpPage2</string>
 </resources>

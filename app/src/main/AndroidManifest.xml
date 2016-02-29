@@ -14,21 +14,29 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Login"
             android:label="@string/title_activity_login"
             android:theme="@style/AppTheme.NoActionBar">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
+        <activity
+            android:name=".ListAndOptionPage"
+            android:label="@string/title_activity_user_options"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".RoleChoice"
+            android:label="@string/title_activity_role_choice"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SignUpPage2"
+            android:label="@string/title_activity_sign_up_page2"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

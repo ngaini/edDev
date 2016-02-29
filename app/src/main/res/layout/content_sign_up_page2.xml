@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="edu.scu.levelup.SignUpPage2"
+    tools:showIn="@layout/activity_sign_up_page2"
+    android:background="#ffdab7">
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Click to Upload Image"
+        android:id="@+id/btn_UploadUserImage"
+        android:layout_marginTop="102dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/userImageUploaded"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:background="#000000" />
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="35dp"
+    android:orientation="horizontal"
+    android:layout_marginTop="160dp"
+    android:id="@+id/linearLayout">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Gender : "
+        android:id="@+id/txt_userGender"
+        android:textSize="20dp"
+        android:layout_below="@+id/btn_UploadUserImage"
+        android:layout_alignParentStart="true" />
+
+    <RadioButton android:id="@+id/rg_Male"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Male"
+        android:layout_marginRight="30dp"
+        android:checked="true"
+        android:layout_alignBottom="@+id/txt_userGender"
+        android:layout_toEndOf="@+id/txt_userGender" />
+
+    <RadioButton android:id="@+id/rd_Female"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Female"
+    android:layout_marginRight="30dp"
+    android:checked="false"
+    android:layout_alignTop="@+id/rg_Male"
+    android:layout_toEndOf="@+id/rg_Male" />
+
+</LinearLayout>
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:id="@+id/rg_years">
+
+    </RadioGroup>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Description"
+        android:id="@+id/textView3"
+        android:textStyle="italic"
+        android:layout_below="@+id/linearLayout"
+        android:layout_toEndOf="@+id/rg_years"
+        android:layout_marginTop="12dp"/>
+
+
+</RelativeLayout>
