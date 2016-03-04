@@ -35,15 +35,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
-<<<<<<< HEAD
     compile 'com.firebase:firebase-client-android:2.5.2+'
-=======
-<<<<<<< HEAD
     compile 'com.firebase:firebase-client-android:2.5.2+'
-||||||| merged common ancestors
-=======
-//    compile 'com.firebase:firebase-client-android:2.5.2+'
->>>>>>> 11f8cd823bc2fefc67793df4746407b02f13ab5a
->>>>>>> 44f517b905af4304a01a3531a83c7cb23d49bcdb
 }
 

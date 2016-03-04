@@ -89,12 +89,9 @@
         android:id="@+id/main_Back"
         android:layout_below="@+id/main_ConfirmPassword"
         android:layout_marginTop="14dp"
-<<<<<<< HEAD
         android:layout_toStartOf="@+id/main_Next" />
-=======
         android:layout_toStartOf="@+id/main_Back"
         android:onClick="moveToDetailsActivity"/>
->>>>>>> 44f517b905af4304a01a3531a83c7cb23d49bcdb
 
     <Button
         android:layout_width="wrap_content"
@@ -102,14 +99,11 @@
         android:text="NEXT"
         android:id="@+id/main_Next"
         android:layout_marginEnd="36dp"
-<<<<<<< HEAD
         android:layout_alignTop="@+id/main_Back"
         android:layout_alignEnd="@+id/main_ConfirmPassword" />
-=======
         android:layout_alignTop="@+id/main_Confirm"
         android:layout_alignEnd="@+id/main_ConfirmPassword"
         android:onClick="moveToLoginActivity"/>
->>>>>>> 44f517b905af4304a01a3531a83c7cb23d49bcdb
 
     <TextView
         android:layout_width="wrap_content"

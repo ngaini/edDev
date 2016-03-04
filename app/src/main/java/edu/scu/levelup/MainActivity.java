@@ -120,21 +120,21 @@ public class MainActivity extends AppCompatActivity {
                 else {
                       Firebase newUserRef = mref.child("users").child(uFullName);
                       Users newUser = new Users(uRole, uFullName, uAge, uPhoneNumber, uPassword);
-                      newUserRef.setValue(newUser);
-                      mref.createUser(uEmailID, uPassword, new Firebase.ValueResultHandler<Map<String, Object>>() {
+                      Intent mainPage = new Intent(MainActivity.this, SignUpPage2.class);
+                      startActivity(mainPage);
+                      //newUserRef.setValue(newUser);
+//                      mref.createUser(uEmailID, uPassword, new Firebase.ValueResultHandler<Map<String, Object>>() {
+//                          @Override
+//                          public void onSuccess(Map<String, Object> stringObjectMap) {
+//                              Toast.makeText(getApplicationContext(), uRole, Toast.LENGTH_SHORT).show();
+//                          }
+//
+//                          @Override
+//                          public void onError(FirebaseError firebaseError) {
+//
+//                          }
+//                      });
 
-                          @Override
-                          public void onSuccess(Map<String, Object> stringObjectMap) {
-                              Toast.makeText(getApplicationContext(), uRole, Toast.LENGTH_SHORT).show();
-                          }
-
-                          @Override
-                          public void onError(FirebaseError firebaseError) {
-
-                          }
-                      });
-                        Intent mainPage = new Intent(MainActivity.this, ListAndOptionPage.class);
-                        startActivity(mainPage);
                 }
 
             }

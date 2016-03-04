@@ -47,45 +47,83 @@
         android:layout_below="@+id/btn_UploadUserImage"
         android:layout_alignParentStart="true" />
 
-    <RadioButton android:id="@+id/rg_Male"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Male"
-        android:layout_marginRight="30dp"
-        android:checked="true"
-        android:layout_alignBottom="@+id/txt_userGender"
-        android:layout_toEndOf="@+id/txt_userGender" />
-
-    <RadioButton android:id="@+id/rd_Female"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Female"
-    android:layout_marginRight="30dp"
-    android:checked="false"
-    android:layout_alignTop="@+id/rg_Male"
-    android:layout_toEndOf="@+id/rg_Male" />
-
-</LinearLayout>
-
     <RadioGroup
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:orientation="horizontal"
         android:id="@+id/rg_years">
 
+        <RadioButton android:id="@+id/rd_Female"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Female"
+            android:checked="false" />
+
+        <RadioButton android:id="@+id/rd_Male"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:text="Male"
+            android:checked="true" />
+
     </RadioGroup>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Description"
-        android:id="@+id/textView3"
-        android:textStyle="italic"
-        android:layout_below="@+id/linearLayout"
-        android:layout_toEndOf="@+id/rg_years"
-        android:layout_marginTop="12dp"/>
 
+</LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="210dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Level Of Education : "
+            android:id="@+id/txt_Education"
+            />
+
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinner"
+            android:entries="@array/degree_list"
+            android:prompt="@string/degree_prompt"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="270dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Expertise : "
+            android:id="@+id/txt_Expertise"
+            />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:id="@+id/scrollView">
+            <CheckBox
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="ARTS"
+                android:id="@+id/chk_Arts"
+                android:checked="false" />
+            <CheckBox
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="ARTS"
+                android:id="@+id/chk_Science"
+                android:checked="false" />
+
+            </ScrollView>
+    </LinearLayout>
 </RelativeLayout>
