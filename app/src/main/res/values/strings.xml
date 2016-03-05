@@ -21,4 +21,20 @@
     </string-array>
     <string name="title_activity_student">StudentActivity</string>
 
+    <string name="interest_prompt">Select</string>
+    <string-array name="interest_list">
+        <item>Drawing</item>
+        <item>Science</item>
+        <item>History</item>
+        <item>Software</item>
+        <item>Dance</item>
+        <item>Geography</item>
+        <item>Maths</item>
+        <item>Music</item>
+        <item>Singing</item>
+        <item>Soccer</item>
+        <item>Table Tennis</item>
+        <item>Badminton</item>
+    </string-array>
+
 </resources>

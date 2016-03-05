@@ -38,8 +38,10 @@ public class RoleChoice extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 role = 1;
-                Intent signUpPage = new Intent(getApplicationContext(), MainActivity.class);
-                signUpPage.putExtra("userRole", role);
+                Intent signUpPage = new Intent(RoleChoice.this, MainActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putInt("userRole", role);
+                signUpPage.putExtras(bundle);
                 startActivity(signUpPage);
             }
         });
