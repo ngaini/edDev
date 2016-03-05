@@ -11,15 +11,28 @@ public class Users {
     private int role;
     private String fullName;
     private int age;
-    private int phoneNumber;
+    private long phoneNumber;
     private String password;
+    private String education;
+    private String description;
+    private String gender;
+    private String interests;
+    private String address;
+    private int pincode;
 
-    public Users(int role, String fullName, int age, int phoneNumber, String password ){
+
+    public Users(int role, String fullName, int age, int phoneNumber, String password, String education, String description, String gender, String interests, String address, int pincode ){
         this.role = role;
         this.fullName = fullName;
         this.age = age;
         this.phoneNumber = phoneNumber;
         this.password = password;
+        this.education = education;
+        this.description = description;
+        this.gender = gender;
+        this.interests = interests;
+        this.address = address;
+        this.pincode = pincode;
     }
     public int getRole()
     {
@@ -36,7 +49,7 @@ public class Users {
         return this.age;
     }
 
-    public int getPhoneNumber()
+    public long getPhoneNumber()
     {
         return this.phoneNumber;
     }
@@ -45,5 +58,34 @@ public class Users {
     public String getPassword()
     {
         return this.password;
+    }
+
+    public String getEducation()
+    {
+        return this.education;
+    }
+
+    public String getDescription()
+    {
+        return this.description;
+    }
+
+    public String getGender()
+    {
+        return this.gender;
+    }
+
+    public String getInterests()
+    {
+        return this.interests;
+    }
+
+    public String getAddress(){
+        return this.address;
+    }
+
+    public int getPincode()
+    {
+        return this.pincode;
     }
 }

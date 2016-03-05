@@ -31,6 +31,7 @@ public class Login extends AppCompatActivity {
     String pass;
     Firebase mref;
     Resources res;
+    UserSessionManager session;
 
 
 
@@ -52,7 +53,7 @@ public class Login extends AppCompatActivity {
         Firebase.setAndroidContext(this);
         mref = new Firebase("https://scorching-inferno-7039.firebaseio.com");
         res = getResources();
-
+        session = new UserSessionManager(getApplicationContext());
         clickLink = (TextView) findViewById(R.id.login_SignUp);
         clickLink.setPaintFlags(clickLink.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         username = (EditText) findViewById(R.id.login_emailID);
@@ -80,9 +81,15 @@ public class Login extends AppCompatActivity {
                     mref.authWithPassword(uname, pass, new Firebase.AuthResultHandler() {
                         @Override
                         public void onAuthenticated(AuthData authData) {
-                            Intent mainPage = new Intent(Login.this, ListAndOptionPage.class);
-                            startActivity(mainPage);
+                            //Intent mainPage = new Intent(Login.this, ListAndOptionPage.class);
+                            //startActivity(mainPage);
                             Toast.makeText(getApplicationContext(), "SUCCESS", Toast.LENGTH_SHORT).show();
+                            session.createUserLoginSession(uname, pass);
+                            Intent i = new Intent(getApplicationContext(), ListAndOptionPage.class);
+                            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(i);
+                            finish();
                         }
 
                         @Override

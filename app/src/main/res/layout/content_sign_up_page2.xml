@@ -18,13 +18,12 @@
         android:layout_height="wrap_content"
         android:text="Click to Upload Image"
         android:id="@+id/btn_UploadUserImage"
-        android:layout_marginTop="102dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignBottom="@+id/userImageUploaded"
+        android:layout_alignEnd="@+id/textView3" />
 
     <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
         android:id="@+id/userImageUploaded"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
@@ -34,7 +33,7 @@
     android:layout_width="match_parent"
     android:layout_height="35dp"
     android:orientation="horizontal"
-    android:layout_marginTop="160dp"
+    android:layout_marginTop="180dp"
     android:id="@+id/linearLayout">
 
     <TextView
@@ -42,6 +41,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Gender : "
+        android:textStyle="bold"
         android:id="@+id/txt_userGender"
         android:textSize="20dp"
         android:layout_below="@+id/btn_UploadUserImage"
@@ -51,7 +51,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:id="@+id/rg_years">
+        android:id="@+id/rg_gender">
 
         <RadioButton android:id="@+id/rd_Female"
             android:layout_width="wrap_content"
@@ -75,12 +75,13 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:orientation="horizontal"
-        android:layout_marginTop="210dp">
+        android:layout_marginTop="222dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold"
             android:text="Level Of Education : "
             android:id="@+id/txt_Education"
             />
@@ -88,9 +89,10 @@
         <Spinner
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/spinner"
+            android:id="@+id/spinner_Education"
             android:entries="@array/degree_list"
-            android:prompt="@string/degree_prompt"/>
+            android:prompt="@string/degree_prompt"
+            android:background="#ffdab7" />
 
     </LinearLayout>
 
@@ -98,32 +100,82 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:orientation="horizontal"
-        android:layout_marginTop="270dp">
+        android:layout_marginTop="270dp"
+        android:id="@+id/linearLayout2">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold"
             android:text="Expertise : "
-            android:id="@+id/txt_Expertise"
-            />
+            android:id="@+id/txt_Expertise" />
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="90dp"
-            android:id="@+id/scrollView">
-            <CheckBox
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="ARTS"
-                android:id="@+id/chk_Arts"
-                android:checked="false" />
-            <CheckBox
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="ARTS"
-                android:id="@+id/chk_Science"
-                android:checked="false" />
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinner_Interest"
+            android:entries="@array/interest_list"
+            android:prompt="@string/interest_prompt"
+            android:background="#ffdab7" />
 
-            </ScrollView>
     </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Tell me something about yourself"
+        android:id="@+id/textView3"
+        android:textStyle="bold"
+        android:layout_below="@+id/linearLayout2"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="30dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/description"
+        android:layout_below="@+id/textView3"
+        android:layout_alignParentStart="true"
+        android:layout_alignEnd="@+id/linearLayout2"
+        android:hint="Keep it Short and Simple" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="BACK"
+        android:id="@+id/back"
+        android:layout_alignTop="@+id/confirm"
+        android:layout_toStartOf="@+id/confirm"
+        android:layout_marginEnd="39dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CONFIRM"
+        android:id="@+id/confirm"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/description"
+        android:layout_alignEnd="@+id/textView3" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txt_Address"
+        android:layout_below="@+id/btn_UploadUserImage"
+        android:layout_alignParentStart="true"
+        android:layout_alignEnd="@+id/linearLayout"
+        android:hint="Enter your Address"
+        android:layout_marginTop="7dp"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txt_PinCode"
+        android:layout_below="@+id/txt_Address"
+        android:layout_alignParentStart="true"
+        android:layout_alignEnd="@+id/txt_Address"
+        android:layout_marginTop="5dp"
+        android:hint="Enter your Pin Code" />
+
 </RelativeLayout>

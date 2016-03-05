@@ -13,8 +13,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.HashMap;
+
 public class ListAndOptionPage extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    UserSessionManager session;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +45,16 @@ public class ListAndOptionPage extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        session = new UserSessionManager(getApplicationContext());
+        if(session.checkLogin())
+        {
+            finish();
+        }
+
+        HashMap<String, String> user = session.getUserDetails();
+        String username = user.get(UserSessionManager.username);
+        String password = user.get(UserSessionManager.password);
     }
 
     @Override

@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private String uFullName;
     private int uRole;
     private int uAge;
-    private int uPhoneNumber;
+    private long uPhoneNumber;
     private String uEmailID;
     private String uPassword;
     Firebase mref;
@@ -56,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
         fullName = (EditText) findViewById(R.id.main_FullName);
         age = (EditText) findViewById(R.id.main_Age);
         phoneNumber = (EditText) findViewById(R.id.main_PhoneNumber);
@@ -68,8 +67,9 @@ public class MainActivity extends AppCompatActivity {
         userRole = (TextView) findViewById(R.id.txt_userrole);
         mref = new Firebase("https://scorching-inferno-7039.firebaseio.com");
 
-        Intent info = new Intent();
-        uRole = info.getIntExtra("userRole",0);
+        Bundle extras = getIntent().getExtras();
+        uRole = extras.getInt("userRole");
+
         if(uRole == 0)
         {
             userRole.setText("Tutor");
@@ -79,13 +79,12 @@ public class MainActivity extends AppCompatActivity {
             userRole.setText("Student");
         }
 
-
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 uFullName = fullName.getText().toString();
                 uAge = Integer.parseInt(age.getText().toString());
-                uPhoneNumber = Integer.parseInt(phoneNumber.getText().toString());
+                uPhoneNumber = Long.parseLong(phoneNumber.getText().toString());
                 uEmailID = emailID.getText().toString();
                 uPassword = password.getText().toString();
                 if (uFullName.trim().isEmpty())
@@ -118,11 +117,19 @@ public class MainActivity extends AppCompatActivity {
                     rePassword.setError("Password does not match");
                 }
                 else {
-                      Firebase newUserRef = mref.child("users").child(uFullName);
-                      Users newUser = new Users(uRole, uFullName, uAge, uPhoneNumber, uPassword);
+                      //Firebase newUserRef = mref.child("users").child(uFullName);
+                      //Users newUser = new Users(uRole, uFullName, uAge, uPhoneNumber, uPassword);
                       Intent mainPage = new Intent(MainActivity.this, SignUpPage2.class);
+                      Bundle bundle = new Bundle();
+                      bundle.putInt("userRole", uRole);
+                      bundle.putInt("uAge", uAge);
+                      bundle.putLong("uPhoneNumber", uPhoneNumber);
+                      bundle.putString("uFullName", uFullName);
+                      bundle.putString("uPassword", uPassword);
+                      bundle.putString("uEmailID", uEmailID);
+                      mainPage.putExtras(bundle);
                       startActivity(mainPage);
-                      //newUserRef.setValue(newUser);
+//                      newUserRef.setValue(newUser);
 //                      mref.createUser(uEmailID, uPassword, new Firebase.ValueResultHandler<Map<String, Object>>() {
 //                          @Override
 //                          public void onSuccess(Map<String, Object> stringObjectMap) {
