@@ -46,4 +46,10 @@ public class Users {
     {
         return this.password;
     }
+
+//    public String toString() { return "User{handle='"+handle+“', name='"+name+"', stackId="+stackId+"\’}”; }
+
+
+//    @Override
+//    public String toString() { return "User{fullName='"+fullName+"', name='"+phoneNumber+"', stackId='"+age+"'}"; }
 }
