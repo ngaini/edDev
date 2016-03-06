@@ -19,9 +19,11 @@ public class Users {
     private String interests;
     private String address;
     private int pincode;
+    private String userID;
 
 
-    public Users(int role, String fullName, int age, int phoneNumber, String password, String education, String description, String gender, String interests, String address, int pincode ){
+    public Users(String userID, int role, String fullName, int age, int phoneNumber, String password, String education, String description, String gender, String interests, String address, int pincode ){
+        this.userID = userID;
         this.role = role;
         this.fullName = fullName;
         this.age = age;
@@ -87,5 +89,10 @@ public class Users {
     public int getPincode()
     {
         return this.pincode;
+    }
+
+    public String getUserID()
+    {
+        return this.userID;
     }
 }
