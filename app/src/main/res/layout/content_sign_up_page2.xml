@@ -137,6 +137,7 @@
         android:id="@+id/description"
         android:layout_below="@+id/textView3"
         android:layout_alignParentStart="true"
+        android:singleLine="true"
         android:layout_alignEnd="@+id/linearLayout2"
         android:hint="Keep it Short and Simple" />
 
@@ -165,6 +166,7 @@
         android:layout_below="@+id/btn_UploadUserImage"
         android:layout_alignParentStart="true"
         android:layout_alignEnd="@+id/linearLayout"
+        android:singleLine="true"
         android:hint="Enter your Address"
         android:layout_marginTop="7dp"/>
 

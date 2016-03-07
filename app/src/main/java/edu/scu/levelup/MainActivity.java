@@ -33,8 +33,8 @@ public class MainActivity extends AppCompatActivity {
     private boolean flag = true;
     private String uFullName;
     private int uRole;
-    private int uAge;
-    private long uPhoneNumber;
+    private String uAge;
+    private String uPhoneNumber;
     private String uEmailID;
     private String uPassword;
     Firebase mref;
@@ -83,19 +83,19 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 uFullName = fullName.getText().toString();
-                uAge = Integer.parseInt(age.getText().toString());
-                uPhoneNumber = Long.parseLong(phoneNumber.getText().toString());
+                uAge = age.getText().toString();
+                uPhoneNumber = phoneNumber.getText().toString();
                 uEmailID = emailID.getText().toString();
                 uPassword = password.getText().toString();
                 if (uFullName.trim().isEmpty())
                 {
                     fullName.setError("Invalid Input");
                 }
-                else if (uAge == 0)
+                else if (uAge.trim().isEmpty())
                 {
                     age.setError("Invalid Input");
                 }
-                else if (uPhoneNumber == 0)
+                else if (uPhoneNumber.trim().isEmpty())
                 {
                     phoneNumber.setError("Invalid Input");
                 }
@@ -122,8 +122,8 @@ public class MainActivity extends AppCompatActivity {
                       Intent mainPage = new Intent(MainActivity.this, SignUpPage2.class);
                       Bundle bundle = new Bundle();
                       bundle.putInt("userRole", uRole);
-                      bundle.putInt("uAge", uAge);
-                      bundle.putLong("uPhoneNumber", uPhoneNumber);
+                      bundle.putString("uAge", uAge);
+                      bundle.putString("uPhoneNumber", uPhoneNumber);
                       bundle.putString("uFullName", uFullName);
                       bundle.putString("uPassword", uPassword);
                       bundle.putString("uEmailID", uEmailID);

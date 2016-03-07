@@ -10,19 +10,19 @@ import java.util.Date;
 public class Users {
     private int role;
     private String fullName;
-    private int age;
-    private long phoneNumber;
+    private String age;
+    private String phoneNumber;
     private String password;
     private String education;
     private String description;
     private String gender;
     private String interests;
     private String address;
-    private int pincode;
+    private String pincode;
     private String userID;
 
 
-    public Users(String userID, int role, String fullName, int age, int phoneNumber, String password, String education, String description, String gender, String interests, String address, int pincode ){
+    public Users(String userID, int role, String fullName, String age, String phoneNumber, String password, String education, String description, String gender, String interests, String address, String pincode ){
         this.userID = userID;
         this.role = role;
         this.fullName = fullName;
@@ -46,12 +46,12 @@ public class Users {
         return this.fullName;
     }
 
-    public int getAge()
+    public String getAge()
     {
         return this.age;
     }
 
-    public long getPhoneNumber()
+    public String getPhoneNumber()
     {
         return this.phoneNumber;
     }
@@ -86,7 +86,7 @@ public class Users {
         return this.address;
     }
 
-    public int getPincode()
+    public String getPincode()
     {
         return this.pincode;
     }

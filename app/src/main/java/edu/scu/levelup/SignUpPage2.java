@@ -47,8 +47,8 @@ public class SignUpPage2 extends AppCompatActivity {
     private EditText pincode;
     private int uRole;
     private String uFullName;
-    private int uAge;
-    private int uPhoneNumber;
+    private String uAge;
+    private String uPhoneNumber;
     private String uPassword;
     private String uEmailID;
     private Button imageButton;
@@ -60,7 +60,7 @@ public class SignUpPage2 extends AppCompatActivity {
     private String uDescription;
     private String uAddress;
     private ImageView image;
-    private int uPincode;
+    private String uPincode;
     private String userID;
     boolean flagCapButton = false;
     File imageFile;
@@ -117,9 +117,9 @@ public class SignUpPage2 extends AppCompatActivity {
 
         uRole = extras.getInt("userRole");
         uFullName = extras.getString("uFullName");
-        uPhoneNumber = extras.getInt("uPhoneNumber");
+        uPhoneNumber = extras.getString("uPhoneNumber");
         uPassword = extras.getString("uPassword");
-        uAge = extras.getInt("uAge");
+        uAge = extras.getString("uAge");
         uEmailID = extras.getString("uEmailID");
 
         imageButton.setOnClickListener(new View.OnClickListener() {
@@ -146,19 +146,26 @@ public class SignUpPage2 extends AppCompatActivity {
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(genderGroup.getCheckedRadioButtonId() == male.getId())
-                {
+                if (genderGroup.getCheckedRadioButtonId() == male.getId()) {
                     uGender = "male";
-                }
-                else
-                {
+                } else {
                     uGender = "female";
                 }
                 uDegreeList = degreeList.getSelectedItem().toString();
                 uExpertiseList = expertiseList.getSelectedItem().toString();
                 uDescription = description.getText().toString();
                 uAddress = address.getText().toString();
-                uPincode = Integer.parseInt(pincode.getText().toString());
+                uPincode = pincode.getText().toString();
+
+                if (uAddress.trim().isEmpty()) {
+                    address.setError("Invalid Input");
+                } else if (uPincode.trim().isEmpty()) {
+                    pincode.setError("Invalid Input");
+                } else if (uDescription.trim().isEmpty()) {
+                    description.setError("Invalid Input");
+                }
+                else
+                {
                 Firebase newUserRef = mref.child("users").child(uFullName);
                 Users newUser = new Users(userID, uRole, uFullName, uAge, uPhoneNumber, uPassword, uDegreeList, uDescription, uGender, uExpertiseList, uAddress, uPincode);
                 newUserRef.setValue(newUser);
@@ -174,6 +181,8 @@ public class SignUpPage2 extends AppCompatActivity {
 
                     }
                 });
+
+            }
             }
         });
     }
