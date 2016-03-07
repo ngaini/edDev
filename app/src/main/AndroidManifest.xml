@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="edu.scu.levelup">
+    package="edu.scu.levelup" >
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -14,7 +14,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme" >
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
@@ -22,26 +22,26 @@
         <activity
             android:name=".Login"
             android:label="@string/title_activity_login"
-            android:theme="@style/AppTheme.NoActionBar">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
+            android:theme="@style/AppTheme.NoActionBar" >
 
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity
             android:name=".DetailsActivity"
-            android:label="@string/title_activity_details">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
+            android:label="@string/title_activity_details" >
 
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
-        <activity
-            android:name=".ListAndOptionPage"
-            android:label="@string/title_activity_user_options"
-            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".RoleChoice"
             android:label="@string/title_activity_role_choice"
@@ -52,13 +52,16 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".StudentActivity"
-            android:label="@string/title_activity_student">
+            android:label="@string/title_activity_student" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".StudentList"
+            android:label="@string/title_activity_student_list" />
     </application>
 
 </manifest>

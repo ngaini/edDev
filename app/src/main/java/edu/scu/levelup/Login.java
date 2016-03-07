@@ -85,7 +85,7 @@ public class Login extends AppCompatActivity {
                             //startActivity(mainPage);
                             Toast.makeText(getApplicationContext(), "SUCCESS", Toast.LENGTH_SHORT).show();
                             session.createUserLoginSession(uname, pass);
-                            Intent i = new Intent(getApplicationContext(), ListAndOptionPage.class);
+                            Intent i = new Intent(getApplicationContext(), StudentList.class);
                             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(i);

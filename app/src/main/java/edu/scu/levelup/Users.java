@@ -34,6 +34,12 @@ public class Users {
         this.address = address;
         this.pincode = pincode;
     }
+
+
+    // constructor without parameters essential for firebase to work
+    public Users() {
+    }
+
     public int getRole()
     {
         return this.role;
@@ -59,15 +65,14 @@ public class Users {
     {
         return this.password;
     }
-<<<<<<< HEAD
+
 
 //    public String toString() { return "User{handle='"+handle+“', name='"+name+"', stackId="+stackId+"\’}”; }
 
 
 //    @Override
 //    public String toString() { return "User{fullName='"+fullName+"', name='"+phoneNumber+"', stackId='"+age+"'}"; }
-||||||| merged common ancestors
-=======
+
 
     public String getEducation()
     {
@@ -97,5 +102,5 @@ public class Users {
     {
         return this.pincode;
     }
->>>>>>> f8aedd4078ab0ffd63708d3ab9c045965d001b15
+
 }

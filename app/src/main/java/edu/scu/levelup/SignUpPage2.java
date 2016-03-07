@@ -99,13 +99,14 @@ public class SignUpPage2 extends AppCompatActivity {
                 uDescription = description.getText().toString();
                 uAddress = address.getText().toString();
                 uPincode = Integer.parseInt(pincode.getText().toString());
-                Firebase newUserRef = mref.child("users").child(uFullName);
+//                Firebase newUserRef = mref.child("users").child(uFullName);
+                Firebase newUserRef = mref.child("users").push();
                 Users newUser = new Users(uRole, uFullName, uAge, uPhoneNumber, uPassword, uDegreeList, uDescription, uGender, uExpertiseList, uAddress, uPincode);
                 newUserRef.setValue(newUser);
                 mref.createUser(uEmailID, uPassword, new Firebase.ValueResultHandler<Map<String, Object>>() {
                     @Override
                     public void onSuccess(Map<String, Object> stringObjectMap) {
-                        Intent mainPage = new Intent(SignUpPage2.this, ListAndOptionPage.class);
+                        Intent mainPage = new Intent(SignUpPage2.this, StudentList.class);
                         startActivity(mainPage);
                     }
 
