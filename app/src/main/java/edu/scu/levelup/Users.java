@@ -19,9 +19,11 @@ public class Users {
     private String interests;
     private String address;
     private int pincode;
+    private String userID;
 
 
-    public Users(int role, String fullName, int age, int phoneNumber, String password, String education, String description, String gender, String interests, String address, int pincode ){
+    public Users(String userID, int role, String fullName, int age, int phoneNumber, String password, String education, String description, String gender, String interests, String address, int pincode ){
+        this.userID = userID;
         this.role = role;
         this.fullName = fullName;
         this.age = age;
@@ -102,5 +104,14 @@ public class Users {
     {
         return this.pincode;
     }
+<<<<<<< HEAD
 
+||||||| merged common ancestors
+=======
+
+    public String getUserID()
+    {
+        return this.userID;
+    }
+>>>>>>> 018fcb39b771d44ec6c2af750b67286daf7026a4
 }
