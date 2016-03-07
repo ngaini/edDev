@@ -5,11 +5,11 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.CAMERA"></uses-permission>
-    <!--<uses-permission-->
-        <!--android:name="android.permission.CAMERA"-->
-        <!--android:required="true" />-->
+    <uses-permission android:name="android.permission.CAMERA" />
 
+    <!-- <uses-permission -->
+    <!-- android:name="android.permission.CAMERA" -->
+    <!-- android:required="true" /> -->
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -24,17 +24,6 @@
             android:name=".Login"
             android:label="@string/title_activity_login"
             android:theme="@style/AppTheme.NoActionBar">
-
-             <intent-filter>
-             <action android:name="android.intent.action.MAIN" />
-
-
-             <category android:name="android.intent.category.LAUNCHER" />
-             </intent-filter>
-        </activity>
-        <activity
-            android:name=".DetailsActivity"
-            android:label="@string/title_activity_details">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -42,9 +31,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ListAndOptionPage"
-            android:label="@string/title_activity_user_options"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".DetailsActivity"
+            android:label="@string/title_activity_details">
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
+        </activity>
         <activity
             android:name=".RoleChoice"
             android:label="@string/title_activity_role_choice"
@@ -52,9 +48,24 @@
         <activity
             android:name=".SignUpPage2"
             android:label="@string/title_activity_sign_up_page2"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".StudentsListActivity"
+            android:label="@string/title_activity_student">
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
 
 
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
+        </activity>
+        <activity
+            android:name=".TutorsActivity"
+            android:label="@string/title_activity_student_list" />
+        <activity
+            android:name=".TutorDetailActivity"
+            android:label="@string/title_activity_student_detail"></activity>
     </application>
 
 </manifest>

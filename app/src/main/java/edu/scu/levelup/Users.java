@@ -36,6 +36,12 @@ public class Users {
         this.address = address;
         this.pincode = pincode;
     }
+
+
+    // constructor without parameters essential for firebase to work
+    public Users() {
+    }
+
     public int getRole()
     {
         return this.role;
@@ -61,6 +67,14 @@ public class Users {
     {
         return this.password;
     }
+
+
+//    public String toString() { return "User{handle='"+handle+“', name='"+name+"', stackId="+stackId+"\’}”; }
+
+
+//    @Override
+//    public String toString() { return "User{fullName='"+fullName+"', name='"+phoneNumber+"', stackId='"+age+"'}"; }
+
 
     public String getEducation()
     {
@@ -91,8 +105,10 @@ public class Users {
         return this.pincode;
     }
 
+
     public String getUserID()
     {
         return this.userID;
     }
+
 }
