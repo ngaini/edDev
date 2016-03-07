@@ -7,27 +7,21 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".TutorsActivity"
-    android:orientation="horizontal">
+    tools:context=".TutorDetailActivity"
+    android:orientation="vertical">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/StudentActivity_tutorName_textView"
+        android:id="@+id/TDA_tutorName_textView"
+        android:text="Full Name"
+        android:textStyle="bold"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="First Last"
-        android:layout_gravity="center_vertical|left"/>
         />
-
     <TextView
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/StudentActivity_tutorSkill_textView"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Skill"
-        android:layout_gravity="center_vertical|right"
-        android:gravity="right"/>
-
-
+        android:id="@+id/TDA_tutorExpertise_textView"
+        android:text="Interest "/>
 
 </LinearLayout>

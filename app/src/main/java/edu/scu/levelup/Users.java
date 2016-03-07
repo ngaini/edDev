@@ -104,14 +104,11 @@ public class Users {
     {
         return this.pincode;
     }
-<<<<<<< HEAD
 
-||||||| merged common ancestors
-=======
 
     public String getUserID()
     {
         return this.userID;
     }
->>>>>>> 018fcb39b771d44ec6c2af750b67286daf7026a4
+
 }

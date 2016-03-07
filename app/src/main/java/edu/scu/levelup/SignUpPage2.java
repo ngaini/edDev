@@ -13,7 +13,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
-import android.view.KeyCharacterMap;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,7 +20,6 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -159,22 +157,22 @@ public class SignUpPage2 extends AppCompatActivity {
                 uDescription = description.getText().toString();
                 uAddress = address.getText().toString();
                 uPincode = Integer.parseInt(pincode.getText().toString());
-<<<<<<< HEAD
+
 //                Firebase newUserRef = mref.child("users").child(uFullName);
-                Firebase newUserRef = mref.child("users").push();
-                Users newUser = new Users(uRole, uFullName, uAge, uPhoneNumber, uPassword, uDegreeList, uDescription, uGender, uExpertiseList, uAddress, uPincode);
-||||||| merged common ancestors
-                Firebase newUserRef = mref.child("users").child(uFullName);
-                Users newUser = new Users(uRole, uFullName, uAge, uPhoneNumber, uPassword, uDegreeList, uDescription, uGender, uExpertiseList, uAddress, uPincode);
-=======
+//                Firebase newUserRef = mref.child("users").push();
+//                Users newUser = new Users(uRole, uFullName, uAge, uPhoneNumber, uPassword, uDegreeList, uDescription, uGender, uExpertiseList, uAddress, uPincode);
+
+//                Firebase newUserRef = mref.child("users").child(uFullName);
+//                Users newUser = new Users(uRole, uFullName, uAge, uPhoneNumber, uPassword, uDegreeList, uDescription, uGender, uExpertiseList, uAddress, uPincode);
+
                 Firebase newUserRef = mref.child("users").child(uFullName);
                 Users newUser = new Users(userID, uRole, uFullName, uAge, uPhoneNumber, uPassword, uDegreeList, uDescription, uGender, uExpertiseList, uAddress, uPincode);
->>>>>>> 018fcb39b771d44ec6c2af750b67286daf7026a4
+
                 newUserRef.setValue(newUser);
                 mref.createUser(uEmailID, uPassword, new Firebase.ValueResultHandler<Map<String, Object>>() {
                     @Override
                     public void onSuccess(Map<String, Object> stringObjectMap) {
-                        Intent mainPage = new Intent(SignUpPage2.this, StudentList.class);
+                        Intent mainPage = new Intent(SignUpPage2.this, StudentsListActivity.class);
                         startActivity(mainPage);
                     }
 

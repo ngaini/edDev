@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.firebase.client.Firebase;
 
-public class StudentList extends AppCompatActivity {
+public class TutorsActivity extends AppCompatActivity {
 
     private Firebase mFirebaseRef;
 

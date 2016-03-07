@@ -37,5 +37,6 @@
         <item>Badminton</item>
     </string-array>
     <string name="title_activity_student_list">StudentList</string>
+    <string name="title_activity_student_detail">StudentDetailActivity</string>
 
 </resources>
