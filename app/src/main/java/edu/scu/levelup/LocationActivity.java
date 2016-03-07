@@ -12,6 +12,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.app.Activity;
 import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,6 +44,7 @@ public class LocationActivity extends Activity implements LocationListener {
         // default
         Criteria criteria = new Criteria();
         provider = locationManager.getBestProvider(criteria, false);
+        Log.e("###SEE THIS"," before on location chenged");
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -54,11 +56,12 @@ public class LocationActivity extends Activity implements LocationListener {
             return;
         }
         Location location = locationManager.getLastKnownLocation(provider);
-
+//        Log.e("###SEE THIS", location.toString());
         // Initialize the location fields
         if (location != null) {
             System.out.println("Provider " + provider + " has been selected.");
-//            onLocationChanged(location);
+
+            onLocationChanged(location);
         } else {
             latituteField.setText("Location not available");
             longitudeField.setText("Location not available");
