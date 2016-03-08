@@ -36,7 +36,18 @@
         <item>Table Tennis</item>
         <item>Badminton</item>
     </string-array>
+    <string-array name="navOptions">
+        <item>Home</item>
+        <item>Edit Profile</item>
+        <item>Dicovery Settings</item>
+        <item>Contact Tutor</item>
+        <item>Map View</item>
+        <item>Logout</item>
+
+
+    </string-array>
     <string name="title_activity_student_list">StudentList</string>
     <string name="title_activity_student_detail">StudentDetailActivity</string>
+    <string name="title_activity_drawer_test">DrawerTestActivity</string>
 
 </resources>
