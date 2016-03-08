@@ -16,18 +16,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/mainContent"></FrameLayout>
-    <ListView
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:id="@+id/drawerList"
-        android:layout_gravity="left"
-        android:divider="@null"
-        android:background="#ff8800"
-        android:paddingLeft="5dp"
-        android:paddingTop="20dp"
-        android:gravity="center"
-        android:entries="@array/navOptions">
 
-    </ListView>
 
 </android.support.v4.widget.DrawerLayout>

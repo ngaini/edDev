@@ -1,8 +1,14 @@
 package edu.scu.levelup;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.app.Activity;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -20,20 +26,61 @@ import org.w3c.dom.Text;
 
 import java.util.Map;
 
+import static edu.scu.levelup.R.id.toolbar;
+
 
 /**
  * This activity populates the list with tutors
  * This activity appears only for the student user
  * clicking on the list will give details of the specific tutor
  */
-public class StudentsListActivity extends Activity {
+public class StudentsListActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+
+    private ActionBarDrawerToggle drawerListner;
+    private CustomAdapter myCustomAdapter;
+    private String[] navOptions;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student);
+        Toolbar myToolbar = (Toolbar) findViewById(toolbar);
+        setSupportActionBar(myToolbar);
         Firebase.setAndroidContext(this);
-//
+
+        //setting up for the drawer
+        DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.drawerLayout);
+        ListView list = (ListView)findViewById(R.id.drawerList);
+        myCustomAdapter = new CustomAdapter(this);
+        list.setAdapter(myCustomAdapter);
+        navOptions =getResources().getStringArray(R.array.navOptions);
+
+        //setting item lister for nav drawer item click
+        list.setOnItemClickListener(this);
+
+        drawerListner = new ActionBarDrawerToggle(this,drawerLayout,myToolbar, R.string.navigation_drawer_open,R.string.navigation_drawer_close)
+        {
+
+            /** Called when a drawer has settled in a completely closed state. */
+            public void onDrawerClosed(View view) {
+//                super.onDrawerClosed(view);
+//                getActionBar().setTitle(R.string.title_activity_drawer_test);
+//                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+
+            /** Called when a drawer has settled in a completely open state. */
+            public void onDrawerOpened(View drawerView) {
+//                super.onDrawerOpened(drawerView);
+//                getActionBar().setTitle("Menu");
+//                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+        };
+        drawerLayout.setDrawerListener(drawerListner);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+//      for the tutors list
         final ListView tutorList_id = (ListView)findViewById(R.id.studentActivity_tutorList_listView);
         Firebase ref = new Firebase("https://scorching-inferno-7039.firebaseio.com/users");
         FirebaseListAdapter<Users> adapter = new FirebaseListAdapter<Users>(this, Users.class,android.R.layout.two_line_list_item, ref) {
@@ -84,5 +131,33 @@ public class StudentsListActivity extends Activity {
     protected void onStart() {
         super.onStart();
 
+    }
+
+
+    //Methods for drawer
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // this causes the drawer icon to appear
+        drawerListner.syncState();
+    }
+
+    // change the navigation drawer when the configuration changes
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        drawerListner.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//        Toast.makeText(DrawerTestActivity.this, navOptions[position], Toast.LENGTH_SHORT).show();
+        selectTitle(navOptions[position]);
+    }
+
+    private void selectTitle(String navOption) {
+
+        //to change the nave bar name
+        getSupportActionBar().setTitle(navOption);
     }
 }
