@@ -24,6 +24,7 @@ public class Login extends AppCompatActivity {
     private EditText username;
     private EditText password;
     private Button login;
+    private Button newUser;
     private TextView clickLink;
     String uname;
     String pass;
@@ -37,27 +38,15 @@ public class Login extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
         Firebase.setAndroidContext(this);
         mref = new Firebase("https://scorching-inferno-7039.firebaseio.com");
         res = getResources();
         session = new UserSessionManager(getApplicationContext());
-        clickLink = (TextView) findViewById(R.id.login_SignUp);
-        clickLink.setPaintFlags(clickLink.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         username = (EditText) findViewById(R.id.login_emailID);
         password = (EditText) findViewById(R.id.login_Password);
         login = (Button) findViewById(R.id.main_Login);
-        clickLink.setOnClickListener(new View.OnClickListener() {
+        newUser = (Button) findViewById(R.id.btn_NewUser);
+        newUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent iSignUp = new Intent(Login.this, RoleChoice.class);
@@ -65,17 +54,27 @@ public class Login extends AppCompatActivity {
             }
         });
 
+//        mref.addAuthStateListener(new Firebase.AuthStateListener() {
+//            @Override
+//            public void onAuthStateChanged(AuthData authData) {
+//                if (authData != null) {
+//                    Toast.makeText(getApplicationContext(), "authentication is working", Toast.LENGTH_SHORT).show();
+//                    Intent toMainActivity = new Intent(Login.this, StudentsListActivity.class);
+//                    startActivity(toMainActivity);
+//                } else {
+//                    Toast.makeText(getApplicationContext(), "authentication failed!", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
+
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 uname = username.getText().toString();
                 pass = password.getText().toString();
-                if(uname.isEmpty() || pass.isEmpty())
-                {
+                if (uname.isEmpty() || pass.isEmpty()) {
                     username.setError("Invalid Input");
-                }
-
-                else {
+                } else {
                     mref.authWithPassword(uname, pass, new Firebase.AuthResultHandler() {
                         @Override
                         public void onAuthenticated(AuthData authData) {
@@ -92,9 +91,9 @@ public class Login extends AppCompatActivity {
 
                         @Override
                         public void onAuthenticationError(FirebaseError firebaseError) {
+                            Toast.makeText(getApplicationContext(), "Invalid username or password", Toast.LENGTH_SHORT).show();
                         }
                     });
-
                 }
             }
         });

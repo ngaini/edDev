@@ -6,10 +6,12 @@ import android.app.Activity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.AuthData;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -28,14 +30,28 @@ import java.util.Map;
  */
 public class StudentsListActivity extends Activity {
 
+    private Button logout;
+    Firebase ref;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student);
         Firebase.setAndroidContext(this);
+        ref = new Firebase("https://scorching-inferno-7039.firebaseio.com/users");
+     //   logout = (Button) findViewById(R.id.btn_logout);
+
+//        logout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                ref.unauth();
+//                Intent test = new Intent(StudentsListActivity.this, Login.class);
+//                startActivity(test);
+//            }
+//        });
 //
         final ListView tutorList_id = (ListView)findViewById(R.id.studentActivity_tutorList_listView);
-        Firebase ref = new Firebase("https://scorching-inferno-7039.firebaseio.com/users");
+
+
         FirebaseListAdapter<Users> adapter = new FirebaseListAdapter<Users>(this, Users.class,android.R.layout.two_line_list_item, ref) {
 
 

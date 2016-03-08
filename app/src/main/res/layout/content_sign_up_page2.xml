@@ -167,7 +167,9 @@
         android:layout_alignParentStart="true"
         android:layout_alignEnd="@+id/linearLayout"
         android:singleLine="true"
-        android:hint="Enter your Address"
+        android:digits="1,2,3,4,5,6,7,8,9,0, ,qwertzuiopasdfghjklyxcvbnm"
+        android:maxLength="25"
+        android:hint="Enter Street Number and Name"
         android:layout_marginTop="7dp"/>
 
     <EditText
@@ -178,6 +180,8 @@
         android:layout_alignParentStart="true"
         android:layout_alignEnd="@+id/txt_Address"
         android:layout_marginTop="5dp"
+        android:digits="1234567890"
+        android:maxLength="5"
         android:hint="Enter your Pin Code" />
 
 </RelativeLayout>
