@@ -54,8 +54,8 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
         setSupportActionBar(myToolbar);
         Firebase.setAndroidContext(this);
         ref = new Firebase("https://scorching-inferno-7039.firebaseio.com/users");
-        Bundle extras = getIntent().getExtras();
-        uExpertiseList = extras.getString("uExpertiseList");
+//        Bundle extras = getIntent().getExtras();
+//        uExpertiseList = extras.getString("uExpertiseList");
         Query queryRef = ref.orderByChild("interests").equalTo(uExpertiseList);
         //setting up for the drawer
         DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.drawerLayout);
@@ -90,11 +90,35 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
 
 //      for the tutors list
         final ListView tutorList_id = (ListView)findViewById(R.id.studentActivity_tutorList_listView);
-        FirebaseListAdapter<Users> adapter = new FirebaseListAdapter<Users>(this, Users.class,android.R.layout.two_line_list_item, queryRef) {
+
+        Firebase ref = new Firebase("https://scorching-inferno-7039.firebaseio.com/users");
+        Query queryRef1 = ref.orderByChild("pincode").equalTo("95050");
+        FirebaseListAdapter<Users> adapter = new FirebaseListAdapter<Users>(this, Users.class,android.R.layout.two_line_list_item, queryRef1) {
+
+
+
+
+
+
+
             @Override
             protected void populateView(View view, Users user, int i) {
-                ((TextView) view.findViewById(android.R.id.text1)).setText(user.getFullName());
-                ((TextView) view.findViewById(android.R.id.text2)).setText(user.getInterests());
+
+
+               TextView text1_id =(TextView) view.findViewById(android.R.id.text1);
+               TextView text2_id =(TextView) view.findViewById(android.R.id.text2);
+                text1_id.setPaddingRelative(30,5,10,5);
+                text2_id.setPaddingRelative(30,5,10,20);
+
+                text1_id.setTextAppearance(view.getContext(), android.R.style.TextAppearance_Large);
+
+
+                   text1_id.setText(user.getFullName());
+                   text2_id.setText(user.getInterests());
+
+
+
+
             }
         };
         //Bind the list adapter to  listView
