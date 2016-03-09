@@ -29,16 +29,14 @@ public class Login extends AppCompatActivity {
     private EditText password;
     private Button login;
     private Button newUser;
-    private String firePassword;
-    private String uExpertiseList;
     private TextView clickLink;
     String uname;
     String pass;
-    Firebase ref, userRef;
+    Firebase mref, userRef;
     Resources res;
     UserSessionManager session;
     Query qref;
-
+    String uExpertiseList;
 
 
     @Override
@@ -46,7 +44,7 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         Firebase.setAndroidContext(this);
-        ref = new Firebase("https://scorching-inferno-7039.firebaseio.com");
+        mref = new Firebase("https://scorching-inferno-7039.firebaseio.com");
         userRef = new Firebase("https://scorching-inferno-7039.firebaseio.com/users");
         res = getResources();
         session = new UserSessionManager(getApplicationContext());
@@ -68,6 +66,9 @@ public class Login extends AppCompatActivity {
                 if (authData != null) {
                     Toast.makeText(getApplicationContext(), "authentication is working", Toast.LENGTH_SHORT).show();
                     Intent toMainActivity = new Intent(Login.this, StudentsListActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("uExpertiseList", "Dance");
+                    toMainActivity.putExtras(bundle);
                     startActivity(toMainActivity);
                 } else {
                     Toast.makeText(getApplicationContext(), "authentication failed!", Toast.LENGTH_SHORT).show();
@@ -83,47 +84,26 @@ public class Login extends AppCompatActivity {
                 if (uname.isEmpty() || pass.isEmpty()) {
                     username.setError("Invalid Input");
                 } else {
-                    qref = userRef.orderByChild("emailID").equalTo(uname);
-                    qref.addChildEventListener(new ChildEventListener() {
+                    mref.authWithPassword(uname, pass, new Firebase.AuthResultHandler() {
                         @Override
-                        public void onChildAdded(DataSnapshot dataSnapshot, String previousChildKey) {
-                            Users userData = dataSnapshot.getValue(Users.class);
-                            firePassword = userData.getPassword();
-                            if(firePassword.toString().trim().equals(pass))
-                            {
-                                uExpertiseList = userData.getInterests();
-                                Toast.makeText(getApplicationContext(), "Login Successful", Toast.LENGTH_SHORT).show();
-                                Intent mainPage = new Intent(Login.this, StudentsListActivity.class);
-                                Bundle bundle = new Bundle();
-                                bundle.putString("uExpertiseList", uExpertiseList);
-                                mainPage.putExtras(bundle);
-                                startActivity(mainPage);
-
-                            }
-                            else
-                            {
-                                Toast.makeText(getApplicationContext(), "Invalid username or password", Toast.LENGTH_SHORT).show();
-                            }
+                        public void onAuthenticated(AuthData authData) {
+                            Toast.makeText(getApplicationContext(), "The email ID is - " + uname, Toast.LENGTH_SHORT).show();
+                            uExpertiseList = getUserInterest(uname);
+                            Toast.makeText(getApplicationContext(), " " + uExpertiseList, Toast.LENGTH_SHORT).show();
+                            //Intent mainPage = new Intent(Login.this, ListAndOptionPage.class);
+                            //startActivity(mainPage);
+                            //Toast.makeText(getApplicationContext(), "SUCCESS", Toast.LENGTH_SHORT).show();
+                            Intent mainPage = new Intent(Login.this, StudentsListActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putString("uExpertiseList", uExpertiseList);
+                            mainPage.putExtras(bundle);
+                            startActivity(mainPage);
+                            session.createUserLoginSession(uname, pass);
                         }
 
                         @Override
-                        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                        }
-
-                        @Override
-                        public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                        }
-
-                        @Override
-                        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                        }
-
-                        @Override
-                        public void onCancelled(FirebaseError firebaseError) {
-
+                        public void onAuthenticationError(FirebaseError firebaseError) {
+                            Toast.makeText(getApplicationContext(), "Invalid username or password", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
@@ -131,4 +111,23 @@ public class Login extends AppCompatActivity {
         });
     }
 
+    public String getUserInterest(String uname) {
+        qref = userRef.orderByChild("emailID").equalTo(uname);
+        qref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Toast.makeText(getApplicationContext(), "INSIDE return string", Toast.LENGTH_SHORT).show();
+                Users userData = dataSnapshot.getValue(Users.class);
+                uExpertiseList = userData.getInterests();
+                Toast.makeText(getApplicationContext(), "Login Successful", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+
+        });
+        return uExpertiseList;
+    }
 }

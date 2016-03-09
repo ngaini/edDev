@@ -239,17 +239,17 @@ public class SignUpPage2 extends AppCompatActivity implements LocationListener{
                     bundle.putString("uExpertiseList", uExpertiseList);
                     mainPage.putExtras(bundle);
                     startActivity(mainPage);
-//                mref.createUser(uEmailID, uPassword, new Firebase.ValueResultHandler<Map<String, Object>>() {
-//                    @Override
-//                    public void onSuccess(Map<String, Object> stringObjectMap) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onError(FirebaseError firebaseError) {
-//
-//                    }
-//                });
+                mref.createUser(uEmailID, uPassword, new Firebase.ValueResultHandler<Map<String, Object>>() {
+                    @Override
+                    public void onSuccess(Map<String, Object> stringObjectMap) {
+
+                    }
+
+                    @Override
+                    public void onError(FirebaseError firebaseError) {
+
+                    }
+                });
 
             }
             }
