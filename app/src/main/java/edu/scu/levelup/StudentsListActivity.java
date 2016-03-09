@@ -1,5 +1,6 @@
 package edu.scu.levelup;
 
+import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -53,17 +54,6 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
         setSupportActionBar(myToolbar);
         Firebase.setAndroidContext(this);
         ref = new Firebase("https://scorching-inferno-7039.firebaseio.com/users");
-     //   logout = (Button) findViewById(R.id.btn_logout);
-
-//        logout.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                ref.unauth();
-//                Intent test = new Intent(StudentsListActivity.this, Login.class);
-//                startActivity(test);
-//            }
-//        });
-//
 
         //setting up for the drawer
         DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.drawerLayout);
@@ -136,8 +126,6 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
                 extra.putString("interest",interest);
                 tutorDetailIntent.putExtras(extra);
                 startActivity(tutorDetailIntent);
-
-
             }
         });
 
@@ -170,6 +158,30 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 //        Toast.makeText(DrawerTestActivity.this, navOptions[position], Toast.LENGTH_SHORT).show();
         selectTitle(navOptions[position]);
+
+        if(position == 5) {
+
+            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    switch (which)
+                    {
+                        case DialogInterface.BUTTON_POSITIVE:
+                            ref.unauth();
+                            Intent login = new Intent(StudentsListActivity.this, Login.class);
+                            startActivity(login);
+                            break;
+
+                        case DialogInterface.BUTTON_NEGATIVE:
+                            break;
+                    }
+                }
+            };
+            AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+            builder.setTitle("CONFIRM");
+            builder.setMessage("Are you sure ?").setPositiveButton("Yes", dialogClickListener)
+                    .setNegativeButton("No", dialogClickListener).show();
+        }
     }
 
     private void selectTitle(String navOption) {

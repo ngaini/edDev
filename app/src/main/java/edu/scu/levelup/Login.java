@@ -54,18 +54,18 @@ public class Login extends AppCompatActivity {
             }
         });
 
-//        mref.addAuthStateListener(new Firebase.AuthStateListener() {
-//            @Override
-//            public void onAuthStateChanged(AuthData authData) {
-//                if (authData != null) {
-//                    Toast.makeText(getApplicationContext(), "authentication is working", Toast.LENGTH_SHORT).show();
-//                    Intent toMainActivity = new Intent(Login.this, StudentsListActivity.class);
-//                    startActivity(toMainActivity);
-//                } else {
-//                    Toast.makeText(getApplicationContext(), "authentication failed!", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
+        mref.addAuthStateListener(new Firebase.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(AuthData authData) {
+                if (authData != null) {
+                    Toast.makeText(getApplicationContext(), "authentication is working", Toast.LENGTH_SHORT).show();
+                    Intent toMainActivity = new Intent(Login.this, StudentsListActivity.class);
+                    startActivity(toMainActivity);
+                } else {
+                    Toast.makeText(getApplicationContext(), "authentication failed!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
