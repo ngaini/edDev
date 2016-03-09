@@ -54,8 +54,8 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
         setSupportActionBar(myToolbar);
         Firebase.setAndroidContext(this);
         ref = new Firebase("https://scorching-inferno-7039.firebaseio.com/users");
-        Bundle extras = getIntent().getExtras();
-        uExpertiseList = extras.getString("uExpertiseList");
+//        Bundle extras = getIntent().getExtras();
+//        uExpertiseList = extras.getString("uExpertiseList");
         Query queryRef = ref.orderByChild("interests").equalTo(uExpertiseList);
         //setting up for the drawer
         DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.drawerLayout);
@@ -90,23 +90,20 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
 
 //      for the tutors list
         final ListView tutorList_id = (ListView)findViewById(R.id.studentActivity_tutorList_listView);
-<<<<<<< HEAD
+
         Firebase ref = new Firebase("https://scorching-inferno-7039.firebaseio.com/users");
-        Query queryRef = ref.orderByChild("pincode").equalTo(95050);
-        FirebaseListAdapter<Users> adapter = new FirebaseListAdapter<Users>(this, Users.class,android.R.layout.two_line_list_item, queryRef) {
+        Query queryRef1 = ref.orderByChild("pincode").equalTo("95050");
+        FirebaseListAdapter<Users> adapter = new FirebaseListAdapter<Users>(this, Users.class,android.R.layout.two_line_list_item, queryRef1) {
 
 
-||||||| merged common ancestors
-        Firebase ref = new Firebase("https://scorching-inferno-7039.firebaseio.com/users");
-        FirebaseListAdapter<Users> adapter = new FirebaseListAdapter<Users>(this, Users.class,android.R.layout.two_line_list_item, ref) {
 
 
-=======
-        FirebaseListAdapter<Users> adapter = new FirebaseListAdapter<Users>(this, Users.class,android.R.layout.two_line_list_item, queryRef) {
->>>>>>> 7c7ebdd69c0f48f7236b43dacaa738f46565da6f
+
+
+
             @Override
             protected void populateView(View view, Users user, int i) {
-<<<<<<< HEAD
+
 
                TextView text1_id =(TextView) view.findViewById(android.R.id.text1);
                TextView text2_id =(TextView) view.findViewById(android.R.id.text2);
@@ -121,17 +118,7 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
 
 
 
-||||||| merged common ancestors
 
-
-                ((TextView) view.findViewById(android.R.id.text1)).setText(user.getFullName());
-                ((TextView) view.findViewById(android.R.id.text2)).setText(user.getInterests());
-
-
-=======
-                ((TextView) view.findViewById(android.R.id.text1)).setText(user.getFullName());
-                ((TextView) view.findViewById(android.R.id.text2)).setText(user.getInterests());
->>>>>>> 7c7ebdd69c0f48f7236b43dacaa738f46565da6f
             }
         };
         //Bind the list adapter to  listView
