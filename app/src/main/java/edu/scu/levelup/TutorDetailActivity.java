@@ -44,18 +44,7 @@ public class TutorDetailActivity extends Activity {
             queryRef.addChildEventListener(new ChildEventListener() {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-//                    Map<String,Object> map = (Map<String, Object>) dataSnapshot.getValue();
-//                    String name =(String) map.get("fullName");
-//                    String expertise = (String)map.get("interests");
-//                    String description = (String)map.get("description");
-//                    String gender = (String)map.get("gender");
-//                    long age = (long)map.get("age");
-//                    Toast.makeText(TutorDetailActivity.this, ""+name+"::"+expertise+"::"+gender+"::"+age+"::"+description,Toast.LENGTH_LONG).show();
                     Users user = dataSnapshot.getValue(Users.class);
-
-
-//                    tutorName_id.setText(name);
-//                    tutorExpertize_id.setText(expertise);
                     tutorName_id.setText(user.getFullName());
                     tutorExpertize_id.setText("Gender: "+user.getInterests());
                     tutorAge_id.setText(user.getAge()+" yrs");
@@ -89,7 +78,6 @@ public class TutorDetailActivity extends Activity {
         //incase the tutor happens to delete his account
         else if(name.isEmpty())
         {
-
             Intent tutorUnAvailableIntent = new Intent(TutorDetailActivity.this, StudentsListActivity.class);
             startActivity(tutorUnAvailableIntent);
         }
