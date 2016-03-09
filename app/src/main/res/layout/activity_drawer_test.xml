@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:id="@+id/drawer_toolbar"
-    tools:context="edu.scu.levelup.StudentsListActivity">
+    tools:context="edu.scu.levelup.DrawerTestActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -22,7 +22,7 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_student" />
+    <include layout="@layout/content_drawer_test" />
 
 
 

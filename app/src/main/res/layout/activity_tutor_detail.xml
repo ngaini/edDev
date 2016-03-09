@@ -8,20 +8,68 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".TutorDetailActivity"
-    android:orientation="vertical">
-
+    android:orientation="vertical"
+    android:layout_marginRight="20dp"
+    android:layout_marginLeft="20dp"
+    android:layout_marginTop="20dp">
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:src="@drawable/orangutan"
+        android:background="@android:color/background_dark"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/TDA_tutorName_textView"
+            android:text="Full Name"
+            android:textStyle="bold"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="30dp"
+            />
+        />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Age"
+            android:id="@+id/TDA_tutorAge_textView"
+            android:layout_gravity="end|center_vertical"
+            android:gravity="end"
+            />
+    </LinearLayout>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/TDA_tutorName_textView"
-        android:text="Full Name"
-        android:textStyle="bold"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        />
+        android:id="@+id/TDA_tutorGender_textView"
+        android:text="Gender "
+        android:layout_marginTop="5dp"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/TDA_tutorExpertise_textView"
-        android:text="Interest "/>
+        android:text="Interest "
+        android:layout_marginTop="5dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/TDA_tutorEducation_textView"
+        android:text="Highest Education "
+        android:layout_marginTop="5dp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/TDA_tutorDescription_textView"
+        android:text="Description "
+        android:layout_marginTop="5dp"/>
+
+
+
+
 
 </LinearLayout>
