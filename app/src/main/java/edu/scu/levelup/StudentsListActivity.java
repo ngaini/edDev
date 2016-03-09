@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 import com.firebase.ui.FirebaseListAdapter;
 
@@ -83,15 +84,24 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
 //      for the tutors list
         final ListView tutorList_id = (ListView)findViewById(R.id.studentActivity_tutorList_listView);
         Firebase ref = new Firebase("https://scorching-inferno-7039.firebaseio.com/users");
-        FirebaseListAdapter<Users> adapter = new FirebaseListAdapter<Users>(this, Users.class,android.R.layout.two_line_list_item, ref) {
+        Query queryRef = ref.orderByChild("pincode").equalTo(95050);
+        FirebaseListAdapter<Users> adapter = new FirebaseListAdapter<Users>(this, Users.class,android.R.layout.two_line_list_item, queryRef) {
 
 
             @Override
             protected void populateView(View view, Users user, int i) {
 
+               TextView text1_id =(TextView) view.findViewById(android.R.id.text1);
+               TextView text2_id =(TextView) view.findViewById(android.R.id.text2);
+                text1_id.setPaddingRelative(30,5,10,5);
+                text2_id.setPaddingRelative(30,5,10,20);
 
-                ((TextView) view.findViewById(android.R.id.text1)).setText(user.getFullName());
-                ((TextView) view.findViewById(android.R.id.text2)).setText(user.getInterests());
+                text1_id.setTextAppearance(view.getContext(), android.R.style.TextAppearance_Large);
+
+
+                   text1_id.setText(user.getFullName());
+                   text2_id.setText(user.getInterests());
+
 
 
             }
