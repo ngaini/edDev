@@ -32,6 +32,7 @@
         android:layout_below="@+id/main_FullName"
         android:layout_alignParentStart="true"
         android:digits="1234567890"
+        android:maxLength="2"
         android:layout_marginTop="14dp"
         android:hint="Enter Your Age" />
 

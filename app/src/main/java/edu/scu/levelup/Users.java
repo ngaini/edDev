@@ -15,6 +15,7 @@ public class Users {
     private String password;
     private String education;
     private String description;
+    private String emailID;
     private String gender;
     private String interests;
     private String address;
@@ -22,11 +23,12 @@ public class Users {
     private String userID;
 
 
-    public Users(String userID, int role, String fullName, String age, String phoneNumber, String password, String education, String description, String gender, String interests, String address, String pincode ){
+    public Users(String userID, int role, String fullName, String age,String emailID, String phoneNumber, String password, String education, String description, String gender, String interests, String address, String pincode ){
         this.userID = userID;
         this.role = role;
         this.fullName = fullName;
         this.age = age;
+        this.emailID = emailID;
         this.phoneNumber = phoneNumber;
         this.password = password;
         this.education = education;
@@ -74,11 +76,14 @@ public class Users {
 
 //    @Override
 //    public String toString() { return "User{fullName='"+fullName+"', name='"+phoneNumber+"', stackId='"+age+"'}"; }
-
+    public String getEmailID()
+    {
+        return this.emailID;
+    }
 
     public String getEducation()
     {
-        return this.education;
+   return this.education;
     }
 
     public String getDescription()

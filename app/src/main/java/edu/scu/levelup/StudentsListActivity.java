@@ -22,6 +22,7 @@ import com.firebase.client.AuthData;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 import com.firebase.ui.FirebaseListAdapter;
 
@@ -42,8 +43,7 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
     private ActionBarDrawerToggle drawerListner;
     private CustomAdapter myCustomAdapter;
     private String[] navOptions;
-
-
+    private String uExpertiseList;
     private Button logout;
     Firebase ref;
     @Override
@@ -54,7 +54,9 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
         setSupportActionBar(myToolbar);
         Firebase.setAndroidContext(this);
         ref = new Firebase("https://scorching-inferno-7039.firebaseio.com/users");
-
+        Bundle extras = getIntent().getExtras();
+        uExpertiseList = extras.getString("uExpertiseList");
+        Query queryRef = ref.orderByChild("interests").equalTo(uExpertiseList);
         //setting up for the drawer
         DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.drawerLayout);
         ListView list = (ListView)findViewById(R.id.drawerList);
@@ -88,34 +90,23 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
 
 //      for the tutors list
         final ListView tutorList_id = (ListView)findViewById(R.id.studentActivity_tutorList_listView);
-
-
-        FirebaseListAdapter<Users> adapter = new FirebaseListAdapter<Users>(this, Users.class,android.R.layout.two_line_list_item, ref) {
-
-
+        FirebaseListAdapter<Users> adapter = new FirebaseListAdapter<Users>(this, Users.class,android.R.layout.two_line_list_item, queryRef) {
             @Override
             protected void populateView(View view, Users user, int i) {
-
-
                 ((TextView) view.findViewById(android.R.id.text1)).setText(user.getFullName());
                 ((TextView) view.findViewById(android.R.id.text2)).setText(user.getInterests());
-
-
             }
         };
         //Bind the list adapter to  listView
         tutorList_id.setAdapter(adapter);
 
-
         // item click action
         tutorList_id.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//
-//     String Name = ((TextView) view.findViewById(android.R.id.text1)).getText()
+
                 String name = ((TextView)view.findViewById(android.R.id.text1)).getText().toString();
                 String interest = ((TextView)view.findViewById(android.R.id.text2)).getText().toString();
-
                 Log.e("TESTING", " name "+name+" is interested in "+interest);
                 Toast.makeText(StudentsListActivity.this," name "+name+" is interested in "+interest, Toast.LENGTH_SHORT).show();
 
@@ -156,10 +147,15 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//        Toast.makeText(DrawerTestActivity.this, navOptions[position], Toast.LENGTH_SHORT).show();
         selectTitle(navOptions[position]);
 
-        if(position == 5) {
+        if(position == 3)
+        {
+            Intent discoverySettingsPage = new Intent(StudentsListActivity.this, DiscoverySettingsPage.class);
+            startActivity(discoverySettingsPage);
+        }
+
+        if(position == 6) {
 
             DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
                 @Override
@@ -182,10 +178,10 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
             builder.setMessage("Are you sure ?").setPositiveButton("Yes", dialogClickListener)
                     .setNegativeButton("No", dialogClickListener).show();
         }
+
     }
 
     private void selectTitle(String navOption) {
-
         //to change the nave bar name
         getSupportActionBar().setTitle(navOption);
     }

@@ -33,7 +33,6 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -72,9 +71,9 @@ public class SignUpPage2 extends AppCompatActivity implements LocationListener{
     private String uDegreeList;
     private String uExpertiseList;
     private String uDescription;
-    private static String uAddress;
+    private String uAddress;
     private ImageView image;
-    private static String uPincode;
+    private String uPincode;
     private String userID;
     boolean flagCapButton = false;
     File imageFile;
@@ -131,6 +130,12 @@ public class SignUpPage2 extends AppCompatActivity implements LocationListener{
         mref = new Firebase("https://scorching-inferno-7039.firebaseio.com");
         image = (ImageView) findViewById(R.id.userImageUploaded);
         Bundle extras = getIntent().getExtras();
+        uRole = extras.getInt("userRole");
+        uFullName = extras.getString("uFullName");
+        uPhoneNumber = extras.getString("uPhoneNumber");
+        uPassword = extras.getString("uPassword");
+        uAge = extras.getString("uAge");
+        uEmailID = extras.getString("uEmailID");
         userID = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
 
         //for getting the location
@@ -171,12 +176,7 @@ public class SignUpPage2 extends AppCompatActivity implements LocationListener{
 
 
 
-//        uRole = extras.getInt("userRole");
-//        uFullName = extras.getString("uFullName");
-//        uPhoneNumber = extras.getString("uPhoneNumber");
-//        uPassword = extras.getString("uPassword");
-//        uAge = extras.getString("uAge");
-//        uEmailID = extras.getString("uEmailID");
+
 
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -232,21 +232,24 @@ public class SignUpPage2 extends AppCompatActivity implements LocationListener{
 //                Users newUser = new Users(uRole, uFullName, uAge, uPhoneNumber, uPassword, uDegreeList, uDescription, uGender, uExpertiseList, uAddress, uPincode);
 
                 Firebase newUserRef = mref.child("users").push();
-                Users newUser = new Users(userID, uRole, uFullName, uAge, uPhoneNumber, uPassword, uDegreeList, uDescription, uGender, uExpertiseList, uAddress, uPincode);
-
+                Users newUser = new Users(userID, uRole, uFullName, uAge, uEmailID, uPhoneNumber, uPassword, uDegreeList, uDescription, uGender, uExpertiseList, uAddress, uPincode);
                 newUserRef.setValue(newUser);
-                mref.createUser(uEmailID, uPassword, new Firebase.ValueResultHandler<Map<String, Object>>() {
-                    @Override
-                    public void onSuccess(Map<String, Object> stringObjectMap) {
-                        Intent mainPage = new Intent(SignUpPage2.this, StudentsListActivity.class);
-                        startActivity(mainPage);
-                    }
-
-                    @Override
-                    public void onError(FirebaseError firebaseError) {
-
-                    }
-                });
+                    Intent mainPage = new Intent(SignUpPage2.this, StudentsListActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("uExpertiseList", uExpertiseList);
+                    mainPage.putExtras(bundle);
+                    startActivity(mainPage);
+//                mref.createUser(uEmailID, uPassword, new Firebase.ValueResultHandler<Map<String, Object>>() {
+//                    @Override
+//                    public void onSuccess(Map<String, Object> stringObjectMap) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onError(FirebaseError firebaseError) {
+//
+//                    }
+//                });
 
             }
             }
