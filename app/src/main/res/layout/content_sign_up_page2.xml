@@ -168,7 +168,7 @@
         android:layout_alignEnd="@+id/linearLayout"
         android:singleLine="true"
         android:digits="1,2,3,4,5,6,7,8,9,0, ,qwertzuiopasdfghjklyxcvbnm"
-        android:maxLength="25"
+        android:maxLength="30"
         android:hint="Enter Street Number and Name"
         android:layout_marginTop="7dp"/>
 

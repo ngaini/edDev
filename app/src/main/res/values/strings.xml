@@ -12,6 +12,12 @@
     <string name="title_activity_details">DetailsActivity</string>
     <string name="title_activity_location">LocationActivity</string>
 
+    <string name="role_prompt">Select</string>
+    <string-array name="change_role">
+        <item>Student</item>
+        <item>Tutor</item>
+    </string-array>
+
     <string name="degree_prompt">Select</string>
     <string-array name="degree_list">
         <item>High School Diploma</item>
@@ -19,6 +25,7 @@
         <item>Masters</item>
         <item>Doctorate</item>
     </string-array>
+
     <string name="title_activity_student">StudentActivity</string>
 
     <string name="interest_prompt">Select</string>
@@ -51,5 +58,7 @@
     <string name="title_activity_student_detail">StudentDetailActivity</string>
     <string name="title_activity_drawer_test">DrawerTestActivity</string>
     <string name="title_activity_discovery_settings_page">DiscoverySettingsPage</string>
+    <string name="title_activity_change_password">changePassword</string>
+    <string name="title_activity_edit_profile">EditProfile</string>
 
 </resources>

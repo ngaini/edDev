@@ -39,6 +39,17 @@ public class Users {
         this.pincode = pincode;
     }
 
+    public Users(String address, String pincode, String phoneNumber, String education, String interests, String description, int role ){
+        this.address = address;
+        this.pincode = pincode;
+        this.phoneNumber = phoneNumber;
+        this.education = education;
+        this.interests = interests;
+        this.description = description;
+        this.role = role;
+
+    }
+
 
     // constructor without parameters essential for firebase to work
     public Users() {
@@ -96,6 +107,10 @@ public class Users {
         return this.gender;
     }
 
+    public void setRole(int role) {
+        this.role = role;
+    }
+
     public String getInterests()
     {
         return this.interests;
@@ -116,4 +131,51 @@ public class Users {
         return this.userID;
     }
 
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public void setAge(String age) {
+        this.age = age;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setEducation(String education) {
+        this.education = education;
+    }
+
+    public void setEmailID(String emailID) {
+        this.emailID = emailID;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public void setInterests(String interests) {
+        this.interests = interests;
+    }
+
+    public void setPincode(String pincode) {
+        this.pincode = pincode;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
+    }
 }

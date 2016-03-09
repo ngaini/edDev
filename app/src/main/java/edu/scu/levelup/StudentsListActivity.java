@@ -45,6 +45,9 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
     private String[] navOptions;
     private String uExpertiseList;
     private Button logout;
+    private String uEmailID;
+    private String uFullName;
+    private int uRole;
     Firebase ref;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,9 +56,13 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
         Toolbar myToolbar = (Toolbar) findViewById(toolbar);
         setSupportActionBar(myToolbar);
         Firebase.setAndroidContext(this);
+
         ref = new Firebase("https://scorching-inferno-7039.firebaseio.com/users");
-//        Bundle extras = getIntent().getExtras();
-//        uExpertiseList = extras.getString("uExpertiseList");
+        Bundle extras = getIntent().getExtras();
+        uExpertiseList = extras.getString("uExpertiseList");
+        uEmailID = extras.getString("uemailID");
+        uFullName = extras.getString("uFullName");
+        uRole = extras.getInt("uRole");
         Query queryRef = ref.orderByChild("interests").equalTo(uExpertiseList);
         //setting up for the drawer
         DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.drawerLayout);
@@ -69,19 +76,11 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
 
         drawerListner = new ActionBarDrawerToggle(this,drawerLayout,myToolbar, R.string.navigation_drawer_open,R.string.navigation_drawer_close)
         {
-
             /** Called when a drawer has settled in a completely closed state. */
             public void onDrawerClosed(View view) {
-//                super.onDrawerClosed(view);
-//                getActionBar().setTitle(R.string.title_activity_drawer_test);
-//                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
-
             /** Called when a drawer has settled in a completely open state. */
             public void onDrawerOpened(View drawerView) {
-//                super.onDrawerOpened(drawerView);
-//                getActionBar().setTitle("Menu");
-//                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
         };
         drawerLayout.setDrawerListener(drawerListner);
@@ -93,32 +92,18 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
 
         Firebase ref = new Firebase("https://scorching-inferno-7039.firebaseio.com/users");
         Query queryRef1 = ref.orderByChild("pincode").equalTo("95050");
-        FirebaseListAdapter<Users> adapter = new FirebaseListAdapter<Users>(this, Users.class,android.R.layout.two_line_list_item, queryRef1) {
-
-
-
-
-
-
-
+        FirebaseListAdapter<Users> adapter = new FirebaseListAdapter<Users>(this, Users.class,android.R.layout.two_line_list_item, queryRef)
+        {
             @Override
-            protected void populateView(View view, Users user, int i) {
-
-
+            protected void populateView(View view, Users user, int i)
+            {
                TextView text1_id =(TextView) view.findViewById(android.R.id.text1);
                TextView text2_id =(TextView) view.findViewById(android.R.id.text2);
                 text1_id.setPaddingRelative(30,5,10,5);
                 text2_id.setPaddingRelative(30,5,10,20);
-
                 text1_id.setTextAppearance(view.getContext(), android.R.style.TextAppearance_Large);
-
-
                    text1_id.setText(user.getFullName());
                    text2_id.setText(user.getInterests());
-
-
-
-
             }
         };
         //Bind the list adapter to  listView
@@ -173,10 +158,30 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         selectTitle(navOptions[position]);
 
-        if(position == 3)
+        if(position == 1)
+        {
+            Intent editProfilePage = new Intent(StudentsListActivity.this, EditProfile.class);
+            Bundle bundle = new Bundle();
+            bundle.putInt("uEmailID", uRole);
+            bundle.putString("uFullName", uFullName);
+            editProfilePage.putExtras(bundle);
+            startActivity(editProfilePage);
+        }
+
+        if(position == 2)
         {
             Intent discoverySettingsPage = new Intent(StudentsListActivity.this, DiscoverySettingsPage.class);
             startActivity(discoverySettingsPage);
+        }
+
+        if(position == 5)
+        {
+            Intent changePasswordPage = new Intent(StudentsListActivity.this, changePassword.class);
+            Bundle bundle = new Bundle();
+            bundle.putString("uEmailID", uEmailID);
+            bundle.putString("uFullName", uFullName);
+            changePasswordPage.putExtras(bundle);
+            startActivity(changePasswordPage);
         }
 
         if(position == 6) {
