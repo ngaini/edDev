@@ -97,6 +97,12 @@ public class SignUpPage2 extends AppCompatActivity implements LocationListener{
     private String provider;
 
 
+    List<Address> addresses;
+    private String constructedAddress;
+
+    private static double latValue;
+    private static double longValue;
+
 
 
     @Override
@@ -376,4 +382,145 @@ public class SignUpPage2 extends AppCompatActivity implements LocationListener{
         }
         locationManager.removeUpdates(this);
     }
+
+    //construct address from pin code
+    public String constructAddress(String zip, String streetAddress)
+    {
+        Geocoder coder = new Geocoder(this);
+        List<Address> addresses1;
+        double convLat;
+        double convLong;
+        final String zippy = "95050";
+        try {
+            String streetAddr = "1050 Benton Street";
+            addresses1 = coder.getFromLocationName(zippy, 1);
+            if (addresses1 != null && !addresses1.isEmpty()) {
+                Address address = addresses1.get(0);
+                // Use the address as needed
+                convLat = address.getLatitude();
+                convLong = address.getLongitude();
+                String message = String.format("Latitude: %f, Longitude: %f",
+                address.getLatitude(), address.getLongitude());
+                Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+
+                //convert back to address
+                Geocoder geocoder = new Geocoder(this, Locale.ENGLISH);
+                try {
+                    List<Address> addrConv = geocoder.getFromLocation(convLat, convLong, 1);
+
+
+                    if (addrConv != null) {
+                        Address returnedAddress = addrConv.get(0);
+//                        StringBuilder strReturnedAddress = new StringBuilder("Address:\n");
+//                        for (int i = 0; i < returnedAddress.getMaxAddressLineIndex(); i++) {
+//                            strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
+//                        }
+//                        longitudeField.setText(strReturnedAddress.toString());
+
+                        String city = addrConv.get(0).getLocality();
+                        String state = addrConv.get(0).getAdminArea();
+                        String country = addrConv.get(0).getCountryName();
+//                        constructedAddress = streetAddr + " " + city + " " + state + " " + " "+zip+" " + country;
+                        constructedAddress = streetAddr + " " + city + " " + state + " " +country +" "+zippy;
+                        ((TextView) findViewById(R.id.location_givenAddr_textView)).setText("the given address is:" + constructedAddress);
+
+                        //getting the same address from the constructed address
+
+                        String returnedAddr =convertToLatLong(constructedAddress);
+                        ((TextView) findViewById(R.id.location_constructedAddr_textView)).setText("Trying to get the same address: \n"+returnedAddr);
+
+
+
+                    } else {
+                        longitudeField.setText("No Address returned!");
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+//            e.printStackTrace();
+                    longitudeField.setText("Canont get Address!");
+                }
+
+
+                ((TextView) findViewById(R.id.location_displayLati_textView)).setText(message);
+            } else {
+                // Display appropriate message when Geocoder services are not available
+                Toast.makeText(this, "Unable to geocode zipcode", Toast.LENGTH_LONG).show();
+            }
+
+
+
+
+        } catch (IOException e) {
+            // handle exception
+        }
+
+        return null;
+    }
+    //convert address into lat long
+    public String convertToLatLong(String completeAddr) {
+        Geocoder coder = new Geocoder(this);
+        addresses = null;
+        latValue = longValue =0;
+        String addr = null;
+        try {
+            Log.e("LocationDETAILS", completeAddr);
+            addresses = coder.getFromLocationName(completeAddr, 1);
+            if (addresses != null && !addresses.isEmpty()) {
+                Address address = addresses.get(0);
+                // Use the address as needed
+                latValue = address.getLatitude();
+                longValue = address.getLongitude();
+                String message = String.format("Latitude: %f, Longitude: %f",
+                        address.getLatitude(), address.getLongitude());
+                Log.e("LocationDETAILS", " lat long value : "+ message);
+                Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+
+//                addr =convToAddr(latValue, longValue);
+
+            }
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return addr;
+    }
+
+    public String convToAddr(double lat, double lng)
+    {
+        //convert from lat long to address
+        String constructedAddressForMethod=null;
+        Geocoder geocoder = new Geocoder(this, Locale.ENGLISH);
+        try {
+            List<Address> addrConv = geocoder.getFromLocation(lat, lng, 1);
+
+
+            if (addrConv != null) {
+                Address returnedAddress = addrConv.get(0);
+                StringBuilder strReturnedAddress = new StringBuilder("Address:\n");
+                for (int i = 0; i < returnedAddress.getMaxAddressLineIndex(); i++) {
+                    strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
+                }
+                longitudeField.setText(strReturnedAddress.toString());
+
+//                String city = addrConv.get(0).getLocality();
+//                String state = addrConv.get(0).getAdminArea();
+//                String country = addrConv.get(0).getCountryName();
+                constructedAddressForMethod = strReturnedAddress.toString();
+                ((TextView) findViewById(R.id.location_constructedAddr_textView)).setText(constructedAddress);
+            } else {
+                longitudeField.setText("No Address returned!");
+//                constructedAddressForMethod = "";
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+//            e.printStackTrace();
+            longitudeField.setText("Canont get Address!");
+        }
+
+        return constructedAddressForMethod;
+    }
+
 }
