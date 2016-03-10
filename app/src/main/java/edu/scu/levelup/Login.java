@@ -29,16 +29,16 @@ public class Login extends AppCompatActivity {
     private EditText password;
     private Button login;
     private Button newUser;
-    private String firePassword;
-    private String uExpertiseList;
     private TextView clickLink;
     String uname;
     String pass;
-    Firebase ref, userRef;
+    private int uRole;
+    Firebase mref, userRef;
     Resources res;
     UserSessionManager session;
     Query qref;
-
+    private static String uExpertiseList, uEmailID, uFullName;
+    Users userData;
 
 
     @Override
@@ -46,7 +46,7 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         Firebase.setAndroidContext(this);
-        ref = new Firebase("https://scorching-inferno-7039.firebaseio.com");
+        mref = new Firebase("https://scorching-inferno-7039.firebaseio.com");
         userRef = new Firebase("https://scorching-inferno-7039.firebaseio.com/users");
         res = getResources();
         session = new UserSessionManager(getApplicationContext());
@@ -66,9 +66,17 @@ public class Login extends AppCompatActivity {
             @Override
             public void onAuthStateChanged(AuthData authData) {
                 if (authData != null) {
-                    Toast.makeText(getApplicationContext(), "authentication is working", Toast.LENGTH_SHORT).show();
-                    Intent toMainActivity = new Intent(Login.this, StudentsListActivity.class);
-                    startActivity(toMainActivity);
+                    userRef.unauth();
+//                    Toast.makeText(getApplicationContext(), "authentication is working", Toast.LENGTH_SHORT).show();
+//                    Intent toMainActivity = new Intent(Login.this, StudentsListActivity.class);
+//                    Bundle bundle = new Bundle();
+//                    bundle.putString("uExpertiseList", "Dance");
+//                    bundle.putString("uemailID", "g@g.com");
+//                    bundle.putString("uExpertiseList", "Dance");
+//                    bundle.putString("uFullName", "g");
+//                    bundle.putInt("uRole", 1);
+//                    toMainActivity.putExtras(bundle);
+//                    startActivity(toMainActivity);
                 } else {
                     Toast.makeText(getApplicationContext(), "authentication failed!", Toast.LENGTH_SHORT).show();
                 }
@@ -83,47 +91,53 @@ public class Login extends AppCompatActivity {
                 if (uname.isEmpty() || pass.isEmpty()) {
                     username.setError("Invalid Input");
                 } else {
-                    qref = userRef.orderByChild("emailID").equalTo(uname);
-                    qref.addChildEventListener(new ChildEventListener() {
+                    mref.authWithPassword(uname, pass, new Firebase.AuthResultHandler() {
                         @Override
-                        public void onChildAdded(DataSnapshot dataSnapshot, String previousChildKey) {
-                            Users userData = dataSnapshot.getValue(Users.class);
-                            firePassword = userData.getPassword();
-                            if(firePassword.toString().trim().equals(pass))
-                            {
-                                uExpertiseList = userData.getInterests();
-                                Toast.makeText(getApplicationContext(), "Login Successful", Toast.LENGTH_SHORT).show();
-                                Intent mainPage = new Intent(Login.this, StudentsListActivity.class);
-                                Bundle bundle = new Bundle();
-                                bundle.putString("uExpertiseList", uExpertiseList);
-                                mainPage.putExtras(bundle);
-                                startActivity(mainPage);
+                        public void onAuthenticated(AuthData authData) {
+                            qref = userRef.orderByChild("emailID").equalTo(uname);
+                            qref.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                                        Users userData = postSnapshot.getValue(Users.class);
+                                        uExpertiseList = userData.getInterests();
+                                        uEmailID = userData.getEmailID();
+                                        uFullName = userData.getFullName();
+                                        uRole = userData.getRole();
+                                    }
+                                    //Toast.makeText(getApplicationContext(), " " + uExpertiseList, Toast.LENGTH_SHORT).show();
+                                    //Toast.makeText(getApplicationContext(), " " + uEmailID, Toast.LENGTH_SHORT).show();
+                                    //Toast.makeText(getApplicationContext(), "Login Successful", Toast.LENGTH_SHORT).show();
+                                    Intent mainPage = new Intent(Login.this, StudentsListActivity.class);
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("uExpertiseList", uExpertiseList);
+                                    bundle.putString("uemailID", uname);
+                                    bundle.putString("uFullName", uFullName);
+                                    bundle.putInt("uRole", uRole);
+                                    mainPage.putExtras(bundle);
+                                    startActivity(mainPage);
+                                    session.createUserLoginSession(uname, pass);
 
+                                }
+
+                                @Override
+                                public void onCancelled(FirebaseError firebaseError) {
+
+                                }
+
+                            });
+
+                        }
+
+                        @Override
+                        public void onAuthenticationError(FirebaseError firebaseError) {
+                            switch (firebaseError.getCode()){
+                                case FirebaseError.USER_DOES_NOT_EXIST:
+                                    username.setError("username does not exist");
+                                    break;
+                                case FirebaseError.INVALID_PASSWORD:
+                                    password.setError("password is not correct");
                             }
-                            else
-                            {
-                                Toast.makeText(getApplicationContext(), "Invalid username or password", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-
-                        @Override
-                        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                        }
-
-                        @Override
-                        public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                        }
-
-                        @Override
-                        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                        }
-
-                        @Override
-                        public void onCancelled(FirebaseError firebaseError) {
-
                         }
                     });
                 }

@@ -101,7 +101,13 @@
         </activity>
         <activity
             android:name=".DiscoverySettingsPage"
-            android:label="@string/title_activity_discovery_settings_page"></activity>
+            android:label="@string/title_activity_discovery_settings_page" />
+        <activity
+            android:name=".changePassword"
+            android:label="@string/title_activity_change_password" />
+        <activity
+            android:name=".EditProfile"
+            android:label="@string/title_activity_edit_profile"></activity>
     </application>
 
 </manifest>
