@@ -96,7 +96,16 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
 //      for the tutors list
         final ListView tutorList_id = (ListView)findViewById(R.id.studentActivity_tutorList_listView);
 
-        Firebase ref = new Firebase("https://scorching-inferno-7039.firebaseio.com/users");
+        Firebase ref;
+
+//        if (uRole ==1)
+//        {
+            ref = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Tutor");
+//        }
+//        else
+//        {
+//            ref = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Student");
+//        }
         Query queryRef1 = ref.orderByChild("pincode").equalTo("95050");
         FirebaseListAdapter<Users> adapter = new FirebaseListAdapter<Users>(this, Users.class,android.R.layout.two_line_list_item, queryRef)
         {
