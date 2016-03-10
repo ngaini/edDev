@@ -28,6 +28,15 @@
         android:id="@+id/location_displayLongi_textView"
         android:text="Print Latitude here"
         android:textAppearance="?android:attr/textAppearanceLarge"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/location_givenAddr_textView"
+        android:text="Constructed address"
+        android:textColor="#7946c4"
+        android:textStyle="bold"
+        android:textAppearance="?android:attr/textAppearanceLarge"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
