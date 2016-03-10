@@ -30,6 +30,7 @@ public class Login extends AppCompatActivity {
     private Button login;
     private Button newUser;
     private TextView clickLink;
+    private String userStatement;
     String uname;
     String pass;
     private int uRole;
@@ -47,7 +48,7 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         Firebase.setAndroidContext(this);
         mref = new Firebase("https://scorching-inferno-7039.firebaseio.com");
-        userRef = new Firebase("https://scorching-inferno-7039.firebaseio.com/users");
+
         res = getResources();
         session = new UserSessionManager(getApplicationContext());
         username = (EditText) findViewById(R.id.login_emailID);
@@ -94,6 +95,7 @@ public class Login extends AppCompatActivity {
                     mref.authWithPassword(uname, pass, new Firebase.AuthResultHandler() {
                         @Override
                         public void onAuthenticated(AuthData authData) {
+                            userRef = new Firebase("https://scorching-inferno-7039.firebaseio.com/users");
                             qref = userRef.orderByChild("emailID").equalTo(uname);
                             qref.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
@@ -105,9 +107,6 @@ public class Login extends AppCompatActivity {
                                         uFullName = userData.getFullName();
                                         uRole = userData.getRole();
                                     }
-                                    //Toast.makeText(getApplicationContext(), " " + uExpertiseList, Toast.LENGTH_SHORT).show();
-                                    //Toast.makeText(getApplicationContext(), " " + uEmailID, Toast.LENGTH_SHORT).show();
-                                    //Toast.makeText(getApplicationContext(), "Login Successful", Toast.LENGTH_SHORT).show();
                                     Intent mainPage = new Intent(Login.this, StudentsListActivity.class);
                                     Bundle bundle = new Bundle();
                                     bundle.putString("uExpertiseList", uExpertiseList);

@@ -32,6 +32,7 @@ public class EditProfile extends Activity {
     private String userStreetAddress, userpinCode, userphoneNumber, userDescription, userRole, userID, userFullName, userAge, userEmailID, userPassword, userGender;
     private String uAddress, uPincode, uPhoneNumber, uEducation, uInterests, uDescription, uID, uFUllName, uAge, uEmailID, uPassword, uGender;
     private int uRole;
+    private String userStatement;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,12 +51,20 @@ public class EditProfile extends Activity {
         back = (Button) findViewById(R.id.update_Back);
         Bundle extras = getIntent().getExtras();
         uEmailID1 = extras.getString("uEmailID");
+        userID = extras.getString("userID");
         uFullName = extras.getString("uFullName");
-        Toast.makeText(getApplicationContext(), " "+uFullName, Toast.LENGTH_SHORT).show();
-        mref = new Firebase("https://scorching-inferno-7039.firebaseio.com/users");
+        uRole = extras.getInt("uRole");
+        //Toast.makeText(getApplicationContext(), " "+uFullName, Toast.LENGTH_SHORT).show();
+        if(uRole == 1) {
+            userStatement = "Student";
+            mref = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/"+userStatement);
+        }else {
+            userStatement = "Tutor";
+            mref = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/"+userStatement);
+        }
 
-        href = new Firebase("https://scorching-inferno-7039.firebaseio.com");
-        queryRef = mref.orderByChild("fullName").equalTo(uFullName);
+        //href = new Firebase("https://scorching-inferno-7039.firebaseio.com");
+        queryRef = mref.orderByChild("userID").equalTo(userID);
 
         queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
