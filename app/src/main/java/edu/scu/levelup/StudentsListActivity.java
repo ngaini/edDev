@@ -43,7 +43,7 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
     private ActionBarDrawerToggle drawerListner;
     private CustomAdapter myCustomAdapter;
     private String[] navOptions;
-    private String uExpertiseList;
+    private String uExpertiseList, userID;
     private Button logout;
     private String uEmailID;
     private String uFullName;
@@ -62,7 +62,13 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
         uExpertiseList = extras.getString("uExpertiseList");
         uEmailID = extras.getString("uemailID");
         uFullName = extras.getString("uFullName");
+        userID = extras.getString("userID");
         uRole = extras.getInt("uRole");
+        Toast.makeText(StudentsListActivity.this,"user Expertise is - "+uExpertiseList, Toast.LENGTH_SHORT).show();
+        Toast.makeText(StudentsListActivity.this,"user email id is - "+uEmailID, Toast.LENGTH_SHORT).show();
+        Toast.makeText(StudentsListActivity.this,"user full name is - "+uFullName, Toast.LENGTH_SHORT).show();
+        Toast.makeText(StudentsListActivity.this,"user ID is - "+userID, Toast.LENGTH_SHORT).show();
+        Toast.makeText(StudentsListActivity.this,"user role is - "+uRole, Toast.LENGTH_SHORT).show();
         Query queryRef = ref.orderByChild("interests").equalTo(uExpertiseList);
         //setting up for the drawer
         DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.drawerLayout);
@@ -162,8 +168,10 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
         {
             Intent editProfilePage = new Intent(StudentsListActivity.this, EditProfile.class);
             Bundle bundle = new Bundle();
-            bundle.putInt("uEmailID", uRole);
+            bundle.putInt("uRole", uRole);
             bundle.putString("uFullName", uFullName);
+            bundle.putString("userID", userID);
+            bundle.putString("uEmailID", uEmailID);
             editProfilePage.putExtras(bundle);
             startActivity(editProfilePage);
         }
@@ -179,7 +187,9 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
             Intent changePasswordPage = new Intent(StudentsListActivity.this, changePassword.class);
             Bundle bundle = new Bundle();
             bundle.putString("uEmailID", uEmailID);
+            bundle.putString("userID", userID);
             bundle.putString("uFullName", uFullName);
+            bundle.putInt("uRole", uRole);
             changePasswordPage.putExtras(bundle);
             startActivity(changePasswordPage);
         }

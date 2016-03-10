@@ -26,12 +26,13 @@ public class EditProfile extends Activity {
     private Spinner role;
     private Button confirm;
     private Button back;
-    Firebase mref,href;
+    Firebase mref,href,xref;
     private String uEmailID1, uFullName;
     Query queryRef;
     private String userStreetAddress, userpinCode, userphoneNumber, userDescription, userRole, userID, userFullName, userAge, userEmailID, userPassword, userGender;
     private String uAddress, uPincode, uPhoneNumber, uEducation, uInterests, uDescription, uID, uFUllName, uAge, uEmailID, uPassword, uGender;
-    private int uRole;
+    private int uRole, userRoleInt;
+    private String userStatement;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,12 +51,19 @@ public class EditProfile extends Activity {
         back = (Button) findViewById(R.id.update_Back);
         Bundle extras = getIntent().getExtras();
         uEmailID1 = extras.getString("uEmailID");
+        userID = extras.getString("userID");
         uFullName = extras.getString("uFullName");
-        Toast.makeText(getApplicationContext(), " "+uFullName, Toast.LENGTH_SHORT).show();
-        mref = new Firebase("https://scorching-inferno-7039.firebaseio.com/users");
+        uRole = extras.getInt("uRole");
+        //Toast.makeText(getApplicationContext(), " "+uFullName, Toast.LENGTH_SHORT).show();
+        if(uRole == 1) {
+            userStatement = "Student";
+            mref = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/"+userStatement);
+        }else {
+            userStatement = "Tutor";
+            mref = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/"+userStatement);
+        }
 
-        href = new Firebase("https://scorching-inferno-7039.firebaseio.com");
-        queryRef = mref.orderByChild("fullName").equalTo(uFullName);
+        queryRef = mref.orderByChild("userID").equalTo(userID);
 
         queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -104,10 +112,10 @@ public class EditProfile extends Activity {
                 userRole = role.getSelectedItem().toString();
                 if(userRole.equals("Student"))
                 {
-                    uRole = 1;
+                    userRoleInt = 1;
                 }
                 else{
-                    uRole = 0;
+                    userRoleInt = 0;
                 }
 
                 if(uAddress.equals(""))
@@ -127,9 +135,22 @@ public class EditProfile extends Activity {
                     description.setError("Field cannot be Empty!");
                 }
                 else{
-                    Firebase newUserRef = href.child("users").child(uFullName);
-                    Users newUser = new Users(uID,uRole, uFullName, uAge, uEmailID, uPhoneNumber, uPassword,uEducation,  uDescription, uGender,uInterests,uAddress, uPincode);
-                    newUserRef.setValue(newUser);
+                    if(uRole == userRoleInt) {
+                        mref = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/" + userRole);
+                        Firebase newUserRef = mref.child(userID);
+                        Users newUser = new Users(uID, uRole, uFullName, uAge, uEmailID, uPhoneNumber, uPassword, uEducation, uDescription, uGender, uInterests, uAddress, uPincode);
+                        newUserRef.setValue(newUser);
+                    }
+//                    }else
+//                    {
+//                        mref = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/"+userStatement);
+//                        Firebase newUserRef = mref.child(userID);
+//                        newUserRef.removeValue();
+//                        xref = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/"+userRole);
+//                        Firebase newUserRef1 = mref.child(userID);
+//                        Users newUser = new Users(uID, uRole, uFullName, uAge, uEmailID, uPhoneNumber, uPassword, uEducation, uDescription, uGender, uInterests, uAddress, uPincode);
+//                        newUserRef1.setValue(newUser);
+//                    }
                     Intent mainPage = new Intent(EditProfile.this, StudentsListActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putString("uExpertiseList", uInterests);

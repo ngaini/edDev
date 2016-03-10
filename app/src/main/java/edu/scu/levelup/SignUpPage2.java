@@ -96,6 +96,8 @@ public class SignUpPage2 extends AppCompatActivity implements LocationListener{
     private TextView longitudeField;
     private LocationManager locationManager;
     private String provider;
+    private String userStatement;
+    Firebase newUserRef;
 
 
     List<Address> addresses;
@@ -149,8 +151,10 @@ public class SignUpPage2 extends AppCompatActivity implements LocationListener{
         if(uRole == 1)
         {
             areaOfInterest.setText("I need Tutor for ");
+            userStatement = "Student";
         }else{
             areaOfInterest.setText("Expertise ");
+            userStatement = "Tutor";
         }
 
         //for getting the location
@@ -245,8 +249,13 @@ public class SignUpPage2 extends AppCompatActivity implements LocationListener{
 
 //                Firebase newUserRef = mref.child("users").child(uFullName);
 //                Users newUser = new Users(uRole, uFullName, uAge, uPhoneNumber, uPassword, uDegreeList, uDescription, uGender, uExpertiseList, uAddress, uPincode);
+                if(uRole == 1)
+                {
+                    newUserRef = mref.child("users").child(userStatement).child(userID);
+                }else{
+                    newUserRef = mref.child("users").child(userStatement).child(userID);
+                }
 
-                Firebase newUserRef = mref.child("users").child(uFullName);
                 Users newUser = new Users(userID, uRole, uFullName, uAge, uEmailID, uPhoneNumber, uPassword, uDegreeList, uDescription, uGender, uExpertiseList, uAddress, uPincode);
                 newUserRef.setValue(newUser);
                     Intent mainPage = new Intent(SignUpPage2.this, StudentsListActivity.class);
@@ -255,6 +264,7 @@ public class SignUpPage2 extends AppCompatActivity implements LocationListener{
                     bundle.putString("uemailID", uEmailID);
                     bundle.putString("uFullName", uFullName);
                     bundle.putInt("uRole", uRole);
+                    bundle.putString("userID", userID);
                     mainPage.putExtras(bundle);
                     startActivity(mainPage);
                 mref.createUser(uEmailID, uPassword, new Firebase.ValueResultHandler<Map<String, Object>>() {

@@ -22,12 +22,13 @@ public class changePassword extends Activity {
     private EditText confirmPassword;
     private Button confirm;
     private Button back;
-    private String uEmailID, uFullName;
+    private String uEmailID, uFullName, userID;
     private String uPassword;
     private String userEmailID;
-    private String userOldPassword;
+    private String userOldPassword, userStatement;
     private String userNewPassword;
     private String userConfirmPassword;
+    private int uRole;
     Firebase mref,href;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,9 +43,20 @@ public class changePassword extends Activity {
         Bundle extras = getIntent().getExtras();
         uEmailID = extras.getString("uEmailID");
         uFullName = extras.getString("uFullName");
-        Toast.makeText(changePassword.this, "The email id is - "+uEmailID, Toast.LENGTH_SHORT).show();
+        uRole = extras.getInt("uRole");
+        Toast.makeText(changePassword.this, "The user role is - "+uRole, Toast.LENGTH_SHORT).show();
+        if(uRole == 1)
+        {
+            userStatement = "Student";
+        }
+        else
+        {
+            userStatement = "Tutor";
+        }
+        userID = extras.getString("userID");
+        //Toast.makeText(changePassword.this, "The email id is - "+uEmailID, Toast.LENGTH_SHORT).show();
         mref = new Firebase("https://scorching-inferno-7039.firebaseio.com");
-        href = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/"+uFullName);
+        href = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/"+userStatement+"/"+userID);
 
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
