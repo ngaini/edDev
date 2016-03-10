@@ -57,7 +57,7 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
         setSupportActionBar(myToolbar);
         Firebase.setAndroidContext(this);
 
-        ref = new Firebase("https://scorching-inferno-7039.firebaseio.com/users");
+        ref = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Tutor");
         Bundle extras = getIntent().getExtras();
         uExpertiseList = extras.getString("uExpertiseList");
         uEmailID = extras.getString("uemailID");

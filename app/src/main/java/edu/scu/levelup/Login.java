@@ -68,16 +68,16 @@ public class Login extends AppCompatActivity {
             public void onAuthStateChanged(AuthData authData) {
                 if (authData != null) {
                     userRef.unauth();
-                    Toast.makeText(getApplicationContext(), "authentication is working", Toast.LENGTH_SHORT).show();
-                    Intent toMainActivity = new Intent(Login.this, StudentsListActivity.class);
-                    Bundle bundle = new Bundle();
+//                    Toast.makeText(getApplicationContext(), "authentication is working", Toast.LENGTH_SHORT).show();
+//                    Intent toMainActivity = new Intent(Login.this, StudentsListActivity.class);
+//                    Bundle bundle = new Bundle();
 //                    bundle.putString("uExpertiseList", "Dance");
 //                    bundle.putString("uemailID", "g@g.com");
 //                    bundle.putString("uExpertiseList", "Dance");
 //                    bundle.putString("uFullName", "g");
 //                    bundle.putInt("uRole", 1);
-                    toMainActivity.putExtras(bundle);
-                    startActivity(toMainActivity);
+//                    toMainActivity.putExtras(bundle);
+//                    startActivity(toMainActivity);
                 } else {
                     Toast.makeText(getApplicationContext(), "authentication failed!", Toast.LENGTH_SHORT).show();
                 }
