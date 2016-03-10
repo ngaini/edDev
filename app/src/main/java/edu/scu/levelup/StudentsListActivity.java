@@ -64,6 +64,11 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
         uFullName = extras.getString("uFullName");
         userID = extras.getString("userID");
         uRole = extras.getInt("uRole");
+        Toast.makeText(StudentsListActivity.this,"user Expertise is - "+uExpertiseList, Toast.LENGTH_SHORT).show();
+        Toast.makeText(StudentsListActivity.this,"user email id is - "+uEmailID, Toast.LENGTH_SHORT).show();
+        Toast.makeText(StudentsListActivity.this,"user full name is - "+uFullName, Toast.LENGTH_SHORT).show();
+        Toast.makeText(StudentsListActivity.this,"user ID is - "+userID, Toast.LENGTH_SHORT).show();
+        Toast.makeText(StudentsListActivity.this,"user role is - "+uRole, Toast.LENGTH_SHORT).show();
         Query queryRef = ref.orderByChild("interests").equalTo(uExpertiseList);
         //setting up for the drawer
         DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.drawerLayout);

@@ -38,7 +38,7 @@ public class Login extends AppCompatActivity {
     Resources res;
     UserSessionManager session;
     Query qref;
-    private static String uExpertiseList, uEmailID, uFullName;
+    private static String uExpertiseList, uEmailID, uFullName, userID;
     Users userData;
 
 
@@ -48,7 +48,7 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         Firebase.setAndroidContext(this);
         mref = new Firebase("https://scorching-inferno-7039.firebaseio.com");
-
+        userRef = new Firebase("https://scorching-inferno-7039.firebaseio.com/users");
         res = getResources();
         session = new UserSessionManager(getApplicationContext());
         username = (EditText) findViewById(R.id.login_emailID);
@@ -68,16 +68,16 @@ public class Login extends AppCompatActivity {
             public void onAuthStateChanged(AuthData authData) {
                 if (authData != null) {
                     userRef.unauth();
-//                    Toast.makeText(getApplicationContext(), "authentication is working", Toast.LENGTH_SHORT).show();
-//                    Intent toMainActivity = new Intent(Login.this, StudentsListActivity.class);
-//                    Bundle bundle = new Bundle();
+                    Toast.makeText(getApplicationContext(), "authentication is working", Toast.LENGTH_SHORT).show();
+                    Intent toMainActivity = new Intent(Login.this, StudentsListActivity.class);
+                    Bundle bundle = new Bundle();
 //                    bundle.putString("uExpertiseList", "Dance");
 //                    bundle.putString("uemailID", "g@g.com");
 //                    bundle.putString("uExpertiseList", "Dance");
 //                    bundle.putString("uFullName", "g");
 //                    bundle.putInt("uRole", 1);
-//                    toMainActivity.putExtras(bundle);
-//                    startActivity(toMainActivity);
+                    toMainActivity.putExtras(bundle);
+                    startActivity(toMainActivity);
                 } else {
                     Toast.makeText(getApplicationContext(), "authentication failed!", Toast.LENGTH_SHORT).show();
                 }
@@ -95,17 +95,43 @@ public class Login extends AppCompatActivity {
                     mref.authWithPassword(uname, pass, new Firebase.AuthResultHandler() {
                         @Override
                         public void onAuthenticated(AuthData authData) {
-                            userRef = new Firebase("https://scorching-inferno-7039.firebaseio.com/users");
+                            userRef = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Student");
                             qref = userRef.orderByChild("emailID").equalTo(uname);
                             qref.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
-                                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                                        Users userData = postSnapshot.getValue(Users.class);
-                                        uExpertiseList = userData.getInterests();
-                                        uEmailID = userData.getEmailID();
-                                        uFullName = userData.getFullName();
-                                        uRole = userData.getRole();
+                                    if(dataSnapshot.getChildrenCount() != 0) {
+                                        for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                                            Users userData = postSnapshot.getValue(Users.class);
+                                            uExpertiseList = userData.getInterests();
+                                            uEmailID = userData.getEmailID();
+                                            uFullName = userData.getFullName();
+                                            userID = userData.getUserID();
+                                            uRole = userData.getRole();
+                                        }
+                                    }
+                                    else
+                                    {
+                                        userRef = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Tutor");
+                                        qref = userRef.orderByChild("emailID").equalTo(uname);
+                                        qref.addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                                                    Users userData = postSnapshot.getValue(Users.class);
+                                                    uExpertiseList = userData.getInterests();
+                                                    uEmailID = userData.getEmailID();
+                                                    uFullName = userData.getFullName();
+                                                    userID = userData.getUserID();
+                                                    uRole = userData.getRole();
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(FirebaseError firebaseError) {
+
+                                            }
+                                        });
                                     }
                                     Intent mainPage = new Intent(Login.this, StudentsListActivity.class);
                                     Bundle bundle = new Bundle();
@@ -113,6 +139,7 @@ public class Login extends AppCompatActivity {
                                     bundle.putString("uemailID", uname);
                                     bundle.putString("uFullName", uFullName);
                                     bundle.putInt("uRole", uRole);
+                                    bundle.putString("userID", userID);
                                     mainPage.putExtras(bundle);
                                     startActivity(mainPage);
                                     session.createUserLoginSession(uname, pass);
