@@ -13,23 +13,7 @@
     tools:showIn="@layout/activity_sign_up_page2"
     android:background="#ffdab7">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Click to Upload Image"
-        android:id="@+id/btn_UploadUserImage"
-        android:layout_alignBottom="@+id/userImageUploaded"
-        android:layout_alignEnd="@+id/textView3" />
-
-    <ImageView
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:id="@+id/userImageUploaded"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:background="#000000" />
-
-<LinearLayout
+    <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="35dp"
     android:orientation="horizontal"
@@ -163,7 +147,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/txt_Address"
-        android:layout_below="@+id/btn_UploadUserImage"
         android:layout_alignParentStart="true"
         android:layout_alignEnd="@+id/linearLayout"
         android:singleLine="true"
@@ -176,12 +159,36 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/txt_PinCode"
-        android:layout_below="@+id/txt_Address"
-        android:layout_alignParentStart="true"
-        android:layout_alignEnd="@+id/txt_Address"
-        android:layout_marginTop="5dp"
         android:digits="1234567890"
         android:maxLength="5"
-        android:hint="Enter your Pin Code" />
+        android:hint="Enter your Pin Code"
+        android:layout_alignBottom="@+id/linearLayout"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="44dp"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txt_City"
+        android:singleLine="true"
+        android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZqwertzuiopasdfghjklyxcvbnm"
+        android:maxLength="30"
+        android:hint="Enter City "
+        android:layout_below="@+id/txt_Address"
+        android:layout_alignParentStart="true"
+        android:layout_alignEnd="@+id/txt_Address" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txt_State"
+        android:singleLine="true"
+        android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZqwertzuiopasdfghjklyxcvbnm"
+        android:maxLength="30"
+        android:hint="Enter State"
+        android:layout_below="@+id/txt_City"
+        android:layout_alignParentStart="true"
+        android:layout_alignEnd="@+id/txt_PinCode" />
 
 </RelativeLayout>

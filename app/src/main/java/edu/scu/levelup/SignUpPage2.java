@@ -57,6 +57,8 @@ public class SignUpPage2 extends AppCompatActivity implements LocationListener{
     private Spinner expertiseList;
     private EditText description;
     private EditText address;
+    private EditText city;
+    private EditText state;
     private EditText pincode;
     private TextView areaOfInterest;
     private int uRole;
@@ -68,6 +70,8 @@ public class SignUpPage2 extends AppCompatActivity implements LocationListener{
     private Button imageButton;
     private Button back;
     private Button confirm;
+    private String uCity;
+    private String uState;
     private String uGender;
     private String uDegreeList;
     private String uExpertiseList;
@@ -135,8 +139,10 @@ public class SignUpPage2 extends AppCompatActivity implements LocationListener{
         confirm = (Button) findViewById(R.id.confirm);
         address = (EditText) findViewById(R.id.txt_Address);
         pincode = (EditText) findViewById(R.id.txt_PinCode);
+        city = (EditText) findViewById(R.id.txt_City);
+        state = (EditText) findViewById(R.id.txt_State);
         areaOfInterest = (TextView) findViewById(R.id.txt_Expertise);
-        imageButton = (Button) findViewById(R.id.btn_UploadUserImage);
+        //imageButton = (Button) findViewById(R.id.btn_UploadUserImage);
         mref = new Firebase("https://scorching-inferno-7039.firebaseio.com");
         image = (ImageView) findViewById(R.id.userImageUploaded);
         Bundle extras = getIntent().getExtras();
@@ -221,6 +227,8 @@ public class SignUpPage2 extends AppCompatActivity implements LocationListener{
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                uCity = city.getText().toString();
+                uState = state.getText().toString();
                 if (genderGroup.getCheckedRadioButtonId() == male.getId()) {
                     uGender = "male";
                 } else {
@@ -238,6 +246,11 @@ public class SignUpPage2 extends AppCompatActivity implements LocationListener{
                     pincode.setError("Invalid Input");
                 } else if (uDescription.trim().isEmpty()) {
                     description.setError("Invalid Input");
+                } else if (uCity.trim().isEmpty()){
+                    city.setError("Invalid Input");
+                } else if(uState.trim().isEmpty())
+                {
+                    state.setError("Invalid Input");
                 }
                 else
                 {
