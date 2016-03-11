@@ -48,7 +48,8 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
     private String uEmailID;
     private String uFullName;
     private int uRole;
-    Firebase ref;
+    private static Firebase ref1;
+//    Firebase ref
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,20 +57,20 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
         Toolbar myToolbar = (Toolbar) findViewById(toolbar);
         setSupportActionBar(myToolbar);
         Firebase.setAndroidContext(this);
-
-        ref = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Tutor");
+        uRole = 999 ;
+        ref1 = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Tutor");
         Bundle extras = getIntent().getExtras();
         uExpertiseList = extras.getString("uExpertiseList");
         uEmailID = extras.getString("uemailID");
         uFullName = extras.getString("uFullName");
         userID = extras.getString("userID");
         uRole = extras.getInt("uRole");
-        Toast.makeText(StudentsListActivity.this,"user Expertise is - "+uExpertiseList, Toast.LENGTH_SHORT).show();
-        Toast.makeText(StudentsListActivity.this,"user email id is - "+uEmailID, Toast.LENGTH_SHORT).show();
-        Toast.makeText(StudentsListActivity.this,"user full name is - "+uFullName, Toast.LENGTH_SHORT).show();
-        Toast.makeText(StudentsListActivity.this,"user ID is - "+userID, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(StudentsListActivity.this,"user Expertise is - "+uExpertiseList, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(StudentsListActivity.this,"user email id is - "+uEmailID, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(StudentsListActivity.this,"user full name is - "+uFullName, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(StudentsListActivity.this,"user ID is - "+userID, Toast.LENGTH_SHORT).show();
         Toast.makeText(StudentsListActivity.this,"user role is - "+uRole, Toast.LENGTH_SHORT).show();
-        Query queryRef = ref.orderByChild("interests").equalTo(uExpertiseList);
+//        Query queryRef = ref.orderByChild("interests").equalTo(uExpertiseList);
         //setting up for the drawer
         DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.drawerLayout);
         ListView list = (ListView)findViewById(R.id.drawerList);
@@ -96,18 +97,18 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
 //      for the tutors list
         final ListView tutorList_id = (ListView)findViewById(R.id.studentActivity_tutorList_listView);
 
-        Firebase ref;
+        ;
 
 //        if (uRole ==1)
 //        {
-            ref = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Tutor");
+        Firebase ref = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Tutor");
 //        }
 //        else
 //        {
 //            ref = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Student");
 //        }
         Query queryRef1 = ref.orderByChild("pincode").equalTo("95050");
-        FirebaseListAdapter<Users> adapter = new FirebaseListAdapter<Users>(this, Users.class,android.R.layout.two_line_list_item, queryRef)
+        FirebaseListAdapter<Users> adapter = new FirebaseListAdapter<Users>(this, Users.class,android.R.layout.two_line_list_item, queryRef1)
         {
             @Override
             protected void populateView(View view, Users user, int i)
@@ -211,7 +212,7 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
                     switch (which)
                     {
                         case DialogInterface.BUTTON_POSITIVE:
-                            ref.unauth();
+                            ref1.unauth();
                             Intent login = new Intent(StudentsListActivity.this, Login.class);
                             startActivity(login);
                             break;
