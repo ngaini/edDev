@@ -293,6 +293,8 @@ public class SignUpPage2 extends AppCompatActivity implements LocationListener{
                     bundle.putString("uFullName", uFullName);
                     bundle.putInt("uRole", uRole);
                     bundle.putString("userID", userID);
+                    bundle.putDouble("lat", lat);
+                    bundle.putDouble("long", lng);
                     mainPage.putExtras(bundle);
                     startActivity(mainPage);
                 mref.createUser(uEmailID, uPassword, new Firebase.ValueResultHandler<Map<String, Object>>() {
