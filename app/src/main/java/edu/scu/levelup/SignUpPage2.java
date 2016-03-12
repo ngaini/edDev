@@ -144,7 +144,7 @@ public class SignUpPage2 extends AppCompatActivity implements LocationListener{
         areaOfInterest = (TextView) findViewById(R.id.txt_Expertise);
         //imageButton = (Button) findViewById(R.id.btn_UploadUserImage);
         mref = new Firebase("https://scorching-inferno-7039.firebaseio.com");
-        image = (ImageView) findViewById(R.id.userImageUploaded);
+//        image = (ImageView) findViewById(R.id.userImageUploaded);
         Bundle extras = getIntent().getExtras();
         uRole = extras.getInt("userRole");
         uFullName = extras.getString("uFullName");
@@ -188,8 +188,11 @@ public class SignUpPage2 extends AppCompatActivity implements LocationListener{
         if (location != null) {
             System.out.println("Provider " + provider + " has been selected.");
             onLocationChanged(location);
+
             pincode.setText(uPincode);
             address.setText(uAddress);
+            city.setText(uCity);
+            state.setText(uState);
 //            Toast.makeText(SignUpPage2.this, " "+uPincode+", "+uAddress, Toast.LENGTH_SHORT);
         } else {
             Toast.makeText(SignUpPage2.this, "Network Issues unable to fetch Loaction", Toast.LENGTH_SHORT);
@@ -203,26 +206,26 @@ public class SignUpPage2 extends AppCompatActivity implements LocationListener{
 
 
 
-        imageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                flagCapButton = true;
-                curPhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                if(curPhotoIntent.resolveActivity(getPackageManager()) != null)
-                {
-                    externalPictureDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-                    Random randomGenerator = new Random();
-                    int randomNumber = randomGenerator.nextInt(10000);
-                    String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-                    imageName = uPhoneNumber + randomNumber + timeStamp;
-                    imageFile = new File(externalPictureDirectory, imageName + ".jpg");
-                    imageUri = Uri.fromFile(imageFile);
-                    imagePath = imageFile.getAbsolutePath();
-                    curPhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-                    startActivityForResult(curPhotoIntent, IMAGE_CAPTURE_IDENTIFIER);
-                }
-            }
-        });
+//        imageButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                flagCapButton = true;
+//                curPhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                if(curPhotoIntent.resolveActivity(getPackageManager()) != null)
+//                {
+//                    externalPictureDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+//                    Random randomGenerator = new Random();
+//                    int randomNumber = randomGenerator.nextInt(10000);
+//                    String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+//                    imageName = uPhoneNumber + randomNumber + timeStamp;
+//                    imageFile = new File(externalPictureDirectory, imageName + ".jpg");
+//                    imageUri = Uri.fromFile(imageFile);
+//                    imagePath = imageFile.getAbsolutePath();
+//                    curPhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+//                    startActivityForResult(curPhotoIntent, IMAGE_CAPTURE_IDENTIFIER);
+//                }
+//            }
+//        });
 
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -360,6 +363,8 @@ public class SignUpPage2 extends AppCompatActivity implements LocationListener{
                     strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
                 }
 //                longitudeField.setText(strReturnedAddress.toString());
+                uState = addresses.get(0).getAdminArea();
+                uCity = addresses.get(0).getLocality();
                 uPincode = addresses.get(0).getPostalCode();
                 uAddress = addresses.get(0).getAddressLine(0).toString();
 //                address.setText(uAddress);
@@ -372,7 +377,7 @@ public class SignUpPage2 extends AppCompatActivity implements LocationListener{
         } catch (IOException e) {
             e.printStackTrace();
 //            e.printStackTrace();
-            longitudeField.setText("Canont get Address!");
+//            longitudeField.setText("Canont get Address!");
         }
 
     }
