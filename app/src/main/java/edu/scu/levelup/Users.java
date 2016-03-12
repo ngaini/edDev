@@ -18,12 +18,16 @@ public class Users {
     private String emailID;
     private String gender;
     private String interests;
-    private String address;
-    private String pincode;
+
+    private double lat;
+    private double lng;
+
+//    private String address;
+//    private String pincode;
     private String userID;
 
 
-    public Users(String userID, int role, String fullName, String age,String emailID, String phoneNumber, String password, String education, String description, String gender, String interests, String address, String pincode ){
+    public Users(String userID, int role, String fullName, String age,String emailID, String phoneNumber, String password, String education, String description, String gender, String interests, double lat, double lng ){
         this.userID = userID;
         this.role = role;
         this.fullName = fullName;
@@ -35,20 +39,22 @@ public class Users {
         this.description = description;
         this.gender = gender;
         this.interests = interests;
-        this.address = address;
-        this.pincode = pincode;
+        this.lat=lat;
+        this.lng = lng;
+//        this.address = address;
+//        this.pincode = pincode;
     }
 
-    public Users(String address, String pincode, String phoneNumber, String education, String interests, String description, int role ){
-        this.address = address;
-        this.pincode = pincode;
-        this.phoneNumber = phoneNumber;
-        this.education = education;
-        this.interests = interests;
-        this.description = description;
-        this.role = role;
-
-    }
+//    public Users(String address, String pincode, String phoneNumber, String education, String interests, String description, int role ){
+////        this.address = address;
+////        this.pincode = pincode;
+//        this.phoneNumber = phoneNumber;
+//        this.education = education;
+//        this.interests = interests;
+//        this.description = description;
+//        this.role = role;
+//
+//    }
 
 
     // constructor without parameters essential for firebase to work
@@ -116,14 +122,14 @@ public class Users {
         return this.interests;
     }
 
-    public String getAddress(){
-        return this.address;
-    }
-
-    public String getPincode()
-    {
-        return this.pincode;
-    }
+//    public String getAddress(){
+//        return this.address;
+//    }
+//
+//    public String getPincode()
+//    {
+//        return this.pincode;
+//    }
 
 
     public String getUserID()
@@ -167,15 +173,34 @@ public class Users {
         this.interests = interests;
     }
 
-    public void setPincode(String pincode) {
-        this.pincode = pincode;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
+//    public void setPincode(String pincode) {
+//        this.pincode = pincode;
+//    }
+//
+//    public void setAddress(String address) {
+//        this.address = address;
+//    }
 
     public void setUserID(String userID) {
         this.userID = userID;
     }
+
+
+    public double getLat() {
+        return lat;
+    }
+
+    public double getLng() {
+        return lng;
+    }
+
+    public void setLng(double lng) {
+        this.lng = lng;
+    }
+
+    public void setLat(double lat) {
+
+        this.lat = lat;
+    }
+
 }
