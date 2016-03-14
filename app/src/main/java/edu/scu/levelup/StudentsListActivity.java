@@ -115,6 +115,10 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
         locationA.setLatitude(uLat);
         locationA.setLongitude(uLong);
 
+        // 37.352804, -121.963429
+        locationA.setLatitude( 37.352804);
+        locationA.setLongitude(-121.963429);
+
         if (uRole ==1)
         {
              ref = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Tutor");
