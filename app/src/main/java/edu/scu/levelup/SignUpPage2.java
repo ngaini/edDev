@@ -289,7 +289,7 @@ public class SignUpPage2 extends AppCompatActivity implements LocationListener{
                     @Override
                     public void onError(FirebaseError firebaseError) {
 
-                    }
+                    }w
                 });
 
             }
