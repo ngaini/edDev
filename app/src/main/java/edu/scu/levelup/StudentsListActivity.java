@@ -40,7 +40,18 @@ import static edu.scu.levelup.R.id.toolbar;
  * This activity appears only for the student user
  * clicking on the list will give details of the specific tutor
  *
+ *
+ * for google maps
  * API key = AIzaSyBU_2MPKbm5qSHTrQBlz7Fl-ci3TddSH6g
+ *
+ *
+ * for GCM
+ * API KEY: AIzaSyDYtLy2W-aF93cRlFo9efq1utGDfx24Ep4
+ * SenderID : 175791489113
+ *
+ *
+ * Batch API key DEV56E7BC3BA4A1F6DF11D0CAB6148
+ *
  */
 public class StudentsListActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
@@ -192,7 +203,7 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
                 Intent tutorDetailIntent = new Intent(StudentsListActivity.this, TutorDetailActivity.class);
                 // creating bundle
                 Bundle extra = new Bundle();
-                extra.putString("name",name);
+                extra.putString("name", name);
                 extra.putInt("listRole",listRole);
                 tutorDetailIntent.putExtras(extra);
                 startActivity(tutorDetailIntent);
