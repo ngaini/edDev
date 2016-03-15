@@ -71,8 +71,8 @@ public class EditProfile extends Activity {
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren())
                 {
                     Users userData = postSnapshot.getValue(Users.class);
-                    userStreetAddress = userData.getAddress();
-                    userpinCode = userData.getPincode();
+//                    userStreetAddress = userData.getAddress();
+//                    userpinCode = userData.getPincode();
                     userphoneNumber = userData.getPhoneNumber();
                     userDescription = userData.getDescription();
                     userID = userData.getUserID();
@@ -138,8 +138,8 @@ public class EditProfile extends Activity {
                     if(uRole == userRoleInt) {
                         mref = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/" + userRole);
                         Firebase newUserRef = mref.child(userID);
-                        Users newUser = new Users(uID, uRole, uFullName, uAge, uEmailID, uPhoneNumber, uPassword, uEducation, uDescription, uGender, uInterests, uAddress, uPincode);
-                        newUserRef.setValue(newUser);
+//                        Users newUser = new Users(uID, uRole, uFullName, uAge, uEmailID, uPhoneNumber, uPassword, uEducation, uDescription, uGender, uInterests, lat, lng);
+//                        newUserRef.setValue(newUser);
                     }
 //                    }else
 //                    {

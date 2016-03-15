@@ -43,6 +43,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -102,13 +103,13 @@ public class SignUpPage2 extends AppCompatActivity implements LocationListener{
     private String provider;
     private String userStatement;
     Firebase newUserRef;
+    private static String uCountry;
 
 
     List<Address> addresses;
     private String constructedAddress;
 
-    private static double latValue;
-    private static double longValue;
+
 
 
 
@@ -144,7 +145,7 @@ public class SignUpPage2 extends AppCompatActivity implements LocationListener{
         areaOfInterest = (TextView) findViewById(R.id.txt_Expertise);
         //imageButton = (Button) findViewById(R.id.btn_UploadUserImage);
         mref = new Firebase("https://scorching-inferno-7039.firebaseio.com");
-        image = (ImageView) findViewById(R.id.userImageUploaded);
+//        image = (ImageView) findViewById(R.id.userImageUploaded);
         Bundle extras = getIntent().getExtras();
         uRole = extras.getInt("userRole");
         uFullName = extras.getString("uFullName");
@@ -188,8 +189,11 @@ public class SignUpPage2 extends AppCompatActivity implements LocationListener{
         if (location != null) {
             System.out.println("Provider " + provider + " has been selected.");
             onLocationChanged(location);
+
             pincode.setText(uPincode);
             address.setText(uAddress);
+            city.setText(uCity);
+            state.setText(uState);
 //            Toast.makeText(SignUpPage2.this, " "+uPincode+", "+uAddress, Toast.LENGTH_SHORT);
         } else {
             Toast.makeText(SignUpPage2.this, "Network Issues unable to fetch Loaction", Toast.LENGTH_SHORT);
@@ -203,32 +207,31 @@ public class SignUpPage2 extends AppCompatActivity implements LocationListener{
 
 
 
-        imageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                flagCapButton = true;
-                curPhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                if(curPhotoIntent.resolveActivity(getPackageManager()) != null)
-                {
-                    externalPictureDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-                    Random randomGenerator = new Random();
-                    int randomNumber = randomGenerator.nextInt(10000);
-                    String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-                    imageName = uPhoneNumber + randomNumber + timeStamp;
-                    imageFile = new File(externalPictureDirectory, imageName + ".jpg");
-                    imageUri = Uri.fromFile(imageFile);
-                    imagePath = imageFile.getAbsolutePath();
-                    curPhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-                    startActivityForResult(curPhotoIntent, IMAGE_CAPTURE_IDENTIFIER);
-                }
-            }
-        });
+//        imageButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                flagCapButton = true;
+//                curPhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                if(curPhotoIntent.resolveActivity(getPackageManager()) != null)
+//                {
+//                    externalPictureDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+//                    Random randomGenerator = new Random();
+//                    int randomNumber = randomGenerator.nextInt(10000);
+//                    String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+//                    imageName = uPhoneNumber + randomNumber + timeStamp;
+//                    imageFile = new File(externalPictureDirectory, imageName + ".jpg");
+//                    imageUri = Uri.fromFile(imageFile);
+//                    imagePath = imageFile.getAbsolutePath();
+//                    curPhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+//                    startActivityForResult(curPhotoIntent, IMAGE_CAPTURE_IDENTIFIER);
+//                }
+//            }
+//        });
 
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                uCity = city.getText().toString();
-                uState = state.getText().toString();
+
                 if (genderGroup.getCheckedRadioButtonId() == male.getId()) {
                     uGender = "male";
                 } else {
@@ -236,9 +239,11 @@ public class SignUpPage2 extends AppCompatActivity implements LocationListener{
                 }
                 uDegreeList = degreeList.getSelectedItem().toString();
                 uExpertiseList = expertiseList.getSelectedItem().toString();
-                uDescription = description.getText().toString();
+                uDescription = description.getText().toString().trim();
                 uAddress = address.getText().toString();
                 uPincode = pincode.getText().toString();
+                uCity = city.getText().toString().trim();
+                uState = state.getText().toString().trim();
 
                 if (uAddress.trim().isEmpty()) {
                     address.setError("Invalid Input");
@@ -254,7 +259,17 @@ public class SignUpPage2 extends AppCompatActivity implements LocationListener{
                 }
                 else
                 {
-                uPincode = pincode.getText().toString();
+
+                    uPincode = pincode.getText().toString();
+
+                    // constructing the address
+
+                    String full_address = uAddress + ", "+uCity+ ", " +uState+", "+uCountry+", "+uPincode;
+                    Log.e(" FULL ADDR",full_address);
+                    HashMap<String, Double> latLong_values = convertToLatLong(full_address);
+                    double lat =latLong_values.get("lattitude") ;
+                    double lng=latLong_values.get("longitude") ;
+                    Log.e(" ADDR LATLONG", "lat :"+lat+" long:"+lng);
 
 //                Firebase newUserRef = mref.child("users").child(uFullName);
 //                Firebase newUserRef = mref.child("users").push();
@@ -269,7 +284,7 @@ public class SignUpPage2 extends AppCompatActivity implements LocationListener{
                     newUserRef = mref.child("users").child(userStatement).child(userID);
                 }
 
-                Users newUser = new Users(userID, uRole, uFullName, uAge, uEmailID, uPhoneNumber, uPassword, uDegreeList, uDescription, uGender, uExpertiseList, uAddress, uPincode);
+                Users newUser = new Users(userID, uRole, uFullName, uAge, uEmailID, uPhoneNumber, uPassword, uDegreeList, uDescription, uGender, uExpertiseList, lat, lng);
                 newUserRef.setValue(newUser);
                     Intent mainPage = new Intent(SignUpPage2.this, StudentsListActivity.class);
                     Bundle bundle = new Bundle();
@@ -278,6 +293,8 @@ public class SignUpPage2 extends AppCompatActivity implements LocationListener{
                     bundle.putString("uFullName", uFullName);
                     bundle.putInt("uRole", uRole);
                     bundle.putString("userID", userID);
+                    bundle.putDouble("lat", lat);
+                    bundle.putDouble("long", lng);
                     mainPage.putExtras(bundle);
                     startActivity(mainPage);
                 mref.createUser(uEmailID, uPassword, new Firebase.ValueResultHandler<Map<String, Object>>() {
@@ -354,25 +371,28 @@ public class SignUpPage2 extends AppCompatActivity implements LocationListener{
 
             if (addresses != null) {
                 Log.e(" ADDR VALUE"," inside location changed" );
-                Address returnedAddress = addresses.get(0);
-                StringBuilder strReturnedAddress = new StringBuilder("Address:\n");
-                for (int i = 0; i < returnedAddress.getMaxAddressLineIndex(); i++) {
-                    strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
-                }
+                uState = null;
+                uCity = null;
+                uPincode = null;
+                uAddress = null;
+                uCountry = null;
+
 //                longitudeField.setText(strReturnedAddress.toString());
+                uState = addresses.get(0).getAdminArea();
+                uCity = addresses.get(0).getLocality();
                 uPincode = addresses.get(0).getPostalCode();
                 uAddress = addresses.get(0).getAddressLine(0).toString();
-//                address.setText(uAddress);
-//                pincode.setText(uPincode);
+                uCountry = addresses.get(0).getCountryName();
+//
                 Log.e(" ADDR VALUE"," "+uAddress+", "+uPincode );
             } else {
-                longitudeField.setText("No Address returned!");
+//                longitudeField.setText("No Address returned!");
             }
 
         } catch (IOException e) {
             e.printStackTrace();
 //            e.printStackTrace();
-            longitudeField.setText("Canont get Address!");
+//            longitudeField.setText("Canont get Address!");
         }
 
     }
@@ -453,12 +473,7 @@ public class SignUpPage2 extends AppCompatActivity implements LocationListener{
 
 
                     if (addrConv != null) {
-                        Address returnedAddress = addrConv.get(0);
-//                        StringBuilder strReturnedAddress = new StringBuilder("Address:\n");
-//                        for (int i = 0; i < returnedAddress.getMaxAddressLineIndex(); i++) {
-//                            strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
-//                        }
-//                        longitudeField.setText(strReturnedAddress.toString());
+
 
                         String city = addrConv.get(0).getLocality();
                         String state = addrConv.get(0).getAdminArea();
@@ -469,8 +484,8 @@ public class SignUpPage2 extends AppCompatActivity implements LocationListener{
 
                         //getting the same address from the constructed address
 
-                        String returnedAddr =convertToLatLong(constructedAddress);
-                        ((TextView) findViewById(R.id.location_constructedAddr_textView)).setText("Trying to get the same address: \n"+returnedAddr);
+//                        String returnedAddr =convertToLatLong(constructedAddress);
+//                        ((TextView) findViewById(R.id.location_constructedAddr_textView)).setText("Trying to get the same address: \n"+returnedAddr);
 
 
 
@@ -501,22 +516,30 @@ public class SignUpPage2 extends AppCompatActivity implements LocationListener{
         return null;
     }
     //convert address into lat long
-    public String convertToLatLong(String completeAddr) {
+    public HashMap<String, Double> convertToLatLong(String completeAddr) {
         Geocoder coder = new Geocoder(this);
         addresses = null;
-        latValue = longValue =0;
-        String addr = null;
+
+
+        HashMap<String, Double> hmap = new HashMap<String,Double>();
         try {
             Log.e("LocationDETAILS", completeAddr);
             addresses = coder.getFromLocationName(completeAddr, 1);
             if (addresses != null && !addresses.isEmpty()) {
                 Address address = addresses.get(0);
                 // Use the address as needed
-                latValue = address.getLatitude();
-                longValue = address.getLongitude();
+
                 String message = String.format("Latitude: %f, Longitude: %f",
                         address.getLatitude(), address.getLongitude());
-                Log.e("LocationDETAILS", " lat long value : "+ message);
+                Log.e("LocationDETAILS", " lat long value : " + message);
+                hmap.put("lattitude", address.getLatitude());
+                hmap.put("longitude", address.getLongitude());
+
+                //checking if values are put inside the hash map
+                Log.e(" HASH MAP CHECK", hmap.get("lattitude").toString());
+
+
+
                 Toast.makeText(this, message, Toast.LENGTH_LONG).show();
 
 //                addr =convToAddr(latValue, longValue);
@@ -527,7 +550,7 @@ public class SignUpPage2 extends AppCompatActivity implements LocationListener{
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return addr;
+        return hmap;
     }
 
     public String convToAddr(double lat, double lng)

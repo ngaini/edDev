@@ -80,8 +80,8 @@ public class MainActivity extends AppCompatActivity {
         userRole = (TextView) findViewById(R.id.txt_userrole);
         mref = new Firebase("https://scorching-inferno-7039.firebaseio.com");
 
-//        Bundle extras = getIntent().getExtras();
-//        uRole = extras.getInt("userRole");
+        Bundle extras = getIntent().getExtras();
+        uRole = extras.getInt("userRole");
 
         if(uRole == 0)
         {
