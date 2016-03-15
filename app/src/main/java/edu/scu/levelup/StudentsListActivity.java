@@ -29,6 +29,7 @@ import com.firebase.ui.FirebaseListAdapter;
 
 import org.w3c.dom.Text;
 
+import java.text.DecimalFormat;
 import java.util.Map;
 
 import static edu.scu.levelup.R.id.toolbar;
@@ -51,6 +52,7 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
     private String uEmailID;
     private String uFullName;
     private int uRole;
+    private static int listRole;
     private double uLat;
     private double uLong;
 
@@ -65,20 +67,33 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
         Firebase.setAndroidContext(this);
 //        uRole = 999 ;
 //
-        Bundle extras = getIntent().getExtras();
-        uExpertiseList = extras.getString("uExpertiseList");
-        uEmailID = extras.getString("uemailID");
-        uFullName = extras.getString("uFullName");
-        userID = extras.getString("userID");
-        uRole = extras.getInt("uRole");
-        uLat =extras.getDouble("lat");
-        uLong =extras.getDouble("long");
+
+        /**
+         * commenting for test purposes
+         *
+         * REMEMBER to uncomment
+         */
+
+//        Bundle extras = getIntent().getExtras();
+//        uExpertiseList = extras.getString("uExpertiseList");
+//        uEmailID = extras.getString("uemailID");
+//        uFullName = extras.getString("uFullName");
+//        userID = extras.getString("userID");
+//        uRole = extras.getInt("uRole");
+//        uLat =extras.getDouble("lat");
+//        uLong =extras.getDouble("long");
+
+//          uRole =0; //tutor
+          uRole =1; //student
+
 //        Toast.makeText(StudentsListActivity.this,"user Expertise is - "+uExpertiseList, Toast.LENGTH_SHORT).show();
 //        Toast.makeText(StudentsListActivity.this,"user email id is - "+uEmailID, Toast.LENGTH_SHORT).show();
 //        Toast.makeText(StudentsListActivity.this,"user full name is - "+uFullName, Toast.LENGTH_SHORT).show();
 //        Toast.makeText(StudentsListActivity.this,"user ID is - "+userID, Toast.LENGTH_SHORT).show();
         Toast.makeText(StudentsListActivity.this,"user role is - "+uRole, Toast.LENGTH_SHORT).show();
         Toast.makeText(StudentsListActivity.this,"user LatLong is - "+uLat+" "+uLong, Toast.LENGTH_SHORT).show();
+
+
 //        Query queryRef = ref.orderByChild("interests").equalTo(uExpertiseList);
         //setting up for the drawer
         DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.drawerLayout);
@@ -118,17 +133,19 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
         // 37.352804, -121.963429
         locationA.setLatitude( 37.352804);
         locationA.setLongitude(-121.963429);
-
+        listRole=1000;
         if (uRole ==1)
         {
              ref = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Tutor");
             ref1 = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Student");
+            listRole=0;
         }
         else
         {
             ref = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Student");
 
             ref1 = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Tutor");
+            listRole=1;
         }
 //        Query queryRef1 = ref.orderByChild("pincode").equalTo("95050");
         FirebaseListAdapter<Users> adapter = new FirebaseListAdapter<Users>(this, Users.class,android.R.layout.two_line_list_item, ref)
@@ -152,9 +169,10 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
                 text1_id.setTextAppearance(view.getContext(), android.R.style.TextAppearance_Large);
 //                if(distanceInMeters<10)
 //                {
+                    DecimalFormat df = new DecimalFormat("####0.0");
 
-                    text1_id.setText(dFname+"   "+(int)distanceInMeters+ "mi. away");
-                    text2_id.setText(user.getInterests());
+                    text1_id.setText(dFname);
+                    text2_id.setText(user.getInterests()+"  ("+df.format(getMiles(distanceInMeters))+ " mi. )");
 //                }
             }
         };
@@ -175,7 +193,7 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
                 // creating bundle
                 Bundle extra = new Bundle();
                 extra.putString("name",name);
-                extra.putString("interest",interest);
+                extra.putInt("listRole",listRole);
                 tutorDetailIntent.putExtras(extra);
                 startActivity(tutorDetailIntent);
             }
@@ -269,5 +287,11 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
     private void selectTitle(String navOption) {
         //to change the nave bar name
         getSupportActionBar().setTitle(navOption);
+    }
+
+
+    private double getMiles(float distanceVal)
+    {
+        return distanceVal/1609.344;
     }
 }
