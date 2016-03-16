@@ -3,6 +3,7 @@ package edu.scu.levelup;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.location.Location;
 import android.os.Bundle;
@@ -50,9 +51,15 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
     private Button logout;
     private String uEmailID;
     private String uFullName;
+    private String sessionUserName;
     private int uRole;
     private double uLat;
+    SharedPreferences pref;
+    SharedPreferences.Editor editor;
     private double uLong;
+    private static final String preferName = "AndriodSession";
+    public static final String key_userid = "name";
+    public static final String key_email = "email";
 
     private static Firebase ref;
     private static Firebase ref1;
@@ -63,23 +70,10 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
         Toolbar myToolbar = (Toolbar) findViewById(toolbar);
         setSupportActionBar(myToolbar);
         Firebase.setAndroidContext(this);
-//        uRole = 999 ;
-//
-        Bundle extras = getIntent().getExtras();
-        uExpertiseList = extras.getString("uExpertiseList");
-        uEmailID = extras.getString("uemailID");
-        uFullName = extras.getString("uFullName");
-        userID = extras.getString("userID");
-        uRole = extras.getInt("uRole");
-        uLat =extras.getDouble("lat");
-        uLong =extras.getDouble("long");
-//        Toast.makeText(StudentsListActivity.this,"user Expertise is - "+uExpertiseList, Toast.LENGTH_SHORT).show();
-//        Toast.makeText(StudentsListActivity.this,"user email id is - "+uEmailID, Toast.LENGTH_SHORT).show();
-//        Toast.makeText(StudentsListActivity.this,"user full name is - "+uFullName, Toast.LENGTH_SHORT).show();
-//        Toast.makeText(StudentsListActivity.this,"user ID is - "+userID, Toast.LENGTH_SHORT).show();
-        Toast.makeText(StudentsListActivity.this,"user role is - "+uRole, Toast.LENGTH_SHORT).show();
-        Toast.makeText(StudentsListActivity.this,"user LatLong is - "+uLat+" "+uLong, Toast.LENGTH_SHORT).show();
-//        Query queryRef = ref.orderByChild("interests").equalTo(uExpertiseList);
+        pref = getApplicationContext().getSharedPreferences(preferName, 0);
+        editor = pref.edit();
+        sessionUserName = pref.getString(key_email, null);
+        Toast.makeText(StudentsListActivity.this, "Session user name is - " +sessionUserName, Toast.LENGTH_SHORT).show();
         //setting up for the drawer
         DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.drawerLayout);
         ListView list = (ListView)findViewById(R.id.drawerList);
@@ -123,7 +117,6 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
         else
         {
             ref = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Student");
-
             ref1 = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Tutor");
         }
 //        Query queryRef1 = ref.orderByChild("pincode").equalTo("95050");
@@ -209,12 +202,6 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
         if(position == 1)
         {
             Intent editProfilePage = new Intent(StudentsListActivity.this, EditProfile.class);
-            Bundle bundle = new Bundle();
-            bundle.putInt("uRole", uRole);
-            bundle.putString("uFullName", uFullName);
-            bundle.putString("userID", userID);
-            bundle.putString("uEmailID", uEmailID);
-            editProfilePage.putExtras(bundle);
             startActivity(editProfilePage);
         }
 
@@ -227,12 +214,6 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
         if(position == 5)
         {
             Intent changePasswordPage = new Intent(StudentsListActivity.this, changePassword.class);
-            Bundle bundle = new Bundle();
-            bundle.putString("uEmailID", uEmailID);
-            bundle.putString("userID", userID);
-            bundle.putString("uFullName", uFullName);
-            bundle.putInt("uRole", uRole);
-            changePasswordPage.putExtras(bundle);
             startActivity(changePasswordPage);
         }
 
@@ -245,6 +226,8 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
                     {
                         case DialogInterface.BUTTON_POSITIVE:
                             ref1.unauth();
+                            editor.clear();
+                            editor.commit();
                             Intent login = new Intent(StudentsListActivity.this, Login.class);
                             startActivity(login);
                             break;

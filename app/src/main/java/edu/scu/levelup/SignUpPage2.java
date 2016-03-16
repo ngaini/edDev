@@ -104,6 +104,7 @@ public class SignUpPage2 extends AppCompatActivity implements LocationListener{
     private String userStatement;
     Firebase newUserRef;
     private static String uCountry;
+    double lat1, lng1;
 
 
     List<Address> addresses;
@@ -232,6 +233,7 @@ public class SignUpPage2 extends AppCompatActivity implements LocationListener{
             @Override
             public void onClick(View v) {
 
+                Toast.makeText(SignUpPage2.this, "button clicked!!", Toast.LENGTH_LONG).show();
                 if (genderGroup.getCheckedRadioButtonId() == male.getId()) {
                     uGender = "male";
                 } else {
@@ -267,8 +269,10 @@ public class SignUpPage2 extends AppCompatActivity implements LocationListener{
                     String full_address = uAddress + ", "+uCity+ ", " +uState+", "+uCountry+", "+uPincode;
                     Log.e(" FULL ADDR",full_address);
                     HashMap<String, Double> latLong_values = convertToLatLong(full_address);
-                    double lat =latLong_values.get("lattitude") ;
+                     double lat =latLong_values.get("lattitude") ;
+                    lat1 = lat;
                     double lng=latLong_values.get("longitude") ;
+                    lng1 = lng;
                     Log.e(" ADDR LATLONG", "lat :"+lat+" long:"+lng);
 
 //                Firebase newUserRef = mref.child("users").child(uFullName);
@@ -283,30 +287,21 @@ public class SignUpPage2 extends AppCompatActivity implements LocationListener{
                 }else{
                     newUserRef = mref.child("users").child(userStatement).child(userID);
                 }
-
-                Users newUser = new Users(userID, uRole, uFullName, uAge, uEmailID, uPhoneNumber, uPassword, uDegreeList, uDescription, uGender, uExpertiseList, lat, lng);
-                newUserRef.setValue(newUser);
-                    Intent mainPage = new Intent(SignUpPage2.this, StudentsListActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putString("uExpertiseList", uExpertiseList);
-                    bundle.putString("uemailID", uEmailID);
-                    bundle.putString("uFullName", uFullName);
-                    bundle.putInt("uRole", uRole);
-                    bundle.putString("userID", userID);
-                    bundle.putDouble("lat", lat);
-                    bundle.putDouble("long", lng);
-                    mainPage.putExtras(bundle);
-                    startActivity(mainPage);
+                    Toast.makeText(SignUpPage2.this, "CREATING LOG IN USER AUTHENTICATION", Toast.LENGTH_LONG).show();
                 mref.createUser(uEmailID, uPassword, new Firebase.ValueResultHandler<Map<String, Object>>() {
                     @Override
                     public void onSuccess(Map<String, Object> stringObjectMap) {
-
+                        Users newUser = new Users(userID, uRole, uFullName, uAge, uEmailID, uPhoneNumber, uPassword, uDegreeList, uDescription, uGender, uExpertiseList, lat1, lng1);
+                        newUserRef.setValue(newUser);
+                        Toast.makeText(SignUpPage2.this, "ON SUCCESS!", Toast.LENGTH_LONG).show();
+                        Intent mainPage = new Intent(SignUpPage2.this, StudentsListActivity.class);
+                        startActivity(mainPage);
                     }
 
                     @Override
                     public void onError(FirebaseError firebaseError) {
 
-                    }w
+                    }
                 });
 
             }

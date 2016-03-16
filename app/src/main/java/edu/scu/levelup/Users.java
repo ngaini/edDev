@@ -18,7 +18,6 @@ public class Users {
     private String emailID;
     private String gender;
     private String interests;
-
     private double lat;
     private double lng;
 

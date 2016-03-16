@@ -141,8 +141,7 @@
         android:text="BACK"
         android:id="@+id/update_Back"
         android:layout_alignParentBottom="true"
-        android:layout_toStartOf="@+id/update_Interest"
-        android:layout_marginBottom="74dp" />
+        android:layout_toStartOf="@+id/update_Interest" />
 
     <Button
         android:layout_width="wrap_content"
@@ -157,19 +156,37 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Change Your Role"
-        android:layout_marginTop="25dp"
-        android:layout_marginLeft="10dp"
-        android:id="@+id/textView18"
-        android:layout_below="@+id/update_Description"
-        android:layout_alignParentStart="true" />
+        android:text="City"
+        android:id="@+id/textView19"
+        android:layout_marginTop="18dp"
+        android:layout_alignStart="@+id/update_Description"
+        android:layout_below="@+id/update_Description" />
 
-    <Spinner
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/update_UserRole"
-        android:entries="@array/change_role"
-        android:prompt="@string/role_prompt"
-        android:layout_below="@+id/update_Description"
-        android:layout_toEndOf="@+id/textView18" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="State"
+        android:id="@+id/textView20"
+        android:layout_marginTop="18dp"
+        android:layout_below="@+id/textView19"
+        android:layout_alignStart="@+id/textView19" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/update_City"
+        android:layout_above="@+id/textView20"
+        android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZqwertzuiopasdfghjklyxcvbnm"
+        android:layout_alignEnd="@+id/update_Description"
+        android:layout_alignStart="@+id/update_State" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/update_State"
+        android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZqwertzuiopasdfghjklyxcvbnm"
+        android:layout_below="@+id/update_City"
+        android:layout_alignEnd="@+id/update_Description"
+        android:layout_toEndOf="@+id/textView13" />
 </RelativeLayout>

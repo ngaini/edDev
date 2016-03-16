@@ -1,6 +1,7 @@
 package edu.scu.levelup;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.View;
@@ -18,6 +19,8 @@ import com.firebase.client.ValueEventListener;
 public class EditProfile extends Activity {
 
     private EditText streetAdrress;
+    private EditText city;
+    private EditText state;
     private EditText pinCode;
     private EditText phoneNumber;
     private EditText description;
@@ -25,66 +28,100 @@ public class EditProfile extends Activity {
     private Spinner interest;
     private Spinner role;
     private Button confirm;
+    private double lat, lng;
     private Button back;
-    Firebase mref,href,xref;
+    Firebase mref,href,xref, userRef;
     private String uEmailID1, uFullName;
     Query queryRef;
     private String userStreetAddress, userpinCode, userphoneNumber, userDescription, userRole, userID, userFullName, userAge, userEmailID, userPassword, userGender;
     private String uAddress, uPincode, uPhoneNumber, uEducation, uInterests, uDescription, uID, uFUllName, uAge, uEmailID, uPassword, uGender;
     private int uRole, userRoleInt;
     private String userStatement;
+    private static final String preferName = "AndriodSession";
+    private String sessionUserName, sessionUserID;
+    public static final String key_userid = "name";
+    public static final String key_email = "email";
+    SharedPreferences pref;
+    SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
         Firebase.setAndroidContext(this);
-
+        pref = getApplicationContext().getSharedPreferences(preferName, 0);
+        editor = pref.edit();
+        sessionUserName = pref.getString(key_email, null);
+        Toast.makeText(getApplicationContext(), "Session User Name - "+sessionUserName, Toast.LENGTH_SHORT).show();
         streetAdrress = (EditText) findViewById(R.id.update_StreetAdress);
         pinCode = (EditText) findViewById(R.id.update_PinCode);
         phoneNumber = (EditText) findViewById(R.id.update_PhoneNumber);
         description = (EditText) findViewById(R.id.update_Description);
         education = (Spinner) findViewById(R.id.update_Education);
         interest = (Spinner) findViewById(R.id.update_Interest);
-        role = (Spinner) findViewById(R.id.update_UserRole);
         confirm = (Button) findViewById(R.id.update_Confirm);
         back = (Button) findViewById(R.id.update_Back);
-        Bundle extras = getIntent().getExtras();
-        uEmailID1 = extras.getString("uEmailID");
-        userID = extras.getString("userID");
-        uFullName = extras.getString("uFullName");
-        uRole = extras.getInt("uRole");
-        //Toast.makeText(getApplicationContext(), " "+uFullName, Toast.LENGTH_SHORT).show();
-        if(uRole == 1) {
-            userStatement = "Student";
-            mref = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/"+userStatement);
-        }else {
-            userStatement = "Tutor";
-            mref = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/"+userStatement);
-        }
+        city = (EditText) findViewById(R.id.update_City);
+        state = (EditText) findViewById(R.id.update_State);
 
-        queryRef = mref.orderByChild("userID").equalTo(userID);
-
+        userRef = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Student/");
+        queryRef = userRef.orderByChild("emailID").equalTo(sessionUserName);
+        Toast.makeText(getApplicationContext(), "Going inside the query"+sessionUserName, Toast.LENGTH_SHORT).show();
         queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot postSnapshot : dataSnapshot.getChildren())
+                if (dataSnapshot.getChildrenCount() != 0) {
+                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                        Users userData = postSnapshot.getValue(Users.class);
+                        uRole = userData.getRole();
+                        userphoneNumber = userData.getPhoneNumber();
+                        userDescription = userData.getDescription();
+                        userID = userData.getUserID();
+                        userFullName = userData.getFullName();
+                        userAge = userData.getAge();
+                        userEmailID = userData.getEmailID();
+                        userPassword = userData.getPassword();
+                        userGender = userData.getGender();
+                        streetAdrress.setText("1234 Benton Street");
+                        pinCode.setText("95050");
+                        city.setText("Fremont");
+                        state.setText("CaliforniA");
+                        phoneNumber.setText(userphoneNumber);
+                        description.setText(userDescription);
+
+                    }
+                }else
                 {
-                    Users userData = postSnapshot.getValue(Users.class);
-//                    userStreetAddress = userData.getAddress();
-//                    userpinCode = userData.getPincode();
-                    userphoneNumber = userData.getPhoneNumber();
-                    userDescription = userData.getDescription();
-                    userID = userData.getUserID();
-                    userFullName = userData.getFullName();
-                    userAge = userData.getAge();
-                    userEmailID = userData.getEmailID();
-                    userPassword = userData.getPassword();
-                    userGender = userData.getGender();
-                    streetAdrress.setText(userStreetAddress);
-                    pinCode.setText(userpinCode);
-                    phoneNumber.setText(userphoneNumber);
-                    description.setText(userDescription);
+                    userRef = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Tutor");
+                    queryRef = userRef.orderByChild("emailID").equalTo(sessionUserName);
+                    queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                                Users userData = postSnapshot.getValue(Users.class);
+                                uRole = userData.getRole();
+                                userphoneNumber = userData.getPhoneNumber();
+                                userDescription = userData.getDescription();
+                                userID = userData.getUserID();
+                                userFullName = userData.getFullName();
+                                userAge = userData.getAge();
+                                userEmailID = userData.getEmailID();
+                                userPassword = userData.getPassword();
+                                userGender = userData.getGender();
+                                streetAdrress.setText("1234 Benton Street");
+                                pinCode.setText("95050");
+                                city.setText("Fremont");
+                                state.setText("CaliforniA");
+                                phoneNumber.setText(userphoneNumber);
+                                description.setText(userDescription);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {
+
+                        }
+                    });
                 }
             }
 
@@ -109,57 +146,31 @@ public class EditProfile extends Activity {
                 uGender = userGender.toString().trim();
                 uEducation = education.getSelectedItem().toString();
                 uInterests = interest.getSelectedItem().toString();
-                userRole = role.getSelectedItem().toString();
-                if(userRole.equals("Student"))
-                {
-                    userRoleInt = 1;
-                }
-                else{
-                    userRoleInt = 0;
-                }
-
-                if(uAddress.equals(""))
-                {
+                lat = 37.3502;
+                lng = -121.946224;
+                if (uAddress.equals("")) {
                     streetAdrress.setError("Field cannot be Empty!");
-                }
-                else if(uPincode.equals(""))
-                {
+                } else if (uPincode.equals("")) {
                     pinCode.setError("Field cannot be Empty!");
-                }
-                else if(uPhoneNumber.equals(""))
-                {
+                } else if (uPhoneNumber.equals("")) {
                     phoneNumber.setError("Field cannot be Empty!");
-                }
-                else if(uDescription.equals(""))
-                {
+                } else if (uDescription.equals("")) {
                     description.setError("Field cannot be Empty!");
-                }
-                else{
-                    if(uRole == userRoleInt) {
-                        mref = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/" + userRole);
-                        Firebase newUserRef = mref.child(userID);
-//                        Users newUser = new Users(uID, uRole, uFullName, uAge, uEmailID, uPhoneNumber, uPassword, uEducation, uDescription, uGender, uInterests, lat, lng);
-//                        newUserRef.setValue(newUser);
-                    }
-//                    }else
-//                    {
-//                        mref = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/"+userStatement);
-//                        Firebase newUserRef = mref.child(userID);
-//                        newUserRef.removeValue();
-//                        xref = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/"+userRole);
-//                        Firebase newUserRef1 = mref.child(userID);
-//                        Users newUser = new Users(uID, uRole, uFullName, uAge, uEmailID, uPhoneNumber, uPassword, uEducation, uDescription, uGender, uInterests, uAddress, uPincode);
-//                        newUserRef1.setValue(newUser);
-//                    }
-                    Intent mainPage = new Intent(EditProfile.this, StudentsListActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putString("uExpertiseList", uInterests);
-                    bundle.putString("uemailID", uEmailID);
-                    bundle.putString("uFullName", uFullName);
-                    bundle.putInt("uRole", uRole);
-                    mainPage.putExtras(bundle);
-                    startActivity(mainPage);
-                    Toast.makeText(getApplicationContext(), "CHECK IF UPDATED", Toast.LENGTH_SHORT).show();
+                } else {
+                      if(uRole == 1)
+                      {
+                          userRole = "Student";
+                      }else
+                      {
+                          userRole = "Tutor";
+                      }
+                        mref = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/"+userRole);
+                        Firebase newUserRef = mref.child(uID);
+                        Users newUser = new Users(uID, uRole, uFullName, uAge, uEmailID, uPhoneNumber, uPassword, uEducation, uDescription, uGender, uInterests, lat, lng);
+                        newUserRef.setValue(newUser);
+                        Intent mainPage = new Intent(EditProfile.this, StudentsListActivity.class);
+                        startActivity(mainPage);
+                        Toast.makeText(getApplicationContext(), "CHECK IF UPDATED", Toast.LENGTH_SHORT).show();
                 }
             }
         });
