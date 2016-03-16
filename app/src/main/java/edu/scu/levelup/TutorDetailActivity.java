@@ -40,7 +40,8 @@ public class TutorDetailActivity extends Activity {
      * delete this when useridvalue is fetched dynamically
      */
     //is the id value of the logged in user
-    static String userIdValue ="20160311_183546";
+//    static String userIdValue ="20160311_183546";
+    static String clientIdValue ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +51,8 @@ public class TutorDetailActivity extends Activity {
         Bundle extra = getIntent().getExtras();
         final String name = extra.getString("name");
         listRole = extra.getInt("listRole");
-        Toast.makeText(TutorDetailActivity.this, listRole, Toast.LENGTH_SHORT).show();
+        clientIdValue= extra.getString("userID");
+//        Toast.makeText(TutorDetailActivity.this, listRole, Toast.LENGTH_SHORT).show();
         final TextView tutorName_id = (TextView)this.findViewById(R.id.TDA_tutorName_textView);
         final TextView tutorExpertize_id = (TextView)this.findViewById(R.id.TDA_tutorExpertise_textView);
         final TextView tutorAge_id = (TextView)this.findViewById(R.id.TDA_tutorAge_textView);
@@ -91,7 +93,7 @@ public class TutorDetailActivity extends Activity {
                     //enable or disable button
                     //if user has already clicked interested for a tutor the button will stay disabled
                     Log.e("CHECK THIS", "detailsvalue: " + user.getUserID() + " ::" + detailIdValue);
-                    Query q1 =ref.child(detailIdValue).child("tempList").orderByChild("idVal").equalTo(userIdValue);
+                    Query q1 =ref.child(detailIdValue).child("tempList").orderByChild("idVal").equalTo(clientIdValue);
                     q1.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
@@ -183,9 +185,9 @@ public class TutorDetailActivity extends Activity {
         informTutor_ref = new Firebase(TUTOR_TABLE_URL).child(detailIdValue).child("tempList").push();
         Map<String, String> tempListVar = new HashMap<String, String>();
 
-        tempListVar.put("idVal",userIdValue);
+        tempListVar.put("idVal",clientIdValue);
         informTutor_ref.setValue(tempListVar);
-        Toast.makeText(TutorDetailActivity.this, "value added to tutor temp list :"+userIdValue, Toast.LENGTH_SHORT).show();
+        Toast.makeText(TutorDetailActivity.this, "value added to tutor temp list :"+clientIdValue, Toast.LENGTH_SHORT).show();
 
 
 

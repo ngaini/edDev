@@ -97,11 +97,10 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
         setSupportActionBar(myToolbar);
         Firebase.setAndroidContext(this);
         sessionUserName ="t@t.com";
-//        pref = getApplicationContext().getSharedPreferences(preferName, 0);
-//        editor = pref.edit();
-//        sessionUserName = pref.getString(key_email, null);
-//        uRole = Integer.parseInt(pref.getString(key_role, null));
-//        userID = pref.getString(key_userID,null);
+        pref = getApplicationContext().getSharedPreferences(preferName, 0);
+        editor = pref.edit();
+        sessionUserName = pref.getString(key_email, null);
+//
 
 //        Toast.makeText(StudentsListActivity.this, "Session user name is - " +sessionUserName, Toast.LENGTH_SHORT).show();
 
@@ -464,116 +463,10 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
     }
 
 
-    public void getUserHashValues(final String lName) throws InterruptedException {
-
-        userRef1 = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Student/");
-        userQueryRef = userRef1.orderByChild("emailID").equalTo(sessionUserName);
-        userQueryRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            HashMap<String, String> hmap=new HashMap<String, String>();
-            UserSessionManager session;
-            String appUserName, appUserID;
-            int appUserRole;
-            double appUserLat,appUserLng;
-
-
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                //Toast.makeText(getApplicationContext(), "INSIDE MAIN", Toast.LENGTH_SHORT).show();
-                if (dataSnapshot.getChildrenCount() != 0) {
-                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                        Users userData = postSnapshot.getValue(Users.class);
-                        Toast.makeText(getApplicationContext(), "INSIDE", Toast.LENGTH_SHORT).show();
 
 
 
-//                        uRole = userData.getRole();
-//                        userID = userData.getUserID();
-//                        hmap = new HashMap<String, String>();
-//                        hmap.put("role", String.valueOf(userData.getRole()));
-//                        hmap.put("userID", userData.getUserID());
-//                        hmap.put("lat", String.valueOf(userData.getLat()));
-//                        hmap.put("lng", String.valueOf(userData.getLng()));
-//                        session.createUserLoginSession(userData.getFullName(), lName, userData.getRole(), userData.getUserID());
-                        appUserName = userData.getFullName();
-                        appUserRole = userData.getRole();
-                        appUserID= userData.getUserID();
-                        appUserLat =userData.getLat();
-                        appUserLng=userData.getLng();
-                        processDataForLoggedInUser(appUserID,appUserName,appUserRole,appUserLat,appUserLng);
-
-                        Log.e("LOGVAL STUDENT", "ello::" + appUserName + "::" + appUserRole + "::" + appUserID+"::"+appUserLat);
-//                        session.createUserLoginSession("session stored", sessionUserName, uRole, userID);
-//                                            Toast.makeText(getApplicationContext(), "user email ID is - "+pref.getString(key_email, null), Toast.LENGTH_SHORT).show();
-//                        Toast.makeText(getApplicationContext(), "user role is - "+uRole, Toast.LENGTH_SHORT).show();
-//                        Toast.makeText(getApplicationContext(), "user ID is - "+userID, Toast.LENGTH_SHORT).show();
-//                        Intent mainPage = new Intent(StudentsListActivity.this, StudentsListActivity.class);
-//                        startActivity(mainPage);
-
-
-                    }
-                }else
-                {
-                    userRef1 = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Tutor");
-                    userQueryRef = userRef1.orderByChild("emailID").equalTo(sessionUserName);
-                    userQueryRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                                Users userData = postSnapshot.getValue(Users.class);
-
-                                appUserName = userData.getFullName();
-                                appUserRole = userData.getRole();
-                                appUserID= userData.getUserID();
-                                appUserLat =userData.getLat();
-                                appUserLng=userData.getLng();
-                                processDataForLoggedInUser(appUserID,appUserName,appUserRole,appUserLat,appUserLng);
-                                Log.e("LOGVAL STUDENT", "ello::" + appUserName + "::" + appUserRole + "::" + appUserID + "::" + appUserLat);
-//                                uRole = userData.getRole();
-//                                userID = userData.getUserID();
-//                                hmap = new HashMap<String, String>();
-//                                hmap.put("role",String.valueOf(userData.getRole()));
-//                                hmap.put("userID",userData.getUserID());
-//                                hmap.put("lat",String.valueOf(userData.getLat()));
-//                                hmap.put("lng",String.valueOf(userData.getLng()));
-//                                session.createUserLoginSession(userData.getFullName(), lName, userData.getRole(), userData.getUserID());
-//                                session.createUserLoginSession("session stored", uname, uRole, userID);
-                                //Toast.makeText(getApplicationContext(), "user email ID is - "+pref.getString(key_email, null), Toast.LENGTH_SHORT).show();
-//                                Log.e("LOGVAL STUDENT", "ello::" + userData.getRole() + "::" + userData.getUserID() + "::" + userData.getLng());
-//                                Toast.makeText(getApplicationContext(), "user role is - "+uRole, Toast.LENGTH_SHORT).show();
-//                                Toast.makeText(getApplicationContext(), "user ID is - "+userID, Toast.LENGTH_SHORT).show();
-//                                Intent mainPage = new Intent(Login.this, StudentsListActivity.class);
-//                                startActivity(mainPage);
-//                                Log.e("LOGVAL TUTOR", "ello::" +uRole+"::"+userID +"::" +sessionUserName);
-
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(FirebaseError firebaseError) {
-
-                        }
-                    });
-
-                }
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-            });
-//            userQueryRef.wait(5000);
-//        uRole = Integer.parseInt(hmap.get("role"));
-//        userID=hmap.get("userID");
-//        uLat = Double.parseDouble(hmap.get("lat"));
-//        uLong = Double.parseDouble(hmap.get("lng"));
-//        Log.e("!@# HERE WE ARE hmap", "ello::"+uRole+"::"+userID+"::"+uLat);
-
-
-    }
-
-
-    public void processDataForLoggedInUser(String clientId, String clientName, int clientRole, double clientLat, double clientLng)
+    public void processDataForLoggedInUser(final String clientId, String clientName, int clientRole, double clientLat, double clientLng)
     {
 
 //        for the tutors list
@@ -585,9 +478,9 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
         final Location locationA = new Location("point A");
         final Location locationB = new Location("point B");
 
-        locationA.setLatitude(uLat);
-        locationA.setLongitude(uLong);
-
+        locationA.setLatitude(clientLat);
+        locationA.setLongitude(clientLng);
+        Log.e("LATLONG values","ello ::"+clientLat+"::"+clientLng);
         // 37.352804, -121.963429
 //        locationA.setLatitude( 37.352804);
 //        locationA.setLongitude(-121.963429);
@@ -657,7 +550,8 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
                 // creating bundle
                 Bundle extra = new Bundle();
                 extra.putString("name", name);
-                extra.putInt("listRole",listRole);
+                extra.putInt("listRole", listRole);
+                extra.putString("userID",clientId);
                 tutorDetailIntent.putExtras(extra);
                 startActivity(tutorDetailIntent);
             }
