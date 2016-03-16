@@ -98,6 +98,9 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
         pref = getApplicationContext().getSharedPreferences(preferName, 0);
         editor = pref.edit();
         sessionUserName = pref.getString(key_email, null);
+<<<<<<< HEAD
+//        Toast.makeText(StudentsListActivity.this, "Session user name is - " +sessionUserName, Toast.LENGTH_SHORT).show();
+=======
         Toast.makeText(StudentsListActivity.this, "Session user name is - " +sessionUserName, Toast.LENGTH_SHORT).show();
 
 
@@ -115,12 +118,17 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
 
         // then qery in the tutor list
 
+<<<<<<< HEAD
 
 //        Log.e("CHECK THIS LOG OUT ",uFullName+":: "+userID+":: "+uRole+sessionUserName);
 //        Query queryRef = ref.orderByChild("interests").equalTo(uExpertiseList);
 //        Query queryRef = ref.orderByChild("interests").equalTo(uExpertiseList);
         Toast.makeText(StudentsListActivity.this,"full name: "+uFullName, Toast.LENGTH_SHORT).show();
         Toast.makeText(StudentsListActivity.this,"role: "+uRole, Toast.LENGTH_SHORT).show();
+||||||| merged common ancestors
+=======
+>>>>>>> 48e288b3b30aba7d4150ee15b1183a3c7713b915
+>>>>>>> c2c53c7ca5922f0e78c65fedaedec0cd02045fd0
         //setting up for the drawer
         Log.e("LOGVAL", uFullName + uRole);
         DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.drawerLayout);

@@ -39,26 +39,41 @@ public class Login extends AppCompatActivity {
     String lat, lng;
     String pass;
     private int uRole;
-    Firebase mref, userRef;
+    Firebase mref, userRef, userRef1;
     Resources res;
     UserSessionManager session;
     Query qref;
-    private static String uExpertiseList, uEmailID, uFullName, userID;
+    private static String userID;
     Users userData;
     String sessionUserID;
     String sessionUserName;
+<<<<<<< HEAD
     private Double uLat, uLong;
+||||||| merged common ancestors
+    Double uLat, uLng;
+=======
+    Double uLat, uLng;
+    Query queryRef;
+
+>>>>>>> c2c53c7ca5922f0e78c65fedaedec0cd02045fd0
     private static final String preferName = "AndriodSession";
     SharedPreferences pref; // 0 - for private mode
     SharedPreferences.Editor editor;
     public static final String key_userid = "name";
     public static final String key_email = "email";
+<<<<<<< HEAD
     private static Firebase loggedInUserRef;
     private static Firebase loggedInUserRef1;
     private static Query loggedInUserQueryRef;
     private static Query loggedInUserQueryRef1;
     private String TUTOR_TABLE_URL = "https://scorching-inferno-7039.firebaseio.com/users/Tutor";
     private String STUDENT_TABLE_URL = "https://scorching-inferno-7039.firebaseio.com/users/Student";
+||||||| merged common ancestors
+
+=======
+    public static final String key_role = "userRole";
+    public static final String key_userID = "userID";
+>>>>>>> c2c53c7ca5922f0e78c65fedaedec0cd02045fd0
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,11 +120,76 @@ public class Login extends AppCompatActivity {
                 } else {
                     mref.authWithPassword(uname, pass, new Firebase.AuthResultHandler() {
                         @Override
+<<<<<<< HEAD
                         public void onAuthenticated(AuthData authData) {
 
                             session.createUserLoginSession("session stored",uname);
                             Intent mainPage = new Intent(Login.this, StudentsListActivity.class);
                             startActivity(mainPage);
+||||||| merged common ancestors
+                        public void onAuthenticated(AuthData authData) {
+                            session.createUserLoginSession("session stored",uname);
+                            Intent mainPage = new Intent(Login.this, StudentsListActivity.class);
+                            startActivity(mainPage);
+=======
+                        public void onAuthenticated(AuthData authData)
+                        {
+
+                            userRef1 = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Student/");
+                            queryRef = userRef1.orderByChild("emailID").equalTo(uname);
+                            queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    //Toast.makeText(getApplicationContext(), "INSIDE MAIN", Toast.LENGTH_SHORT).show();
+                                    if (dataSnapshot.getChildrenCount() != 0) {
+                                        for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                                            Users userData = postSnapshot.getValue(Users.class);
+                                            Toast.makeText(getApplicationContext(), "INSIDE", Toast.LENGTH_SHORT).show();
+                                            uRole = userData.getRole();
+                                            userID = userData.getUserID();
+                                            session.createUserLoginSession("session stored", uname, uRole, userID);
+//                                            Toast.makeText(getApplicationContext(), "user email ID is - "+pref.getString(key_email, null), Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getApplicationContext(), "user role is - "+uRole, Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getApplicationContext(), "user ID is - "+userID, Toast.LENGTH_SHORT).show();
+                                            Intent mainPage = new Intent(Login.this, StudentsListActivity.class);
+                                            startActivity(mainPage);
+
+                                        }
+                                    }else
+                                    {
+                                        userRef1 = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Tutor");
+                                        queryRef = userRef1.orderByChild("emailID").equalTo(uname);
+                                        queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                                                    Users userData = postSnapshot.getValue(Users.class);
+                                                    uRole = userData.getRole();
+                                                    userID = userData.getUserID();
+                                                    session.createUserLoginSession("session stored", uname, uRole, userID);
+                                                    //Toast.makeText(getApplicationContext(), "user email ID is - "+pref.getString(key_email, null), Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(getApplicationContext(), "user role is - "+uRole, Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(getApplicationContext(), "user ID is - "+userID, Toast.LENGTH_SHORT).show();
+                                                    Intent mainPage = new Intent(Login.this, StudentsListActivity.class);
+                                                    startActivity(mainPage);
+
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(FirebaseError firebaseError) {
+
+                                            }
+                                        });
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(FirebaseError firebaseError) {
+
+                                }
+                            });
+>>>>>>> c2c53c7ca5922f0e78c65fedaedec0cd02045fd0
                         }
 
                         @Override

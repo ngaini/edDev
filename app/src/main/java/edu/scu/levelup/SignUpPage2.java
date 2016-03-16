@@ -122,15 +122,6 @@ public class SignUpPage2 extends AppCompatActivity implements LocationListener{
         setSupportActionBar(toolbar);
         Firebase.setAndroidContext(this);
 
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
-
         male = (RadioButton) findViewById(R.id.rd_Male);
         female = (RadioButton) findViewById(R.id.rd_Female);
         genderGroup = (RadioGroup) findViewById(R.id.rg_gender);

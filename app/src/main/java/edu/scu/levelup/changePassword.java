@@ -4,9 +4,15 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.app.Activity;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.firebase.client.ChildEventListener;
@@ -16,7 +22,9 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 
-public class changePassword extends Activity {
+import static edu.scu.levelup.R.id.toolbar;
+
+public class changePassword extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     private EditText oldPassword;
     private EditText newPassword;
@@ -39,12 +47,18 @@ public class changePassword extends Activity {
     private String sessionUserName, sessionUserID;
     public static final String key_userid = "name";
     public static final String key_email = "email";
+    private android.support.v7.app.ActionBarDrawerToggle drawerListner;
+    private CustomAdapter myCustomAdapter;
+    private String[] navOptions;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_password);
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(myToolbar);
+        Firebase.setAndroidContext(this);
         pref = getApplicationContext().getSharedPreferences(preferName, 0);
         editor = pref.edit();
         sessionUserName = pref.getString(key_email, null);
@@ -55,6 +69,29 @@ public class changePassword extends Activity {
         confirmPassword = (EditText) findViewById(R.id.change_ConfirmPassword);
         confirm = (Button) findViewById(R.id.change_Confirm);
         back = (Button) findViewById(R.id.change_Back);
+
+        DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.drawerLayout);
+        ListView list = (ListView)findViewById(R.id.drawerList);
+        myCustomAdapter = new CustomAdapter(this);
+        list.setAdapter(myCustomAdapter);
+        navOptions = getResources().getStringArray(R.array.navOptions);
+
+        //setting item lister for nav drawer item click
+        list.setOnItemClickListener(this);
+
+        //drawerListner = new ActionBarDrawerToggle(this,drawerLayout,myToolbar, R.string.navigation_drawer_open,R.string.navigation_drawer_close)
+        drawerListner = new android.support.v7.app.ActionBarDrawerToggle(this, drawerLayout, myToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+        {
+            /** Called when a drawer has settled in a completely closed state. */
+            public void onDrawerClosed(View view) {
+            }
+            /** Called when a drawer has settled in a completely open state. */
+            public void onDrawerOpened(View drawerView) {
+            }
+        };
+        drawerLayout.setDrawerListener(drawerListner);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //fetching the parent of emailID
         userRef = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Student/");
@@ -142,4 +179,8 @@ public class changePassword extends Activity {
         });
     }
 
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+    }
 }
