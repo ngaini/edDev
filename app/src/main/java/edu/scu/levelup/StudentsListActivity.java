@@ -19,6 +19,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.batch.android.Batch;
 import com.firebase.client.AuthData;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -76,6 +77,10 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
         Toolbar myToolbar = (Toolbar) findViewById(toolbar);
         setSupportActionBar(myToolbar);
         Firebase.setAndroidContext(this);
+
+        //for fetching the global variables
+        MyApplication app =(MyApplication)getApplication();
+
 //        uRole = 999 ;
 //
 
@@ -142,8 +147,8 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
         locationA.setLongitude(uLong);
 
         // 37.352804, -121.963429
-        locationA.setLatitude( 37.352804);
-        locationA.setLongitude(-121.963429);
+//        locationA.setLatitude( 37.352804);
+//        locationA.setLongitude(-121.963429);
         listRole=1000;
         if (uRole ==1)
         {
@@ -214,10 +219,23 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
     }
 
     @Override
-    protected void onStart() {
+    protected void onStart()
+    {
         super.onStart();
 
+        Batch.onStart(this);
+//
     }
+
+    @Override
+    protected void onStop()
+    {
+        Batch.onStop(this);
+
+        super.onStop();
+    }
+
+
 
 
     //Methods for drawer

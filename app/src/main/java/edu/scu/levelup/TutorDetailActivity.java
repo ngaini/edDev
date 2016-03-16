@@ -44,7 +44,7 @@ public class TutorDetailActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Batch.setConfig(new Config(API_KEY));
+        MyApplication app =(MyApplication)getApplication();
         setContentView(R.layout.activity_tutor_detail);
         interestedButtonId =(Button)findViewById(R.id.TDA_interested_button);
         Bundle extra = getIntent().getExtras();
