@@ -20,6 +20,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.batch.android.Batch;
 import com.firebase.client.AuthData;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -30,6 +31,7 @@ import com.firebase.ui.FirebaseListAdapter;
 
 import org.w3c.dom.Text;
 
+import java.text.DecimalFormat;
 import java.util.Map;
 
 import static edu.scu.levelup.R.id.toolbar;
@@ -40,7 +42,18 @@ import static edu.scu.levelup.R.id.toolbar;
  * This activity appears only for the student user
  * clicking on the list will give details of the specific tutor
  *
+ *
+ * for google maps
  * API key = AIzaSyBU_2MPKbm5qSHTrQBlz7Fl-ci3TddSH6g
+ *
+ *
+ * for GCM
+ * API KEY: AIzaSyDYtLy2W-aF93cRlFo9efq1utGDfx24Ep4
+ * SenderID : 175791489113
+ *
+ *
+ * Batch API key DEV56E7BC3BA4A1F6DF11D0CAB6148
+ *
  */
 public class StudentsListActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
@@ -53,6 +66,7 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
     private String uFullName;
     private String sessionUserName;
     private int uRole;
+    private static int listRole;
     private double uLat;
     SharedPreferences pref;
     SharedPreferences.Editor editor;
@@ -70,10 +84,51 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
         Toolbar myToolbar = (Toolbar) findViewById(toolbar);
         setSupportActionBar(myToolbar);
         Firebase.setAndroidContext(this);
+
         pref = getApplicationContext().getSharedPreferences(preferName, 0);
         editor = pref.edit();
         sessionUserName = pref.getString(key_email, null);
+<<<<<<< HEAD
 //        Toast.makeText(StudentsListActivity.this, "Session user name is - " +sessionUserName, Toast.LENGTH_SHORT).show();
+=======
+        Toast.makeText(StudentsListActivity.this, "Session user name is - " +sessionUserName, Toast.LENGTH_SHORT).show();
+
+
+        //for fetching the global variables
+        MyApplication app =(MyApplication)getApplication();
+
+//        uRole = 999 ;
+//
+
+        /**
+         * commenting for test purposes
+         *
+         * REMEMBER to uncomment
+         */
+
+//        Bundle extras = getIntent().getExtras();
+//        uExpertiseList = extras.getString("uExpertiseList");
+//        uEmailID = extras.getString("uemailID");
+//        uFullName = extras.getString("uFullName");
+//        userID = extras.getString("userID");
+//        uRole = extras.getInt("uRole");
+//        uLat =extras.getDouble("lat");
+//        uLong =extras.getDouble("long");
+
+//          uRole =0; //tutor
+          uRole =1; //student
+
+//        Toast.makeText(StudentsListActivity.this,"user Expertise is - "+uExpertiseList, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(StudentsListActivity.this,"user email id is - "+uEmailID, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(StudentsListActivity.this,"user full name is - "+uFullName, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(StudentsListActivity.this,"user ID is - "+userID, Toast.LENGTH_SHORT).show();
+        Toast.makeText(StudentsListActivity.this,"user role is - "+uRole, Toast.LENGTH_SHORT).show();
+        Toast.makeText(StudentsListActivity.this,"user LatLong is - "+uLat+" "+uLong, Toast.LENGTH_SHORT).show();
+
+
+//        Query queryRef = ref.orderByChild("interests").equalTo(uExpertiseList);
+
+>>>>>>> 48e288b3b30aba7d4150ee15b1183a3c7713b915
         //setting up for the drawer
         DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.drawerLayout);
         ListView list = (ListView)findViewById(R.id.drawerList);
@@ -109,15 +164,21 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
         locationA.setLatitude(uLat);
         locationA.setLongitude(uLong);
 
+        // 37.352804, -121.963429
+//        locationA.setLatitude( 37.352804);
+//        locationA.setLongitude(-121.963429);
+        listRole=1000;
         if (uRole ==1)
         {
              ref = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Tutor");
             ref1 = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Student");
+            listRole=0;
         }
         else
         {
             ref = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Student");
             ref1 = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Tutor");
+            listRole=1;
         }
 //        Query queryRef1 = ref.orderByChild("pincode").equalTo("95050");
         FirebaseListAdapter<Users> adapter = new FirebaseListAdapter<Users>(this, Users.class,android.R.layout.two_line_list_item, ref)
@@ -141,9 +202,10 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
                 text1_id.setTextAppearance(view.getContext(), android.R.style.TextAppearance_Large);
 //                if(distanceInMeters<10)
 //                {
+                    DecimalFormat df = new DecimalFormat("####0.0");
 
-                    text1_id.setText(dFname+"   "+(int)distanceInMeters+ "mi. away");
-                    text2_id.setText(user.getInterests());
+                    text1_id.setText(dFname);
+                    text2_id.setText(user.getInterests()+"  ("+df.format(getMiles(distanceInMeters))+ " mi. )");
 //                }
             }
         };
@@ -163,8 +225,8 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
                 Intent tutorDetailIntent = new Intent(StudentsListActivity.this, TutorDetailActivity.class);
                 // creating bundle
                 Bundle extra = new Bundle();
-                extra.putString("name",name);
-                extra.putString("interest",interest);
+                extra.putString("name", name);
+                extra.putInt("listRole",listRole);
                 tutorDetailIntent.putExtras(extra);
                 startActivity(tutorDetailIntent);
             }
@@ -174,10 +236,23 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
     }
 
     @Override
-    protected void onStart() {
+    protected void onStart()
+    {
         super.onStart();
 
+        Batch.onStart(this);
+//
     }
+
+    @Override
+    protected void onStop()
+    {
+        Batch.onStop(this);
+
+        super.onStop();
+    }
+
+
 
 
     //Methods for drawer
@@ -248,5 +323,11 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
     private void selectTitle(String navOption) {
         //to change the nave bar name
         getSupportActionBar().setTitle(navOption);
+    }
+
+
+    private double getMiles(float distanceVal)
+    {
+        return distanceVal/1609.344;
     }
 }

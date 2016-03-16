@@ -260,10 +260,14 @@ public class SignUpPage2 extends AppCompatActivity implements LocationListener{
                     String full_address = uAddress + ", "+uCity+ ", " +uState+", "+uCountry+", "+uPincode;
                     Log.e(" FULL ADDR",full_address);
                     HashMap<String, Double> latLong_values = convertToLatLong(full_address);
-                     double lat =latLong_values.get("lattitude") ;
-                    lat1 = lat;
+
+                    double lat =latLong_values.get("lattitude") ;
+
                     double lng=latLong_values.get("longitude") ;
-                    lng1 = lng;
+
+//                    double lat =hmap.get("lattitude") ;
+//                    double lng=hmap.get("longitude") ;
+
                     Log.e(" ADDR LATLONG", "lat :"+lat+" long:"+lng);
 
 //                Firebase newUserRef = mref.child("users").child(uFullName);
@@ -506,29 +510,34 @@ public class SignUpPage2 extends AppCompatActivity implements LocationListener{
         Geocoder coder = new Geocoder(this);
         addresses = null;
 
-
+        Log.e("LocationDETAILS", completeAddr);
         HashMap<String, Double> hmap = new HashMap<String,Double>();
         try {
             Log.e("LocationDETAILS", completeAddr);
             addresses = coder.getFromLocationName(completeAddr, 1);
+            Log.e("LocationDETAILS", "before if ");
+
             if (addresses != null && !addresses.isEmpty()) {
                 Address address = addresses.get(0);
                 // Use the address as needed
+                Log.e("LocationDETAILS", "after if ");
+                if(address.getLongitude()!=0 || address.getLatitude()!=0)
+                {
+                    String message = String.format("Latitude: %f, Longitude: %f",
+                            address.getLatitude(), address.getLongitude());
+                    Log.e("LocationDETAILS", " lat long value : " + message);
+                    hmap.put("lattitude", address.getLatitude());
+                    hmap.put("longitude", address.getLongitude());
 
-                String message = String.format("Latitude: %f, Longitude: %f",
-                        address.getLatitude(), address.getLongitude());
-                Log.e("LocationDETAILS", " lat long value : " + message);
-                hmap.put("lattitude", address.getLatitude());
-                hmap.put("longitude", address.getLongitude());
-
-                //checking if values are put inside the hash map
-                Log.e(" HASH MAP CHECK", hmap.get("lattitude").toString());
+                    //checking if values are put inside the hash map
+                    Log.e(" HASH MAP CHECK", hmap.get("lattitude").toString());
 
 
 
-                Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, message, Toast.LENGTH_LONG).show();
 
 //                addr =convToAddr(latValue, longValue);
+                }
 
             }
 
@@ -569,7 +578,7 @@ public class SignUpPage2 extends AppCompatActivity implements LocationListener{
         } catch (IOException e) {
             e.printStackTrace();
 //            e.printStackTrace();
-            longitudeField.setText("Canont get Address!");
+
         }
 
         return constructedAddressForMethod;

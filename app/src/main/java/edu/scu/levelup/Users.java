@@ -2,11 +2,14 @@ package edu.scu.levelup;
 
 import android.widget.EditText;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.Date;
 
 /**
  * Created by avidekar on 2016-02-26.
  */
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class Users {
     private int role;
     private String fullName;
@@ -18,6 +21,15 @@ public class Users {
     private String emailID;
     private String gender;
     private String interests;
+<<<<<<< HEAD
+||||||| merged common ancestors
+
+=======
+//    private int list;
+//
+//    private int idOfInterestedParty;
+
+>>>>>>> distanceAndMapFeature
     private double lat;
     private double lng;
 
@@ -40,6 +52,7 @@ public class Users {
         this.interests = interests;
         this.lat=lat;
         this.lng = lng;
+
 //        this.address = address;
 //        this.pincode = pincode;
     }
@@ -202,4 +215,22 @@ public class Users {
         this.lat = lat;
     }
 
+//    public void setIdOfInterestedParty(int idOfInterestedParty) {
+//        this.idOfInterestedParty = idOfInterestedParty;
+//    }
+//
+//    public void setList(int list) {
+//
+//        this.list = list;
+//    }
+//
+//    public int getList() {
+//
+//        return list;
+//    }
+//
+//    public int getIdOfInterestedParty() {
+//
+//        return idOfInterestedParty;
+//    }
 }

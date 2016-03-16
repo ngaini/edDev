@@ -3,31 +3,53 @@ package edu.scu.levelup;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.batch.android.Batch;
+import com.batch.android.Config;
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
+import com.firebase.client.ValueEventListener;
 
 import org.w3c.dom.Text;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class TutorDetailActivity extends Activity {
 
-    String FIREBASE_URL = "https://scorching-inferno-7039.firebaseio.com";
-    String USER_TABLE_URL = "https://scorching-inferno-7039.firebaseio.com/users";
+    private String FIREBASE_URL = "https://scorching-inferno-7039.firebaseio.com";
+    private String TUTOR_TABLE_URL = "https://scorching-inferno-7039.firebaseio.com/users/Tutor";
+    private String STUDENT_TABLE_URL = "https://scorching-inferno-7039.firebaseio.com/users/Student";
+    private Firebase ref;
+    static int role;
+    private final String API_KEY = "DEV56E7BC3BA4A1F6DF11D0CAB6148";
+    Button interestedButtonId;
+    //is the id value of the user whose details are being displayed
+    static String detailIdValue;
 
+
+    /**
+     * delete this when useridvalue is fetched dynamically
+     */
+    //is the id value of the logged in user
+    static String userIdValue ="20160311_183546";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        MyApplication app =(MyApplication)getApplication();
         setContentView(R.layout.activity_tutor_detail);
-
+        interestedButtonId =(Button)findViewById(R.id.TDA_interested_button);
         Bundle extra = getIntent().getExtras();
-        String name = extra.getString("name");
+        final String name = extra.getString("name");
+        role = extra.getInt("listRole");
         final TextView tutorName_id = (TextView)this.findViewById(R.id.TDA_tutorName_textView);
         final TextView tutorExpertize_id = (TextView)this.findViewById(R.id.TDA_tutorExpertise_textView);
         final TextView tutorAge_id = (TextView)this.findViewById(R.id.TDA_tutorAge_textView);
@@ -36,21 +58,57 @@ public class TutorDetailActivity extends Activity {
         final TextView tutorEducation_id = (TextView)this.findViewById(R.id.TDA_tutorEducation_textView);
         //Setting name to textView
 //        ((TextView)this.findViewById(R.id.TDA_tutorName_textView)).setText(name);
+//        tutorName_id.setText(name);
+
 
         if(!name.isEmpty())
         {
-            Firebase ref = new Firebase(USER_TABLE_URL);
+            if(role == 0)
+            {
+                ref = new Firebase(TUTOR_TABLE_URL);
+            }
+            else
+            {
+                ref= new Firebase(STUDENT_TABLE_URL);
+            }
+            enableInterestedButton();
             Query queryRef = ref.orderByChild("fullName").equalTo(name);
             queryRef.addChildEventListener(new ChildEventListener() {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
                     Users user = dataSnapshot.getValue(Users.class);
-                    tutorName_id.setText(user.getFullName());
-                    tutorExpertize_id.setText("Gender: "+user.getInterests());
-                    tutorAge_id.setText(user.getAge()+" yrs");
-                    tutorEducation_id.setText("Highest Education:\n"+user.getEducation());
-                    tutorGender_id.setText("Gender: "+user.getGender());
-                    tutorDescription_id.setText("Description:\n"+user.getDescription());
+                    tutorName_id.setText(name);
+                    tutorExpertize_id.setText("Gender: " + user.getInterests());
+                    tutorAge_id.setText(user.getAge() + " yrs");
+                    tutorEducation_id.setText("Highest Education:\n" + user.getEducation());
+                    tutorGender_id.setText("Gender: " + user.getGender());
+                    tutorDescription_id.setText("Description:\n" + user.getDescription());
+                    Log.e("CHECK THIS", "before the detailIdvalue ");
+                    detailIdValue = user.getUserID();
+
+                    //enable or disable button
+                    //if user has already clicked interested for a tutor the button will stay disabled
+                    Log.e("CHECK THIS", "detailsvalue: " + user.getUserID() + " ::" + detailIdValue);
+                    Query q1 =ref.child(detailIdValue).child("tempList").orderByChild("idVal").equalTo(userIdValue);
+                    q1.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+
+                            if(dataSnapshot.getValue()!=null)
+                            {
+                                Log.e("CHECK THIS", "inside query data change ");
+                                disableInterestedButton();
+                            }
+//                            enableInterestedButton();
+                        }
+
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {
+
+                        }
+                    });
+//                    detailIdValue ="20160311_183546";
                 }
 
                 @Override
@@ -73,7 +131,13 @@ public class TutorDetailActivity extends Activity {
 
                 }
             });
+//
+
+
+
+
         }
+
 
         //incase the tutor happens to delete his account
         else if(name.isEmpty())
@@ -81,7 +145,67 @@ public class TutorDetailActivity extends Activity {
             Intent tutorUnAvailableIntent = new Intent(TutorDetailActivity.this, StudentsListActivity.class);
             startActivity(tutorUnAvailableIntent);
         }
+//
 
     }
+
+    @Override
+    protected void onStart()
+    {
+        super.onStart();
+
+        Batch.onStart(this);
+//
+    }
+
+    @Override
+    protected void onStop()
+    {
+        Batch.onStop(this);
+
+        super.onStop();
+    }
+
+
+    public void informTutor(View view)
+    {
+
+//        ((Button)view.findViewById(R.id.TDA_interested_button)).setEnabled(false);
+        disableInterestedButton();
+
+         Firebase informTutor_ref ;
+        //get the tutors name
+        TextView name = (TextView)view.findViewById(R.id.TDA_tutorName_textView);
+
+
+        //add student id value for in tutors temp list
+        informTutor_ref = new Firebase(TUTOR_TABLE_URL).child(detailIdValue).child("tempList").push();
+        Map<String, String> tempListVar = new HashMap<String, String>();
+
+        tempListVar.put("idVal",userIdValue);
+        informTutor_ref.setValue(tempListVar);
+        Toast.makeText(TutorDetailActivity.this, "value added to tutor temp list :"+userIdValue, Toast.LENGTH_SHORT).show();
+
+
+
+        //create new child called student list
+
+
+        //if child exists then add to the child
+
+
+        //disable button on click to avoid extra entries
+    }
+
+    public void disableInterestedButton()
+    {
+        interestedButtonId.setEnabled(false);
+    }
+
+    public void enableInterestedButton()
+    {
+        interestedButtonId.setEnabled(true);
+    }
+
 
 }
