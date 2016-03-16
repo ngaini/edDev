@@ -82,8 +82,10 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
     private final String STUDENT_TABLE_URL = "https://scorching-inferno-7039.firebaseio.com/users/Student";
     private static Firebase ref;
     private static Firebase ref1;
-    private static Firebase loggedInUserRef;
-    private static Query loggedInUserQueryRef;
+    private static Firebase userRef1;
+    private static Query userQueryRef;
+    public static final String key_role = "userRole";
+    public static final String key_userID = "userID";
 
 
 
@@ -94,43 +96,165 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
         Toolbar myToolbar = (Toolbar) findViewById(toolbar);
         setSupportActionBar(myToolbar);
         Firebase.setAndroidContext(this);
+        sessionUserName ="t@t.com";
+//        pref = getApplicationContext().getSharedPreferences(preferName, 0);
+//        editor = pref.edit();
+//        sessionUserName = pref.getString(key_email, null);
+//        uRole = Integer.parseInt(pref.getString(key_role, null));
+//        userID = pref.getString(key_userID,null);
 
-        pref = getApplicationContext().getSharedPreferences(preferName, 0);
-        editor = pref.edit();
-        sessionUserName = pref.getString(key_email, null);
-<<<<<<< HEAD
 //        Toast.makeText(StudentsListActivity.this, "Session user name is - " +sessionUserName, Toast.LENGTH_SHORT).show();
-=======
-        Toast.makeText(StudentsListActivity.this, "Session user name is - " +sessionUserName, Toast.LENGTH_SHORT).show();
 
 
         //for fetching the global variables
         MyApplication app =(MyApplication)getApplication();
 
 
-        Toast.makeText(StudentsListActivity.this,"email- "+sessionUserName, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(StudentsListActivity.this,"email- "+sessionUserName, Toast.LENGTH_SHORT).show();
 
 
         //get the loggein user details
 
 //
 
+        userRef1 = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Student/");
+        userQueryRef = userRef1.orderByChild("emailID").equalTo(sessionUserName);
+        userQueryRef.addListenerForSingleValueEvent(new ValueEventListener() {
+//            HashMap<String, String> hmap=new HashMap<String, String>();
+//            UserSessionManager session;
+
+            String appUserName, appUserID;
+            int appUserRole;
+            double appUserLat,appUserLng;
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //Toast.makeText(getApplicationContext(), "INSIDE MAIN", Toast.LENGTH_SHORT).show();
+                if (dataSnapshot.getChildrenCount() != 0) {
+                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                        Users userData = postSnapshot.getValue(Users.class);
+                        Toast.makeText(getApplicationContext(), "INSIDE", Toast.LENGTH_SHORT).show();
+
+                        appUserName = userData.getFullName();
+                        appUserRole = userData.getRole();
+                        appUserID= userData.getUserID();
+                        appUserLat =userData.getLat();
+                        appUserLng=userData.getLng();
+                        processDataForLoggedInUser(appUserID,appUserName,appUserRole,appUserLat,appUserLng);
+                        Log.e("LOGVAL STUDENT", "ello::" + appUserName + "::" + appUserRole + "::" + appUserID + "::" + appUserLat);
+//
+
+//                        uRole = userData.getRole();
+//                        userID = userData.getUserID();
+//                        hmap = new HashMap<String, String>();
+//                        hmap.put("role", String.valueOf(userData.getRole()));
+//                        hmap.put("userID", userData.getUserID());
+//                        hmap.put("lat", String.valueOf(userData.getLat()));
+//                        hmap.put("lng", String.valueOf(userData.getLng()));
+//                        session.createUserLoginSession(userData.getFullName(), sessionUserName, userData.getRole(), userData.getUserID());
+
+
+//                        Log.e("LOGVAL STUDENT", "ello::" + userData.getRole() + "::" + userData.getUserID() + "::" + userData.getLng()+"::"+userData.getFullName());
+////                        session.createUserLoginSession("session stored", sessionUserName, uRole, userID);
+////                                            Toast.makeText(getApplicationContext(), "user email ID is - "+pref.getString(key_email, null), Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getApplicationContext(), "user role is - "+uRole, Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getApplicationContext(), "user ID is - "+userID, Toast.LENGTH_SHORT).show();
+//                        Intent mainPage = new Intent(StudentsListActivity.this, StudentsListActivity.class);
+//                        startActivity(mainPage);
+
+
+                    }
+                }else
+                {
+                    userRef1 = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Tutor");
+                    userQueryRef = userRef1.orderByChild("emailID").equalTo(sessionUserName);
+                    userQueryRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                                Users userData = postSnapshot.getValue(Users.class);
+
+                                appUserName = userData.getFullName();
+                                appUserRole = userData.getRole();
+                                appUserID= userData.getUserID();
+                                appUserLat =userData.getLat();
+                                appUserLng=userData.getLng();
+                                processDataForLoggedInUser(appUserID,appUserName,appUserRole,appUserLat,appUserLng);
+                                Log.e("LOGVAL STUDENT", "ello::" + appUserName + "::" + appUserRole + "::" + appUserID + "::" + appUserLat);
+//
+
+//                                uRole = userData.getRole();
+//                                userID = userData.getUserID();
+//                                hmap = new HashMap<String, String>();
+//                                hmap.put("role",String.valueOf(userData.getRole()));
+//                                hmap.put("userID",userData.getUserID());
+//                                hmap.put("lat",String.valueOf(userData.getLat()));
+//                                hmap.put("lng",String.valueOf(userData.getLng()));
+//                                session.createUserLoginSession(userData.getFullName(), sessionUserName, userData.getRole(), userData.getUserID());
+//                                session.createUserLoginSession("session stored", uname, uRole, userID);
+                                //Toast.makeText(getApplicationContext(), "user email ID is - "+pref.getString(key_email, null), Toast.LENGTH_SHORT).show();
+//                                Log.e("LOGVAL STUDENT", "ello::" + userData.getRole() + "::" + userData.getUserID() + "::" + userData.getLng());
+//                                Toast.makeText(getApplicationContext(), "user role is - "+uRole, Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(getApplicationContext(), "user ID is - "+userID, Toast.LENGTH_SHORT).show();
+////                                Intent mainPage = new Intent(Login.this, StudentsListActivity.class);
+////                                startActivity(mainPage);
+//                                Log.e("LOGVAL TUTOR", "ello::" +uRole+"::"+userID +"::" +sessionUserName);
+
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {
+
+                        }
+                    });
+
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         // then qery in the tutor list
 
-<<<<<<< HEAD
-
+//        uRole = Integer.parseInt(hmap.get("role"));
+//        userID=hmap.get("userID");
+//        uLat = Double.parseDouble(hmap.get("lat"));
+//        uLong = Double.parseDouble(hmap.get("lng"));
 //        Log.e("CHECK THIS LOG OUT ",uFullName+":: "+userID+":: "+uRole+sessionUserName);
 //        Query queryRef = ref.orderByChild("interests").equalTo(uExpertiseList);
 //        Query queryRef = ref.orderByChild("interests").equalTo(uExpertiseList);
-        Toast.makeText(StudentsListActivity.this,"full name: "+uFullName, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(StudentsListActivity.this,"full name: "+uFullName, Toast.LENGTH_SHORT).show();
+
+
+
+//        uLat = Double.parseDouble(hashMap.get("lat"));
+//        uLong = Double.parseDouble(hashMap.get("lng"));
+
         Toast.makeText(StudentsListActivity.this,"role: "+uRole, Toast.LENGTH_SHORT).show();
-||||||| merged common ancestors
-=======
->>>>>>> 48e288b3b30aba7d4150ee15b1183a3c7713b915
->>>>>>> c2c53c7ca5922f0e78c65fedaedec0cd02045fd0
+
         //setting up for the drawer
-        Log.e("LOGVAL", uFullName + uRole);
+//        Log.e("LOGVAL", "::" +uRole+"::"+userID +"::" +sessionUserName);
         DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.drawerLayout);
         ListView list = (ListView)findViewById(R.id.drawerList);
         myCustomAdapter = new CustomAdapter(this);
@@ -153,92 +277,92 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-//      for the tutors list
-        final ListView tutorList_id = (ListView)findViewById(R.id.studentActivity_tutorList_listView);
-
-
-        // to find distance between two lat longs
-        // users lat long
-        final Location locationA = new Location("point A");
-        final Location locationB = new Location("point B");
-
-        locationA.setLatitude(uLat);
-        locationA.setLongitude(uLong);
-
-        // 37.352804, -121.963429
+////      for the tutors list
+//        final ListView tutorList_id = (ListView)findViewById(R.id.studentActivity_tutorList_listView);
+//
+//
+//        // to find distance between two lat longs
+//        // users lat long
+//        final Location locationA = new Location("point A");
+//        final Location locationB = new Location("point B");
+//
+////        locationA.setLatitude(uLat);
+////        locationA.setLongitude(uLong);
+//
+//        // 37.352804, -121.963429
 //        locationA.setLatitude( 37.352804);
 //        locationA.setLongitude(-121.963429);
-        listRole=1000;
-
-        // if the logged in user is a student show a the list of tutors
-        if (uRole ==1)
-        {
-             ref = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Tutor");
-            ref1 = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Student");
-
-            // if it is a student List role should be 0 as we will be sing list of tutors
-            listRole=0;
-        }
-        // if he is a tutor show list of students
-        else if (uRole==0)
-        {
-            ref = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Student");
-            ref1 = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Tutor");
-            // if it is a tutor List role should be 1 as we will be sing list of students
-            listRole=1;
-        }
-
+//        listRole=1000;
+//
+//        // if the logged in user is a student show a the list of tutors
+//        if (uRole ==1)
+//        {
+//             ref = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Tutor");
+//            ref1 = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Student");
+//
+//            // if it is a student List role should be 0 as we will be sing list of tutors
+//            listRole=0;
+//        }
+//        // if he is a tutor show list of students
+//        else if (uRole==0)
+//        {
+//            ref = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Student");
+//            ref1 = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Tutor");
+//            // if it is a tutor List role should be 1 as we will be sing list of students
+//            listRole=1;
+//        }
+//
 //        Query queryRef1 = ref.orderByChild("pincode").equalTo("95050");
-        FirebaseListAdapter<Users> adapter = new FirebaseListAdapter<Users>(this, Users.class,android.R.layout.two_line_list_item, ref)
-        {
-            @Override
-            protected void populateView(View view, Users user, int i)
-            {
-               TextView text1_id =(TextView) view.findViewById(android.R.id.text1);
-               TextView text2_id =(TextView) view.findViewById(android.R.id.text2);
-                text1_id.setPaddingRelative(30,5,10,5);
-                text2_id.setPaddingRelative(30, 5, 10, 20);
-                String dFname= user.getFullName();
-                double dLat = user.getLat();
-                double dLng = user.getLng();
-                locationB.setLatitude(dLat);
-                locationB.setLongitude(dLng);
-                float distanceInMeters =0;
-                 distanceInMeters = locationA.distanceTo(locationB);
-                Log.e("TESTING", " dist :"+distanceInMeters);
-
-                text1_id.setTextAppearance(view.getContext(), android.R.style.TextAppearance_Large);
-//                if(distanceInMeters<10)
-//                {
-                    DecimalFormat df = new DecimalFormat("####0.0");
-
-                    text1_id.setText(dFname);
-                    text2_id.setText(user.getInterests()+"  ("+df.format(getMiles(distanceInMeters))+ " mi. )");
-//                }
-            }
-        };
-        //Bind the list adapter to  listView
-        tutorList_id.setAdapter(adapter);
-
-        // item click action
-        tutorList_id.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                String name = ((TextView)view.findViewById(android.R.id.text1)).getText().toString();
-                String interest = ((TextView)view.findViewById(android.R.id.text2)).getText().toString();
-                Log.e("TESTING", " name "+name+" is interested in "+interest);
-                Toast.makeText(StudentsListActivity.this," name "+name+" is interested in "+interest, Toast.LENGTH_SHORT).show();
-
-                Intent tutorDetailIntent = new Intent(StudentsListActivity.this, TutorDetailActivity.class);
-                // creating bundle
-                Bundle extra = new Bundle();
-                extra.putString("name", name);
-                extra.putInt("listRole",listRole);
-                tutorDetailIntent.putExtras(extra);
-                startActivity(tutorDetailIntent);
-            }
-        });
+//        FirebaseListAdapter<Users> adapter = new FirebaseListAdapter<Users>(this, Users.class,android.R.layout.two_line_list_item, ref)
+//        {
+//            @Override
+//            protected void populateView(View view, Users user, int i)
+//            {
+//               TextView text1_id =(TextView) view.findViewById(android.R.id.text1);
+//               TextView text2_id =(TextView) view.findViewById(android.R.id.text2);
+//                text1_id.setPaddingRelative(30,5,10,5);
+//                text2_id.setPaddingRelative(30, 5, 10, 20);
+//                String dFname= user.getFullName();
+//                double dLat = user.getLat();
+//                double dLng = user.getLng();
+//                locationB.setLatitude(dLat);
+//                locationB.setLongitude(dLng);
+//                float distanceInMeters =0;
+//                 distanceInMeters = locationA.distanceTo(locationB);
+//                Log.e("TESTING", " dist :"+distanceInMeters);
+//
+//                text1_id.setTextAppearance(view.getContext(), android.R.style.TextAppearance_Large);
+////                if(distanceInMeters<10)
+////                {
+//                    DecimalFormat df = new DecimalFormat("####0.0");
+//
+//                    text1_id.setText(dFname);
+//                    text2_id.setText(user.getInterests()+"  ("+df.format(getMiles(distanceInMeters))+ " mi. )");
+////                }
+//            }
+//        };
+//        //Bind the list adapter to  listView
+//        tutorList_id.setAdapter(adapter);
+//
+//        // item click action
+//        tutorList_id.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//
+//                String name = ((TextView)view.findViewById(android.R.id.text1)).getText().toString();
+//                String interest = ((TextView)view.findViewById(android.R.id.text2)).getText().toString();
+//                Log.e("TESTING", " name "+name+" is interested in "+interest);
+//                Toast.makeText(StudentsListActivity.this," name "+name+" is interested in "+interest, Toast.LENGTH_SHORT).show();
+//
+//                Intent tutorDetailIntent = new Intent(StudentsListActivity.this, TutorDetailActivity.class);
+//                // creating bundle
+//                Bundle extra = new Bundle();
+//                extra.putString("name", name);
+//                extra.putInt("listRole",listRole);
+//                tutorDetailIntent.putExtras(extra);
+//                startActivity(tutorDetailIntent);
+//            }
+//        });
 
 
     }
@@ -340,7 +464,205 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
     }
 
 
+    public void getUserHashValues(final String lName) throws InterruptedException {
+
+        userRef1 = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Student/");
+        userQueryRef = userRef1.orderByChild("emailID").equalTo(sessionUserName);
+        userQueryRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            HashMap<String, String> hmap=new HashMap<String, String>();
+            UserSessionManager session;
+            String appUserName, appUserID;
+            int appUserRole;
+            double appUserLat,appUserLng;
 
 
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //Toast.makeText(getApplicationContext(), "INSIDE MAIN", Toast.LENGTH_SHORT).show();
+                if (dataSnapshot.getChildrenCount() != 0) {
+                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                        Users userData = postSnapshot.getValue(Users.class);
+                        Toast.makeText(getApplicationContext(), "INSIDE", Toast.LENGTH_SHORT).show();
+
+
+
+//                        uRole = userData.getRole();
+//                        userID = userData.getUserID();
+//                        hmap = new HashMap<String, String>();
+//                        hmap.put("role", String.valueOf(userData.getRole()));
+//                        hmap.put("userID", userData.getUserID());
+//                        hmap.put("lat", String.valueOf(userData.getLat()));
+//                        hmap.put("lng", String.valueOf(userData.getLng()));
+//                        session.createUserLoginSession(userData.getFullName(), lName, userData.getRole(), userData.getUserID());
+                        appUserName = userData.getFullName();
+                        appUserRole = userData.getRole();
+                        appUserID= userData.getUserID();
+                        appUserLat =userData.getLat();
+                        appUserLng=userData.getLng();
+                        processDataForLoggedInUser(appUserID,appUserName,appUserRole,appUserLat,appUserLng);
+
+                        Log.e("LOGVAL STUDENT", "ello::" + appUserName + "::" + appUserRole + "::" + appUserID+"::"+appUserLat);
+//                        session.createUserLoginSession("session stored", sessionUserName, uRole, userID);
+//                                            Toast.makeText(getApplicationContext(), "user email ID is - "+pref.getString(key_email, null), Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getApplicationContext(), "user role is - "+uRole, Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getApplicationContext(), "user ID is - "+userID, Toast.LENGTH_SHORT).show();
+//                        Intent mainPage = new Intent(StudentsListActivity.this, StudentsListActivity.class);
+//                        startActivity(mainPage);
+
+
+                    }
+                }else
+                {
+                    userRef1 = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Tutor");
+                    userQueryRef = userRef1.orderByChild("emailID").equalTo(sessionUserName);
+                    userQueryRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                                Users userData = postSnapshot.getValue(Users.class);
+
+                                appUserName = userData.getFullName();
+                                appUserRole = userData.getRole();
+                                appUserID= userData.getUserID();
+                                appUserLat =userData.getLat();
+                                appUserLng=userData.getLng();
+                                processDataForLoggedInUser(appUserID,appUserName,appUserRole,appUserLat,appUserLng);
+                                Log.e("LOGVAL STUDENT", "ello::" + appUserName + "::" + appUserRole + "::" + appUserID + "::" + appUserLat);
+//                                uRole = userData.getRole();
+//                                userID = userData.getUserID();
+//                                hmap = new HashMap<String, String>();
+//                                hmap.put("role",String.valueOf(userData.getRole()));
+//                                hmap.put("userID",userData.getUserID());
+//                                hmap.put("lat",String.valueOf(userData.getLat()));
+//                                hmap.put("lng",String.valueOf(userData.getLng()));
+//                                session.createUserLoginSession(userData.getFullName(), lName, userData.getRole(), userData.getUserID());
+//                                session.createUserLoginSession("session stored", uname, uRole, userID);
+                                //Toast.makeText(getApplicationContext(), "user email ID is - "+pref.getString(key_email, null), Toast.LENGTH_SHORT).show();
+//                                Log.e("LOGVAL STUDENT", "ello::" + userData.getRole() + "::" + userData.getUserID() + "::" + userData.getLng());
+//                                Toast.makeText(getApplicationContext(), "user role is - "+uRole, Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(getApplicationContext(), "user ID is - "+userID, Toast.LENGTH_SHORT).show();
+//                                Intent mainPage = new Intent(Login.this, StudentsListActivity.class);
+//                                startActivity(mainPage);
+//                                Log.e("LOGVAL TUTOR", "ello::" +uRole+"::"+userID +"::" +sessionUserName);
+
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {
+
+                        }
+                    });
+
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+            });
+//            userQueryRef.wait(5000);
+//        uRole = Integer.parseInt(hmap.get("role"));
+//        userID=hmap.get("userID");
+//        uLat = Double.parseDouble(hmap.get("lat"));
+//        uLong = Double.parseDouble(hmap.get("lng"));
+//        Log.e("!@# HERE WE ARE hmap", "ello::"+uRole+"::"+userID+"::"+uLat);
+
+
+    }
+
+
+    public void processDataForLoggedInUser(String clientId, String clientName, int clientRole, double clientLat, double clientLng)
+    {
+
+//        for the tutors list
+        final ListView tutorList_id = (ListView)findViewById(R.id.studentActivity_tutorList_listView);
+
+
+        // to find distance between two lat longs
+        // users lat long
+        final Location locationA = new Location("point A");
+        final Location locationB = new Location("point B");
+
+        locationA.setLatitude(uLat);
+        locationA.setLongitude(uLong);
+
+        // 37.352804, -121.963429
+//        locationA.setLatitude( 37.352804);
+//        locationA.setLongitude(-121.963429);
+        listRole=1000;
+
+        // if the logged in user is a student show a the list of tutors
+        if (clientRole ==1)
+        {
+            ref = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Tutor");
+            ref1 = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Student");
+
+            // if it is a student List role should be 0 as we will be sing list of tutors
+            listRole=0;
+        }
+        // if he is a tutor show list of students
+        else if (clientRole==0)
+        {
+            ref = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Student");
+            ref1 = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Tutor");
+            // if it is a tutor List role should be 1 as we will be sing list of students
+            listRole=1;
+        }
+
+        Query queryRef1 = ref.orderByChild("pincode").equalTo("95050");
+        FirebaseListAdapter<Users> adapter = new FirebaseListAdapter<Users>(this, Users.class,android.R.layout.two_line_list_item, ref)
+        {
+            @Override
+            protected void populateView(View view, Users user, int i)
+            {
+                TextView text1_id =(TextView) view.findViewById(android.R.id.text1);
+                TextView text2_id =(TextView) view.findViewById(android.R.id.text2);
+                text1_id.setPaddingRelative(30,5,10,5);
+                text2_id.setPaddingRelative(30, 5, 10, 20);
+                String dFname= user.getFullName();
+                double dLat = user.getLat();
+                double dLng = user.getLng();
+                locationB.setLatitude(dLat);
+                locationB.setLongitude(dLng);
+                float distanceInMeters =0;
+                distanceInMeters = locationA.distanceTo(locationB);
+                Log.e("TESTING", " dist :"+distanceInMeters);
+
+                text1_id.setTextAppearance(view.getContext(), android.R.style.TextAppearance_Large);
+//                if(distanceInMeters<10)
+//                {
+                DecimalFormat df = new DecimalFormat("####0.0");
+
+                text1_id.setText(dFname);
+                text2_id.setText(user.getInterests()+"  ("+df.format(getMiles(distanceInMeters))+ " mi. )");
+//                }
+            }
+        };
+        //Bind the list adapter to  listView
+        tutorList_id.setAdapter(adapter);
+
+        // item click action
+        tutorList_id.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                String name = ((TextView)view.findViewById(android.R.id.text1)).getText().toString();
+                String interest = ((TextView)view.findViewById(android.R.id.text2)).getText().toString();
+                Log.e("TESTING", " name "+name+" is interested in "+interest);
+                Toast.makeText(StudentsListActivity.this," name "+name+" is interested in "+interest, Toast.LENGTH_SHORT).show();
+
+                Intent tutorDetailIntent = new Intent(StudentsListActivity.this, TutorDetailActivity.class);
+                // creating bundle
+                Bundle extra = new Bundle();
+                extra.putString("name", name);
+                extra.putInt("listRole",listRole);
+                tutorDetailIntent.putExtras(extra);
+                startActivity(tutorDetailIntent);
+            }
+        });
+
+    }
 
 }

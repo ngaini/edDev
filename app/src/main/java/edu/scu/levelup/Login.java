@@ -47,33 +47,27 @@ public class Login extends AppCompatActivity {
     Users userData;
     String sessionUserID;
     String sessionUserName;
-<<<<<<< HEAD
+
     private Double uLat, uLong;
-||||||| merged common ancestors
-    Double uLat, uLng;
-=======
-    Double uLat, uLng;
+
     Query queryRef;
 
->>>>>>> c2c53c7ca5922f0e78c65fedaedec0cd02045fd0
     private static final String preferName = "AndriodSession";
     SharedPreferences pref; // 0 - for private mode
     SharedPreferences.Editor editor;
     public static final String key_userid = "name";
     public static final String key_email = "email";
-<<<<<<< HEAD
+
     private static Firebase loggedInUserRef;
     private static Firebase loggedInUserRef1;
     private static Query loggedInUserQueryRef;
     private static Query loggedInUserQueryRef1;
     private String TUTOR_TABLE_URL = "https://scorching-inferno-7039.firebaseio.com/users/Tutor";
     private String STUDENT_TABLE_URL = "https://scorching-inferno-7039.firebaseio.com/users/Student";
-||||||| merged common ancestors
 
-=======
     public static final String key_role = "userRole";
     public static final String key_userID = "userID";
->>>>>>> c2c53c7ca5922f0e78c65fedaedec0cd02045fd0
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,18 +114,7 @@ public class Login extends AppCompatActivity {
                 } else {
                     mref.authWithPassword(uname, pass, new Firebase.AuthResultHandler() {
                         @Override
-<<<<<<< HEAD
-                        public void onAuthenticated(AuthData authData) {
 
-                            session.createUserLoginSession("session stored",uname);
-                            Intent mainPage = new Intent(Login.this, StudentsListActivity.class);
-                            startActivity(mainPage);
-||||||| merged common ancestors
-                        public void onAuthenticated(AuthData authData) {
-                            session.createUserLoginSession("session stored",uname);
-                            Intent mainPage = new Intent(Login.this, StudentsListActivity.class);
-                            startActivity(mainPage);
-=======
                         public void onAuthenticated(AuthData authData)
                         {
 
@@ -189,7 +172,8 @@ public class Login extends AppCompatActivity {
 
                                 }
                             });
->>>>>>> c2c53c7ca5922f0e78c65fedaedec0cd02045fd0
+                            Intent mainPage = new Intent(Login.this, StudentsListActivity.class);
+                            startActivity(mainPage);
                         }
 
                         @Override

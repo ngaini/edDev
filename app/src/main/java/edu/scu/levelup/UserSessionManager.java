@@ -35,7 +35,7 @@ public class UserSessionManager {
 
     public void createUserLoginSession(String name, String email,  int userRole, String userID)
     {
-        editor.putBoolean(isUserLogin, true);
+//        editor.putBoolean(isUserLogin, true);
         editor.putString(key_name, name);
         editor.putString(key_email, email);
         editor.putInt(key_role, userRole);
