@@ -9,6 +9,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,6 +23,8 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
+
+import java.util.Map;
 
 
 public class Login extends AppCompatActivity {
@@ -44,13 +47,18 @@ public class Login extends AppCompatActivity {
     Users userData;
     String sessionUserID;
     String sessionUserName;
-    Double uLat, uLng;
+    private Double uLat, uLong;
     private static final String preferName = "AndriodSession";
     SharedPreferences pref; // 0 - for private mode
     SharedPreferences.Editor editor;
     public static final String key_userid = "name";
     public static final String key_email = "email";
-
+    private static Firebase loggedInUserRef;
+    private static Firebase loggedInUserRef1;
+    private static Query loggedInUserQueryRef;
+    private static Query loggedInUserQueryRef1;
+    private String TUTOR_TABLE_URL = "https://scorching-inferno-7039.firebaseio.com/users/Tutor";
+    private String STUDENT_TABLE_URL = "https://scorching-inferno-7039.firebaseio.com/users/Student";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +106,7 @@ public class Login extends AppCompatActivity {
                     mref.authWithPassword(uname, pass, new Firebase.AuthResultHandler() {
                         @Override
                         public void onAuthenticated(AuthData authData) {
+
                             session.createUserLoginSession("session stored",uname);
                             Intent mainPage = new Intent(Login.this, StudentsListActivity.class);
                             startActivity(mainPage);

@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.batch.android.Batch;
 import com.firebase.client.AuthData;
+import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -32,6 +33,7 @@ import com.firebase.ui.FirebaseListAdapter;
 import org.w3c.dom.Text;
 
 import java.text.DecimalFormat;
+import java.util.HashMap;
 import java.util.Map;
 
 import static edu.scu.levelup.R.id.toolbar;
@@ -60,12 +62,14 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
     private ActionBarDrawerToggle drawerListner;
     private CustomAdapter myCustomAdapter;
     private String[] navOptions;
-    private String uExpertiseList, userID;
+//    private String uExpertiseList;
+    private String userID;
     private Button logout;
-    private String uEmailID;
+//    private String uEmailID;
     private String uFullName;
+//    private String uDescription;
     private String sessionUserName;
-    private int uRole;
+    private static int uRole;
     private static int listRole;
     private double uLat;
     SharedPreferences pref;
@@ -74,9 +78,15 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
     private static final String preferName = "AndriodSession";
     public static final String key_userid = "name";
     public static final String key_email = "email";
-
+    private final String TUTOR_TABLE_URL = "https://scorching-inferno-7039.firebaseio.com/users/Tutor";
+    private final String STUDENT_TABLE_URL = "https://scorching-inferno-7039.firebaseio.com/users/Student";
     private static Firebase ref;
     private static Firebase ref1;
+    private static Firebase loggedInUserRef;
+    private static Query loggedInUserQueryRef;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,38 +104,25 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
         //for fetching the global variables
         MyApplication app =(MyApplication)getApplication();
 
-//        uRole = 999 ;
+
+        Toast.makeText(StudentsListActivity.this,"email- "+sessionUserName, Toast.LENGTH_SHORT).show();
+
+
+        //get the loggein user details
+
 //
 
-        /**
-         * commenting for test purposes
-         *
-         * REMEMBER to uncomment
-         */
 
-//        Bundle extras = getIntent().getExtras();
-//        uExpertiseList = extras.getString("uExpertiseList");
-//        uEmailID = extras.getString("uemailID");
-//        uFullName = extras.getString("uFullName");
-//        userID = extras.getString("userID");
-//        uRole = extras.getInt("uRole");
-//        uLat =extras.getDouble("lat");
-//        uLong =extras.getDouble("long");
-
-//          uRole =0; //tutor
-          uRole =1; //student
-
-//        Toast.makeText(StudentsListActivity.this,"user Expertise is - "+uExpertiseList, Toast.LENGTH_SHORT).show();
-//        Toast.makeText(StudentsListActivity.this,"user email id is - "+uEmailID, Toast.LENGTH_SHORT).show();
-//        Toast.makeText(StudentsListActivity.this,"user full name is - "+uFullName, Toast.LENGTH_SHORT).show();
-//        Toast.makeText(StudentsListActivity.this,"user ID is - "+userID, Toast.LENGTH_SHORT).show();
-        Toast.makeText(StudentsListActivity.this,"user role is - "+uRole, Toast.LENGTH_SHORT).show();
-        Toast.makeText(StudentsListActivity.this,"user LatLong is - "+uLat+" "+uLong, Toast.LENGTH_SHORT).show();
+        // then qery in the tutor list
 
 
+//        Log.e("CHECK THIS LOG OUT ",uFullName+":: "+userID+":: "+uRole+sessionUserName);
 //        Query queryRef = ref.orderByChild("interests").equalTo(uExpertiseList);
-
+//        Query queryRef = ref.orderByChild("interests").equalTo(uExpertiseList);
+        Toast.makeText(StudentsListActivity.this,"full name: "+uFullName, Toast.LENGTH_SHORT).show();
+        Toast.makeText(StudentsListActivity.this,"role: "+uRole, Toast.LENGTH_SHORT).show();
         //setting up for the drawer
+        Log.e("LOGVAL", uFullName + uRole);
         DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.drawerLayout);
         ListView list = (ListView)findViewById(R.id.drawerList);
         myCustomAdapter = new CustomAdapter(this);
@@ -164,18 +161,25 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
 //        locationA.setLatitude( 37.352804);
 //        locationA.setLongitude(-121.963429);
         listRole=1000;
+
+        // if the logged in user is a student show a the list of tutors
         if (uRole ==1)
         {
              ref = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Tutor");
             ref1 = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Student");
+
+            // if it is a student List role should be 0 as we will be sing list of tutors
             listRole=0;
         }
-        else
+        // if he is a tutor show list of students
+        else if (uRole==0)
         {
             ref = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Student");
             ref1 = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Tutor");
+            // if it is a tutor List role should be 1 as we will be sing list of students
             listRole=1;
         }
+
 //        Query queryRef1 = ref.orderByChild("pincode").equalTo("95050");
         FirebaseListAdapter<Users> adapter = new FirebaseListAdapter<Users>(this, Users.class,android.R.layout.two_line_list_item, ref)
         {
@@ -326,4 +330,9 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
     {
         return distanceVal/1609.344;
     }
+
+
+
+
+
 }

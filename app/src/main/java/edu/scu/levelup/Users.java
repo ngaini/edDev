@@ -21,15 +21,7 @@ public class Users {
     private String emailID;
     private String gender;
     private String interests;
-<<<<<<< HEAD
-||||||| merged common ancestors
 
-=======
-//    private int list;
-//
-//    private int idOfInterestedParty;
-
->>>>>>> distanceAndMapFeature
     private double lat;
     private double lng;
 

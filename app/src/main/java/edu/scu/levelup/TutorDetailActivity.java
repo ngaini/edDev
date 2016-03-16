@@ -29,7 +29,7 @@ public class TutorDetailActivity extends Activity {
     private String TUTOR_TABLE_URL = "https://scorching-inferno-7039.firebaseio.com/users/Tutor";
     private String STUDENT_TABLE_URL = "https://scorching-inferno-7039.firebaseio.com/users/Student";
     private Firebase ref;
-    static int role;
+    static int listRole;
     private final String API_KEY = "DEV56E7BC3BA4A1F6DF11D0CAB6148";
     Button interestedButtonId;
     //is the id value of the user whose details are being displayed
@@ -49,7 +49,8 @@ public class TutorDetailActivity extends Activity {
         interestedButtonId =(Button)findViewById(R.id.TDA_interested_button);
         Bundle extra = getIntent().getExtras();
         final String name = extra.getString("name");
-        role = extra.getInt("listRole");
+        listRole = extra.getInt("listRole");
+        Toast.makeText(TutorDetailActivity.this, listRole, Toast.LENGTH_SHORT).show();
         final TextView tutorName_id = (TextView)this.findViewById(R.id.TDA_tutorName_textView);
         final TextView tutorExpertize_id = (TextView)this.findViewById(R.id.TDA_tutorExpertise_textView);
         final TextView tutorAge_id = (TextView)this.findViewById(R.id.TDA_tutorAge_textView);
@@ -63,11 +64,11 @@ public class TutorDetailActivity extends Activity {
 
         if(!name.isEmpty())
         {
-            if(role == 0)
+            if(listRole == 0)
             {
                 ref = new Firebase(TUTOR_TABLE_URL);
             }
-            else
+            else if(listRole==1)
             {
                 ref= new Firebase(STUDENT_TABLE_URL);
             }
