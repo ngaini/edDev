@@ -73,7 +73,7 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
         pref = getApplicationContext().getSharedPreferences(preferName, 0);
         editor = pref.edit();
         sessionUserName = pref.getString(key_email, null);
-        Toast.makeText(StudentsListActivity.this, "Session user name is - " +sessionUserName, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(StudentsListActivity.this, "Session user name is - " +sessionUserName, Toast.LENGTH_SHORT).show();
         //setting up for the drawer
         DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.drawerLayout);
         ListView list = (ListView)findViewById(R.id.drawerList);

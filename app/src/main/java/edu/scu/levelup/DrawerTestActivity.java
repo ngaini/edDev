@@ -28,7 +28,7 @@ public class DrawerTestActivity extends AppCompatActivity implements AdapterView
         setSupportActionBar(myToolbar);
         DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.drawerLayout);
         ListView list = (ListView)findViewById(R.id.drawerList);
-      myCustomAdapter = new CustomAdapter(this);
+         myCustomAdapter = new CustomAdapter(this);
         list.setAdapter(myCustomAdapter);
 //  navOptions =getResources().getStringArray(R.array.navOptions);
 //        list.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, navOptions));
