@@ -109,7 +109,7 @@ public class LocationActivity extends Activity implements LocationListener {
                         String state = addrConv.get(0).getAdminArea();
                         String country = addrConv.get(0).getCountryName();
 //                        constructedAddress = streetAddr + " " + city + " " + state + " " + " "+zip+" " + country;
-                        constructedAddress = streetAddr + " " + city + " " + state + " " +country +" "+zip;
+                        constructedAddress = "1405 Civic Centre Drive" + " " + "Santa Clara" + " " + "California" + " " +"USA"+ "95050";
                         ((TextView) findViewById(R.id.location_givenAddr_textView)).setText("the given address is:" + constructedAddress);
 
                         //getting the same address from the constructed address

@@ -66,14 +66,16 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
     private String uFullName;
     private String sessionUserName;
     private int uRole;
+    private String userROle, userIDD;
     private static int listRole;
     private double uLat;
     SharedPreferences pref;
     SharedPreferences.Editor editor;
     private double uLong;
     private static final String preferName = "AndriodSession";
-    public static final String key_userid = "name";
     public static final String key_email = "email";
+    public static final String key_role = "userRole";
+    public static final String key_userID = "userID";
 
     private static Firebase ref;
     private static Firebase ref1;
@@ -88,10 +90,11 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
         pref = getApplicationContext().getSharedPreferences(preferName, 0);
         editor = pref.edit();
         sessionUserName = pref.getString(key_email, null);
-<<<<<<< HEAD
-//        Toast.makeText(StudentsListActivity.this, "Session user name is - " +sessionUserName, Toast.LENGTH_SHORT).show();
-=======
-        Toast.makeText(StudentsListActivity.this, "Session user name is - " +sessionUserName, Toast.LENGTH_SHORT).show();
+//        userROle = pref.getString(key_role, null);
+//        userIDD = pref.getString(key_userID, null);
+        Toast.makeText(StudentsListActivity.this, "Session user EMAIL ID is - " +sessionUserName, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(StudentsListActivity.this, "Session user ID is - " +userIDD, Toast.LENGTH_SHORT).show();
+
 
 
         //for fetching the global variables
@@ -118,17 +121,6 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
 //          uRole =0; //tutor
           uRole =1; //student
 
-//        Toast.makeText(StudentsListActivity.this,"user Expertise is - "+uExpertiseList, Toast.LENGTH_SHORT).show();
-//        Toast.makeText(StudentsListActivity.this,"user email id is - "+uEmailID, Toast.LENGTH_SHORT).show();
-//        Toast.makeText(StudentsListActivity.this,"user full name is - "+uFullName, Toast.LENGTH_SHORT).show();
-//        Toast.makeText(StudentsListActivity.this,"user ID is - "+userID, Toast.LENGTH_SHORT).show();
-        Toast.makeText(StudentsListActivity.this,"user role is - "+uRole, Toast.LENGTH_SHORT).show();
-        Toast.makeText(StudentsListActivity.this,"user LatLong is - "+uLat+" "+uLong, Toast.LENGTH_SHORT).show();
-
-
-//        Query queryRef = ref.orderByChild("interests").equalTo(uExpertiseList);
-
->>>>>>> 48e288b3b30aba7d4150ee15b1183a3c7713b915
         //setting up for the drawer
         DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.drawerLayout);
         ListView list = (ListView)findViewById(R.id.drawerList);
@@ -220,7 +212,7 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
                 String name = ((TextView)view.findViewById(android.R.id.text1)).getText().toString();
                 String interest = ((TextView)view.findViewById(android.R.id.text2)).getText().toString();
                 Log.e("TESTING", " name "+name+" is interested in "+interest);
-                Toast.makeText(StudentsListActivity.this," name "+name+" is interested in "+interest, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(StudentsListActivity.this," name "+name+" is interested in "+interest, Toast.LENGTH_SHORT).show();
 
                 Intent tutorDetailIntent = new Intent(StudentsListActivity.this, TutorDetailActivity.class);
                 // creating bundle
@@ -273,6 +265,12 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         selectTitle(navOptions[position]);
+
+        if(position == 0)
+        {
+            Intent editProfilePage = new Intent(StudentsListActivity.this, StudentsListActivity.class);
+            startActivity(editProfilePage);
+        }
 
         if(position == 1)
         {
