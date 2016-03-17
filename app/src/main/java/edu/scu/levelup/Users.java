@@ -21,7 +21,10 @@ public class Users {
     private String emailID;
     private String gender;
     private String interests;
+<<<<<<< HEAD
     private String image;
+=======
+>>>>>>> fb22bca39b0b41b93d2a9c20b0d72b1846c9af46
 
     private double lat;
     private double lng;

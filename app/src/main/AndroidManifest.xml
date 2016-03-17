@@ -13,6 +13,11 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> -->
     <uses-permission android:name="android.permission.CAMERA" />
+<<<<<<< HEAD
+=======
+    <permission android:name="edu.scu.levelup.permission.C2D_MESSAGE" android:protectionLevel="signature"/>
+    <uses-permission android:name="edu.scu.levelup.gcm.permission.C2D_MESSAGE"/>
+>>>>>>> fb22bca39b0b41b93d2a9c20b0d72b1846c9af46
 
     <permission
         android:name="edu.scu.levelup.permission.C2D_MESSAGE"
