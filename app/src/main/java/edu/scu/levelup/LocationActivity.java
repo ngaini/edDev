@@ -239,32 +239,41 @@ public class LocationActivity extends Activity implements LocationListener {
     }
 
     public void doThis(View v) {
-        // Get the location manager
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        // Define the criteria how to select the locatioin provider -> use
-        // default
-        Criteria criteria = new Criteria();
-        provider = locationManager.getBestProvider(criteria, false);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        Location location = locationManager.getLastKnownLocation(provider);
+//        // Get the location manager
+//        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+//        // Define the criteria how to select the locatioin provider -> use
+//        // default
+//        Criteria criteria = new Criteria();
+//        provider = locationManager.getBestProvider(criteria, false);
+//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            // TODO: Consider calling
+//            //    ActivityCompat#requestPermissions
+//            // here to request the missing permissions, and then overriding
+//            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+//            //                                          int[] grantResults)
+//            // to handle the case where the user grants the permission. See the documentation
+//            // for ActivityCompat#requestPermissions for more details.
+//            return;
+//        }
+//        Location location = locationManager.getLastKnownLocation(provider);
+//
+//        // Initialize the location fields
+//        if (location != null) {
+//            System.out.println("Provider " + provider + " has been selected.");
+//            onLocationChanged(location);
+//        } else {
+//            latituteField.setText("Location not available");
+//            longitudeField.setText("Location not available");
+//        }
 
-        // Initialize the location fields
-        if (location != null) {
-            System.out.println("Provider " + provider + " has been selected.");
-            onLocationChanged(location);
-        } else {
-            latituteField.setText("Location not available");
-            longitudeField.setText("Location not available");
-        }
+        String test1= "{idVal=20160315_165303},{idVal=20160315_170324}";
+        test1  = test1.replace("idVal", "");
+        test1  = test1.replace("=", "");
+        test1  = test1.replace("{", "");
+        test1 = test1.replace("}", "");
+        String[] animalsArray = test1.split(",");
+
+        ((TextView) findViewById(R.id.location_constructedAddr_textView)).setText(animalsArray[0]+" ::"+animalsArray[1]);
     }
 
     public static void getLatLong(String zipcode, Context context) {

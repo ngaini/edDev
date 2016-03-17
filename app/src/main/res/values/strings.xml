@@ -60,5 +60,6 @@
     <string name="title_activity_discovery_settings_page">DiscoverySettingsPage</string>
     <string name="title_activity_change_password">changePassword</string>
     <string name="title_activity_edit_profile">EditProfile</string>
+    <string name="title_activity_tutors_list">TutorsListActivity</string>
 
 </resources>

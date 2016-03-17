@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.app.Activity;
@@ -13,6 +14,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -34,6 +36,7 @@ import org.w3c.dom.Text;
 
 import java.text.DecimalFormat;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static edu.scu.levelup.R.id.toolbar;
@@ -122,7 +125,7 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
 //            HashMap<String, String> hmap=new HashMap<String, String>();
 //            UserSessionManager session;
 
-            String appUserName, appUserID;
+            String appUserName, appUserID,appUserInterest;
             int appUserRole;
             double appUserLat,appUserLng;
 
@@ -139,8 +142,45 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
                         appUserID= userData.getUserID();
                         appUserLat =userData.getLat();
                         appUserLng=userData.getLng();
-                        processDataForLoggedInUser(appUserID,appUserName,appUserRole,appUserLat,appUserLng);
-                        Log.e("LOGVAL STUDENT", "ello::" + appUserName + "::" + appUserRole + "::" + appUserID + "::" + appUserLat);
+                        appUserInterest=userData.getInterests();
+                        Query q1 = userRef1.child(appUserID).child("tempList").orderByChild("idVal");
+                        q1.addListenerForSingleValueEvent(new ValueEventListener() {
+                            String interestStringArray=null;
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+
+//                                 if(dataSnapshot.getChildrenCount()!=0)
+//                                        {
+                                Log.e("INTERESTED STRING", "ello::before for");
+                                for (DataSnapshot interestSnapshot : dataSnapshot.getChildren()) {
+                                    Log.e("INTERESTED STRING", "ello::inside for");
+                                    Map<String, Object> value = (Map<String, Object>) dataSnapshot.getValue();
+                                    if (interestStringArray == null) {
+
+                                        interestStringArray = String.valueOf(interestSnapshot.getValue());
+                                    } else {
+
+
+                                        interestStringArray = interestStringArray + "," + String.valueOf(interestSnapshot.getValue());
+
+                                    }
+                                }
+
+//                                        }
+                                Log.e("INTERESTED STRING2", "ello::" + interestStringArray);
+                                Log.e("LOGVAL Student", "ello::" + appUserName + "::" + appUserRole + "::" + appUserID + "::" + appUserLat);
+                                processDataForLoggedInUser(appUserID, appUserName, appUserRole, appUserLat, appUserLng, appUserInterest, interestStringArray);
+
+                            }
+
+                            @Override
+                            public void onCancelled(FirebaseError firebaseError) {
+
+                            }
+                        });
+//                        for(DataSnapshot getInterestedSnapshot: postSnapshot.child("tempList"))
+//                        processDataForLoggedInUser(appUserID, appUserName, appUserRole, appUserLat, appUserLng, appUserInterest);
+//                        Log.e("LOGVAL STUDENT", "ello::" + appUserName + "::" + appUserRole + "::" + appUserID + "::" + appUserLat);
 //
 
 //                        uRole = userData.getRole();
@@ -178,7 +218,45 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
                                 appUserID= userData.getUserID();
                                 appUserLat =userData.getLat();
                                 appUserLng=userData.getLng();
-                                processDataForLoggedInUser(appUserID,appUserName,appUserRole,appUserLat,appUserLng);
+                                appUserInterest=userData.getInterests();
+//                                Query q1 = userRef1.child(appUserID).child("tempList").orderByChild("idVal");
+                                Query q1 = userRef1.child(appUserID).child("tempList");
+                                q1.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    String interestStringArray = null;
+
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+//                                        if(dataSnapshot.getChildrenCount()!=0)
+//                                        {
+                                        Log.e("interesded string", "ello::before for");
+                                        for (DataSnapshot interestSnapshot : dataSnapshot.getChildren()) {
+                                            Log.e("interesded string", "ello::inside for");
+                                            Map<String, Object> value = (Map<String, Object>) dataSnapshot.getValue();
+                                            if (interestStringArray == null) {
+
+                                                interestStringArray = String.valueOf(interestSnapshot.getValue());
+                                            } else {
+
+
+                                                interestStringArray = interestStringArray + "," + String.valueOf(interestSnapshot.getValue());
+
+                                            }
+                                        }
+
+//                                        }
+                                        Log.e("interesded string2", "ello::" + interestStringArray);
+                                        Log.e("LOGVAL Tutor", "ello::" + appUserName + "::" + appUserRole + "::" + appUserID + "::" + appUserLat);
+                                        processDataForLoggedInUser(appUserID, appUserName, appUserRole, appUserLat, appUserLng, appUserInterest,interestStringArray);
+                                    }
+
+                                    @Override
+                                    public void onCancelled(FirebaseError firebaseError) {
+
+                                    }
+                                });
+//                                processDataForLoggedInUser(appUserID,appUserName,appUserRole,appUserLat,appUserLng,appUserInterest);
+
                                 Log.e("LOGVAL STUDENT", "ello::" + appUserName + "::" + appUserRole + "::" + appUserID + "::" + appUserLat);
 //
 
@@ -466,7 +544,7 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
 
 
 
-    public void processDataForLoggedInUser(final String clientId, String clientName, int clientRole, double clientLat, double clientLng)
+    public void processDataForLoggedInUser(final String clientId, String clientName, int clientRole, double clientLat, double clientLng,String clientInterest,String interestedInClient)
     {
 
 //        for the tutors list
@@ -501,62 +579,123 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
             ref = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Student");
             ref1 = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Tutor");
             // if it is a tutor List role should be 1 as we will be sing list of students
+            Intent tutorIntent = new Intent(StudentsListActivity.this, TutorsListActivity.class);
+            Bundle extra = new Bundle();
+            extra.putDouble("lat",clientLat);
+            extra.putDouble("lng",clientLng);
+            extra.putString("uID", clientId);
+            extra.putString("interest", clientInterest);
+            extra.putString("interestedPeople", interestedInClient);
+            extra.putInt("role", clientRole);
+
+            tutorIntent.putExtras(extra);
+            startActivity(tutorIntent);
             listRole=1;
         }
 
-        Query queryRef1 = ref.orderByChild("pincode").equalTo("95050");
-        FirebaseListAdapter<Users> adapter = new FirebaseListAdapter<Users>(this, Users.class,android.R.layout.two_line_list_item, ref)
+        if(clientRole==1)
         {
-            @Override
-            protected void populateView(View view, Users user, int i)
+            interestedInClient  = interestedInClient.replace("idVal", "");
+            interestedInClient  = interestedInClient.replace("=", "");
+            interestedInClient  = interestedInClient.replace("{", "");
+            interestedInClient = interestedInClient.replace("}", "");
+            final String[] interestedInClientArray = interestedInClient.split(",");
+            Log.e("Interest without braces", "ello:: "+interestedInClient);
+            Toast.makeText(StudentsListActivity.this, clientInterest, Toast.LENGTH_LONG).show();
+            Query queryRef1 = ref.orderByChild("interests").equalTo(clientInterest);
+            FirebaseListAdapter<Users> adapter = new FirebaseListAdapter<Users>(this, Users.class,android.R.layout.two_line_list_item, queryRef1)
             {
-                TextView text1_id =(TextView) view.findViewById(android.R.id.text1);
-                TextView text2_id =(TextView) view.findViewById(android.R.id.text2);
-                text1_id.setPaddingRelative(30,5,10,5);
-                text2_id.setPaddingRelative(30, 5, 10, 20);
-                String dFname= user.getFullName();
-                double dLat = user.getLat();
-                double dLng = user.getLng();
-                locationB.setLatitude(dLat);
-                locationB.setLongitude(dLng);
-                float distanceInMeters =0;
-                distanceInMeters = locationA.distanceTo(locationB);
-                Log.e("TESTING", " dist :"+distanceInMeters);
+                @Override
+                protected void populateView(View view, Users user, int i)
+                {
+                    TextView text1_id =(TextView) view.findViewById(android.R.id.text1);
+                    TextView text2_id =(TextView) view.findViewById(android.R.id.text2);
+                    text1_id.setPaddingRelative(30,5,10,5);
+                    text2_id.setPaddingRelative(30, 5, 10, 20);
+                    String dFname= user.getFullName();
+                    double dLat = user.getLat();
+                    double dLng = user.getLng();
+                    locationB.setLatitude(dLat);
+                    locationB.setLongitude(dLng);
+                    float distanceInMeters =0;
+                    distanceInMeters = locationA.distanceTo(locationB);
+                    Log.e("TESTING", " dist :" + distanceInMeters);
+                    DecimalFormat df = new DecimalFormat("####0.0");
+                    String dist_in_mile= df.format(getMiles(distanceInMeters));
+                    Boolean flag=false;
+                    for(i=0; i<interestedInClientArray.length; i++)
+                    {
+                        Log.e("TESTING", "ello:: dist :"+interestedInClientArray[i]+":1010:"+ user.getUserID());
+                        if(interestedInClientArray[i].equals(user.getUserID()))
+                        {
+//                        text1_id.setTextColor(Color.BLUE);
+//                        text2_id.setTextColor(Color.GREEN);
+                            flag = true;
+                        }
+                    }
 
-                text1_id.setTextAppearance(view.getContext(), android.R.style.TextAppearance_Large);
+                    if(flag == true)
+                    {
+                        text1_id.setTextAppearance(view.getContext(), android.R.style.TextAppearance_Large);
 //                if(distanceInMeters<10)
 //                {
-                DecimalFormat df = new DecimalFormat("####0.0");
+                        text1_id.setTextColor(Color.parseColor("#FFC2260E"));
+                        text2_id.setTextColor(Color.GREEN);
+                        text1_id.setText(dFname);
+                        text2_id.setText(user.getInterests()+"  ("+dist_in_mile+ " mi. )");
+                    }
+                    else
+                    {
+                        text1_id.setTextAppearance(view.getContext(), android.R.style.TextAppearance_Large);
+//                if(distanceInMeters<10)
+//                {
+//                    text1_id.setTextColor(Color.BLUE);
+//                    text2_id.setTextColor(Color.GREEN);
+                        text1_id.setText(dFname);
+                        text2_id.setText(user.getInterests()+"  ("+dist_in_mile+ " mi. )");
+                    }
+                }
+            };
+            //Bind the list adapter to  listView
+            tutorList_id.setAdapter(adapter);
 
-                text1_id.setText(dFname);
-                text2_id.setText(user.getInterests()+"  ("+df.format(getMiles(distanceInMeters))+ " mi. )");
-//                }
-            }
-        };
-        //Bind the list adapter to  listView
-        tutorList_id.setAdapter(adapter);
+            // item click action
+            tutorList_id.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-        // item click action
-        tutorList_id.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    String name = ((TextView)view.findViewById(android.R.id.text1)).getText().toString();
+                    String interest = ((TextView)view.findViewById(android.R.id.text2)).getText().toString();
+                    Log.e("TESTING", " name "+name+" is interested in "+interest);
+                    Toast.makeText(StudentsListActivity.this," name "+name+" is interested in "+interest, Toast.LENGTH_SHORT).show();
 
-                String name = ((TextView)view.findViewById(android.R.id.text1)).getText().toString();
-                String interest = ((TextView)view.findViewById(android.R.id.text2)).getText().toString();
-                Log.e("TESTING", " name "+name+" is interested in "+interest);
-                Toast.makeText(StudentsListActivity.this," name "+name+" is interested in "+interest, Toast.LENGTH_SHORT).show();
+                    Intent tutorDetailIntent = new Intent(StudentsListActivity.this, TutorDetailActivity.class);
+                    // creating bundle
+                    Bundle extra = new Bundle();
+                    extra.putString("name", name);
+                    extra.putInt("listRole", 0);
+                    extra.putString("userID",clientId);
+                    tutorDetailIntent.putExtras(extra);
+                    startActivity(tutorDetailIntent);
+                }
+            });
+        }
 
-                Intent tutorDetailIntent = new Intent(StudentsListActivity.this, TutorDetailActivity.class);
-                // creating bundle
-                Bundle extra = new Bundle();
-                extra.putString("name", name);
-                extra.putInt("listRole", listRole);
-                extra.putString("userID",clientId);
-                tutorDetailIntent.putExtras(extra);
-                startActivity(tutorDetailIntent);
-            }
-        });
 
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if(keyCode == KeyEvent.KEYCODE_BACK)
+        {
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            return true;
+        }
+        return false;
     }
 
 }

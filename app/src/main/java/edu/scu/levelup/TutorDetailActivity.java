@@ -29,6 +29,10 @@ public class TutorDetailActivity extends Activity {
     private String TUTOR_TABLE_URL = "https://scorching-inferno-7039.firebaseio.com/users/Tutor";
     private String STUDENT_TABLE_URL = "https://scorching-inferno-7039.firebaseio.com/users/Student";
     private Firebase ref;
+    private Firebase ref1;
+
+
+
     static int listRole;
     private final String API_KEY = "DEV56E7BC3BA4A1F6DF11D0CAB6148";
     Button interestedButtonId;
@@ -51,8 +55,9 @@ public class TutorDetailActivity extends Activity {
         Bundle extra = getIntent().getExtras();
         final String name = extra.getString("name");
         listRole = extra.getInt("listRole");
-        clientIdValue= extra.getString("userID");
-//        Toast.makeText(TutorDetailActivity.this, listRole, Toast.LENGTH_SHORT).show();
+        this.setListRole(extra.getInt("listRole"));
+        clientIdValue = extra.getString("userID");
+        Log.e("CHECK THIS", "ello::listROle: "+this.getListRole());
         final TextView tutorName_id = (TextView)this.findViewById(R.id.TDA_tutorName_textView);
         final TextView tutorExpertize_id = (TextView)this.findViewById(R.id.TDA_tutorExpertise_textView);
         final TextView tutorAge_id = (TextView)this.findViewById(R.id.TDA_tutorAge_textView);
@@ -69,10 +74,12 @@ public class TutorDetailActivity extends Activity {
             if(listRole == 0)
             {
                 ref = new Firebase(TUTOR_TABLE_URL);
+                ref1= new Firebase(STUDENT_TABLE_URL);
             }
             else if(listRole==1)
             {
                 ref= new Firebase(STUDENT_TABLE_URL);
+                ref1 = new Firebase(TUTOR_TABLE_URL);
             }
             enableInterestedButton();
             Query queryRef = ref.orderByChild("fullName").equalTo(name);
@@ -87,12 +94,12 @@ public class TutorDetailActivity extends Activity {
                     tutorEducation_id.setText("Highest Education:\n" + user.getEducation());
                     tutorGender_id.setText("Gender: " + user.getGender());
                     tutorDescription_id.setText("Description:\n" + user.getDescription());
-                    Log.e("CHECK THIS", "before the detailIdvalue ");
+                    Log.e("CHECK THIS", "ello::before the detailIdvalue ");
                     detailIdValue = user.getUserID();
 
                     //enable or disable button
                     //if user has already clicked interested for a tutor the button will stay disabled
-                    Log.e("CHECK THIS", "detailsvalue: " + user.getUserID() + " ::" + detailIdValue);
+                    Log.e("CHECK THIS", "ello::detailsvalue: " + user.getUserID() + " ::" + detailIdValue);
                     Query q1 =ref.child(detailIdValue).child("tempList").orderByChild("idVal").equalTo(clientIdValue);
                     q1.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
@@ -173,16 +180,23 @@ public class TutorDetailActivity extends Activity {
     public void informTutor(View view)
     {
 
+        listRole = this.getListRole();
 //        ((Button)view.findViewById(R.id.TDA_interested_button)).setEnabled(false);
         disableInterestedButton();
-
-         Firebase informTutor_ref ;
+        Log.e("CHECK THIS", "ello::: onclick:"+listRole);
+         Firebase informTutor_ref=new Firebase(TUTOR_TABLE_URL) ;
         //get the tutors name
         TextView name = (TextView)view.findViewById(R.id.TDA_tutorName_textView);
 
-
-        //add student id value for in tutors temp list
-        informTutor_ref = new Firebase(TUTOR_TABLE_URL).child(detailIdValue).child("tempList").push();
+        if(listRole==0)
+        {
+            //add student id value for in tutors temp list
+            informTutor_ref = new Firebase(TUTOR_TABLE_URL).child(detailIdValue).child("tempList").push();
+        }
+        else if(listRole==1)
+        {
+            informTutor_ref = new Firebase(STUDENT_TABLE_URL).child(detailIdValue).child("tempList").push();
+        }
         Map<String, String> tempListVar = new HashMap<String, String>();
 
         tempListVar.put("idVal",clientIdValue);
@@ -205,10 +219,20 @@ public class TutorDetailActivity extends Activity {
         interestedButtonId.setEnabled(false);
     }
 
+
+
     public void enableInterestedButton()
     {
         interestedButtonId.setEnabled(true);
     }
 
+
+    public static void setListRole(int listRole) {
+        TutorDetailActivity.listRole = listRole;
+    }
+
+    public static int getListRole() {
+        return listRole;
+    }
 
 }
