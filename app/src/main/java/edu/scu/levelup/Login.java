@@ -95,6 +95,7 @@ public class Login extends AppCompatActivity {
         userRef.addAuthStateListener(new Firebase.AuthStateListener() {
             @Override
             public void onAuthStateChanged(AuthData authData) {
+//                authData=null;
                 if (authData != null)
                 {
                     Intent mainPage = new Intent(Login.this, StudentsListActivity.class);
@@ -109,14 +110,22 @@ public class Login extends AppCompatActivity {
             public void onClick(View v) {
                 uname = username.getText().toString();
                 pass = password.getText().toString();
+
+
+
+
+
+
                 if (uname.isEmpty() || pass.isEmpty()) {
                     username.setError("Invalid Input");
                 } else {
                     mref.authWithPassword(uname, pass, new Firebase.AuthResultHandler() {
-                        @Override
 
+                        @Override
                         public void onAuthenticated(AuthData authData)
                         {
+
+
 
                             session.createUserLoginSession("session stored", uname);
                             Intent mainPage = new Intent(Login.this, StudentsListActivity.class);

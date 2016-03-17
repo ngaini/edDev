@@ -71,10 +71,13 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
     private String sessionUserName;
     private static int uRole;
     private static int listRole;
-    private double uLat;
+    private static Firebase userRef1;
+    private static Firebase userRef;
+    private static Query userQueryRef;
+    private static Query userQueryRef1;
     SharedPreferences pref;
     SharedPreferences.Editor editor;
-    private double uLong;
+
     private static final String preferName = "AndriodSession";
     public static final String key_userid = "name";
     public static final String key_email = "email";
@@ -82,8 +85,7 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
     private final String STUDENT_TABLE_URL = "https://scorching-inferno-7039.firebaseio.com/users/Student";
     private static Firebase ref;
     private static Firebase ref1;
-    private static Firebase userRef1;
-    private static Query userQueryRef;
+
     public static final String key_role = "userRole";
     public static final String key_userID = "userID";
 
@@ -91,22 +93,35 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+//        String appUserName, appUserID;
+//        int appUserRole;
+//        double appUserLat,appUserLng;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student);
         Toolbar myToolbar = (Toolbar) findViewById(toolbar);
         setSupportActionBar(myToolbar);
+        //for fetching the global variables
+        MyApplication app =(MyApplication)getApplication();
         Firebase.setAndroidContext(this);
         sessionUserName ="t@t.com";
         pref = getApplicationContext().getSharedPreferences(preferName, 0);
         editor = pref.edit();
         sessionUserName = pref.getString(key_email, null);
 //
+//        Bundle extra = getIntent().getExtras();
+////        appUserRole =extra.getInt("role");
+//        appUserID=extra.getString("userId");
+//        appUserName= extra.getString("name");
+//        appUserLat =extra.getDouble("lat");
+//        appUserLng =extra.getDouble("long");
+//        Log.e("LOGVAL STUDENT", "ello::" + appUserName + "::" + 1 + "::" + appUserID + "::" + appUserLat);
 
 //        Toast.makeText(StudentsListActivity.this, "Session user name is - " +sessionUserName, Toast.LENGTH_SHORT).show();
 
 
-        //for fetching the global variables
-        MyApplication app =(MyApplication)getApplication();
+
+
 
 
 //        Toast.makeText(StudentsListActivity.this,"email- "+sessionUserName, Toast.LENGTH_SHORT).show();
@@ -143,23 +158,6 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
                         Log.e("LOGVAL STUDENT", "ello::" + appUserName + "::" + appUserRole + "::" + appUserID + "::" + appUserLat);
 //
 
-//                        uRole = userData.getRole();
-//                        userID = userData.getUserID();
-//                        hmap = new HashMap<String, String>();
-//                        hmap.put("role", String.valueOf(userData.getRole()));
-//                        hmap.put("userID", userData.getUserID());
-//                        hmap.put("lat", String.valueOf(userData.getLat()));
-//                        hmap.put("lng", String.valueOf(userData.getLng()));
-//                        session.createUserLoginSession(userData.getFullName(), sessionUserName, userData.getRole(), userData.getUserID());
-
-
-//                        Log.e("LOGVAL STUDENT", "ello::" + userData.getRole() + "::" + userData.getUserID() + "::" + userData.getLng()+"::"+userData.getFullName());
-////                        session.createUserLoginSession("session stored", sessionUserName, uRole, userID);
-////                                            Toast.makeText(getApplicationContext(), "user email ID is - "+pref.getString(key_email, null), Toast.LENGTH_SHORT).show();
-//                        Toast.makeText(getApplicationContext(), "user role is - "+uRole, Toast.LENGTH_SHORT).show();
-//                        Toast.makeText(getApplicationContext(), "user ID is - "+userID, Toast.LENGTH_SHORT).show();
-//                        Intent mainPage = new Intent(StudentsListActivity.this, StudentsListActivity.class);
-//                        startActivity(mainPage);
 
 
                     }
@@ -182,22 +180,7 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
                                 Log.e("LOGVAL STUDENT", "ello::" + appUserName + "::" + appUserRole + "::" + appUserID + "::" + appUserLat);
 //
 
-//                                uRole = userData.getRole();
-//                                userID = userData.getUserID();
-//                                hmap = new HashMap<String, String>();
-//                                hmap.put("role",String.valueOf(userData.getRole()));
-//                                hmap.put("userID",userData.getUserID());
-//                                hmap.put("lat",String.valueOf(userData.getLat()));
-//                                hmap.put("lng",String.valueOf(userData.getLng()));
-//                                session.createUserLoginSession(userData.getFullName(), sessionUserName, userData.getRole(), userData.getUserID());
-//                                session.createUserLoginSession("session stored", uname, uRole, userID);
-                                //Toast.makeText(getApplicationContext(), "user email ID is - "+pref.getString(key_email, null), Toast.LENGTH_SHORT).show();
-//                                Log.e("LOGVAL STUDENT", "ello::" + userData.getRole() + "::" + userData.getUserID() + "::" + userData.getLng());
-//                                Toast.makeText(getApplicationContext(), "user role is - "+uRole, Toast.LENGTH_SHORT).show();
-//                                Toast.makeText(getApplicationContext(), "user ID is - "+userID, Toast.LENGTH_SHORT).show();
-////                                Intent mainPage = new Intent(Login.this, StudentsListActivity.class);
-////                                startActivity(mainPage);
-//                                Log.e("LOGVAL TUTOR", "ello::" +uRole+"::"+userID +"::" +sessionUserName);
+//
 
                             }
                         }
