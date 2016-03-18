@@ -78,9 +78,10 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
     private static int uRole;
     private static int listRole;
     private double uLat;
+
+    private double uLong;
     SharedPreferences pref;
     SharedPreferences.Editor editor;
-    private double uLong;
     private static final String preferName = "AndriodSession";
     public static final String key_email = "email";
     private final String TUTOR_TABLE_URL = "https://scorching-inferno-7039.firebaseio.com/users/Tutor";
@@ -98,88 +99,90 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student);
-//        Toolbar myToolbar = (Toolbar) findViewById(toolbar);
-//        setSupportActionBar(myToolbar);
-//        Firebase.setAndroidContext(this);
+
+        Toolbar myToolbar = (Toolbar) findViewById(toolbar);
+        setSupportActionBar(myToolbar);
+        Firebase.setAndroidContext(this);
 //        sessionUserName ="t@t.com";
-//        pref = getApplicationContext().getSharedPreferences(preferName, 0);
-//        editor = pref.edit();
-//        sessionUserName = pref.getString(key_email, null);
-//        //for fetching the global variables
-//        MyApplication app =(MyApplication)getApplication();
+        pref = getApplicationContext().getSharedPreferences(preferName, 0);
+        editor = pref.edit();
+        sessionUserName = pref.getString(key_email, null);
+        //for fetching the global variables
+        MyApplication app =(MyApplication)getApplication();
+
+
+//        Toast.makeText(StudentsListActivity.this,"email- "+sessionUserName, Toast.LENGTH_SHORT).show();
+
+
+        //get the loggein user details
+
 //
+
+        userRef1 = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Student/");
+        userQueryRef = userRef1.orderByChild("emailID").equalTo(sessionUserName);
+        userQueryRef.addListenerForSingleValueEvent(new ValueEventListener() {
+//            HashMap<String, String> hmap=new HashMap<String, String>();
+//            UserSessionManager session;
+
+            String appUserName, appUserID,appUserInterest;
+            int appUserRole;
+            double appUserLat,appUserLng;
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //Toast.makeText(getApplicationContext(), "INSIDE MAIN", Toast.LENGTH_SHORT).show();
+                if (dataSnapshot.getChildrenCount() != 0) {
+                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                        Users userData = postSnapshot.getValue(Users.class);
+                        Toast.makeText(getApplicationContext(), "INSIDE", Toast.LENGTH_SHORT).show();
+
+                        appUserName = userData.getFullName();
+                        appUserRole = userData.getRole();
+                        appUserID= userData.getUserID();
+                        appUserLat =userData.getLat();
+                        appUserLng=userData.getLng();
+                        appUserInterest=userData.getInterests();
+                        Query q1 = userRef1.child(appUserID).child("tempList").orderByChild("idVal");
+                        q1.addListenerForSingleValueEvent(new ValueEventListener() {
+                            String interestStringArray=null;
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+
+//                                 if(dataSnapshot.getChildrenCount()!=0)
+//                                        {
+                                Log.e("INTERESTED STRING", "ello::before for");
+                                for (DataSnapshot interestSnapshot : dataSnapshot.getChildren()) {
+                                    Log.e("INTERESTED STRING", "ello::inside for");
+                                    Map<String, Object> value = (Map<String, Object>) dataSnapshot.getValue();
+                                    if (interestStringArray == null) {
+
+                                        interestStringArray = String.valueOf(interestSnapshot.getValue());
+                                    } else {
+
+
+                                        interestStringArray = interestStringArray + "," + String.valueOf(interestSnapshot.getValue());
+
+                                    }
+                                }
+
+//                                        }
+                                Log.e("INTERESTED STRING2", "ello::" + interestStringArray);
+                                Log.e("LOGVAL Student", "ello::" + appUserName + "::" + appUserRole + "::" + appUserID + "::" + appUserLat);
+                                processDataForLoggedInUser(appUserID, appUserName, appUserRole, appUserLat, appUserLng, appUserInterest, interestStringArray);
+
+                            }
+
+                            @Override
+                            public void onCancelled(FirebaseError firebaseError) {
+
+                            }
+                        });
 //
-////        Toast.makeText(StudentsListActivity.this,"email- "+sessionUserName, Toast.LENGTH_SHORT).show();
-//
-//
-//        //get the loggein user details
-//
-////
-//
-//        userRef1 = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Student/");
-//        userQueryRef = userRef1.orderByChild("emailID").equalTo(sessionUserName);
-//        userQueryRef.addListenerForSingleValueEvent(new ValueEventListener() {
-////            HashMap<String, String> hmap=new HashMap<String, String>();
-////            UserSessionManager session;
-//
-//            String appUserName, appUserID,appUserInterest;
-//            int appUserRole;
-//            double appUserLat,appUserLng;
-//
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                //Toast.makeText(getApplicationContext(), "INSIDE MAIN", Toast.LENGTH_SHORT).show();
-//                if (dataSnapshot.getChildrenCount() != 0) {
-//                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-//                        Users userData = postSnapshot.getValue(Users.class);
-//                        Toast.makeText(getApplicationContext(), "INSIDE", Toast.LENGTH_SHORT).show();
-//
-//                        appUserName = userData.getFullName();
-//                        appUserRole = userData.getRole();
-//                        appUserID= userData.getUserID();
-//                        appUserLat =userData.getLat();
-//                        appUserLng=userData.getLng();
-//                        appUserInterest=userData.getInterests();
-//                        Query q1 = userRef1.child(appUserID).child("tempList").orderByChild("idVal");
-//                        q1.addListenerForSingleValueEvent(new ValueEventListener() {
-//                            String interestStringArray=null;
-//                            @Override
-//                            public void onDataChange(DataSnapshot dataSnapshot) {
-//
-////                                 if(dataSnapshot.getChildrenCount()!=0)
-////                                        {
-//                                Log.e("INTERESTED STRING", "ello::before for");
-//                                for (DataSnapshot interestSnapshot : dataSnapshot.getChildren()) {
-//                                    Log.e("INTERESTED STRING", "ello::inside for");
-//                                    Map<String, Object> value = (Map<String, Object>) dataSnapshot.getValue();
-//                                    if (interestStringArray == null) {
-//
-//                                        interestStringArray = String.valueOf(interestSnapshot.getValue());
-//                                    } else {
-//
-//
-//                                        interestStringArray = interestStringArray + "," + String.valueOf(interestSnapshot.getValue());
-//
-//                                    }
-//                                }
-//
-////                                        }
-//                                Log.e("INTERESTED STRING2", "ello::" + interestStringArray);
-//                                Log.e("LOGVAL Student", "ello::" + appUserName + "::" + appUserRole + "::" + appUserID + "::" + appUserLat);
-//                                processDataForLoggedInUser(appUserID, appUserName, appUserRole, appUserLat, appUserLng, appUserInterest, interestStringArray);
-//
-//                            }
-//
-//                            @Override
-//                            public void onCancelled(FirebaseError firebaseError) {
-//
-//                            }
-//                        });
-////
-//
-//
-//                    }
-//                }else
+
+
+                    }
+                }
+//                else
 //                {
 //                    userRef1 = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Tutor");
 //                    userQueryRef = userRef1.orderByChild("emailID").equalTo(sessionUserName);
@@ -247,160 +250,160 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
 //                    });
 //
 //                }
-//            }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // then qery in the tutor list
+
+//        uRole = Integer.parseInt(hmap.get("role"));
+//        userID=hmap.get("userID");
+//        uLat = Double.parseDouble(hmap.get("lat"));
+//        uLong = Double.parseDouble(hmap.get("lng"));
+//        Log.e("CHECK THIS LOG OUT ",uFullName+":: "+userID+":: "+uRole+sessionUserName);
+//        Query queryRef = ref.orderByChild("interests").equalTo(uExpertiseList);
+//        Query queryRef = ref.orderByChild("interests").equalTo(uExpertiseList);
+//        Toast.makeText(StudentsListActivity.this,"full name: "+uFullName, Toast.LENGTH_SHORT).show();
+
+
+
+//        uLat = Double.parseDouble(hashMap.get("lat"));
+//        uLong = Double.parseDouble(hashMap.get("lng"));
+
+        Toast.makeText(StudentsListActivity.this,"role: "+uRole, Toast.LENGTH_SHORT).show();
+
+        //setting up for the drawer
+//        Log.e("LOGVAL", "::" +uRole+"::"+userID +"::" +sessionUserName);
+        DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.drawerLayout);
+        ListView list = (ListView)findViewById(R.id.drawerList);
+        myCustomAdapter = new CustomAdapter(this);
+        list.setAdapter(myCustomAdapter);
+        navOptions =getResources().getStringArray(R.array.navOptions);
+
+        //setting item lister for nav drawer item click
+        list.setOnItemClickListener(this);
+
+        drawerListner = new ActionBarDrawerToggle(this,drawerLayout,myToolbar, R.string.navigation_drawer_open,R.string.navigation_drawer_close)
+        {
+            /** Called when a drawer has settled in a completely closed state. */
+            public void onDrawerClosed(View view) {
+            }
+            /** Called when a drawer has settled in a completely open state. */
+            public void onDrawerOpened(View drawerView) {
+            }
+        };
+        drawerLayout.setDrawerListener(drawerListner);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+////      for the tutors list
+//        final ListView tutorList_id = (ListView)findViewById(R.id.studentActivity_tutorList_listView);
 //
-//            @Override
-//            public void onCancelled(FirebaseError firebaseError) {
 //
-//            }
-//        });
+//        // to find distance between two lat longs
+//        // users lat long
+//        final Location locationA = new Location("point A");
+//        final Location locationB = new Location("point B");
 //
+////        locationA.setLatitude(uLat);
+////        locationA.setLongitude(uLong);
 //
+//        // 37.352804, -121.963429
+//        locationA.setLatitude( 37.352804);
+//        locationA.setLongitude(-121.963429);
+//        listRole=1000;
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//        // then qery in the tutor list
-//
-////        uRole = Integer.parseInt(hmap.get("role"));
-////        userID=hmap.get("userID");
-////        uLat = Double.parseDouble(hmap.get("lat"));
-////        uLong = Double.parseDouble(hmap.get("lng"));
-////        Log.e("CHECK THIS LOG OUT ",uFullName+":: "+userID+":: "+uRole+sessionUserName);
-////        Query queryRef = ref.orderByChild("interests").equalTo(uExpertiseList);
-////        Query queryRef = ref.orderByChild("interests").equalTo(uExpertiseList);
-////        Toast.makeText(StudentsListActivity.this,"full name: "+uFullName, Toast.LENGTH_SHORT).show();
-//
-//
-//
-////        uLat = Double.parseDouble(hashMap.get("lat"));
-////        uLong = Double.parseDouble(hashMap.get("lng"));
-//
-//        Toast.makeText(StudentsListActivity.this,"role: "+uRole, Toast.LENGTH_SHORT).show();
-//
-//        //setting up for the drawer
-////        Log.e("LOGVAL", "::" +uRole+"::"+userID +"::" +sessionUserName);
-//        DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.drawerLayout);
-//        ListView list = (ListView)findViewById(R.id.drawerList);
-//        myCustomAdapter = new CustomAdapter(this);
-//        list.setAdapter(myCustomAdapter);
-//        navOptions =getResources().getStringArray(R.array.navOptions);
-//
-//        //setting item lister for nav drawer item click
-//        list.setOnItemClickListener(this);
-//
-//        drawerListner = new ActionBarDrawerToggle(this,drawerLayout,myToolbar, R.string.navigation_drawer_open,R.string.navigation_drawer_close)
+//        // if the logged in user is a student show a the list of tutors
+//        if (uRole ==1)
 //        {
-//            /** Called when a drawer has settled in a completely closed state. */
-//            public void onDrawerClosed(View view) {
-//            }
-//            /** Called when a drawer has settled in a completely open state. */
-//            public void onDrawerOpened(View drawerView) {
+//             ref = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Tutor");
+//            ref1 = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Student");
+//
+//            // if it is a student List role should be 0 as we will be sing list of tutors
+//            listRole=0;
+//        }
+//        // if he is a tutor show list of students
+//        else if (uRole==0)
+//        {
+//            ref = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Student");
+//            ref1 = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Tutor");
+//            // if it is a tutor List role should be 1 as we will be sing list of students
+//            listRole=1;
+//        }
+//
+//        Query queryRef1 = ref.orderByChild("pincode").equalTo("95050");
+
+//        FirebaseListAdapter<Users> adapter = new FirebaseListAdapter<Users>(this, Users.class,android.R.layout.two_line_list_item, ref)
+//        {
+//            @Override
+//            protected void populateView(View view, Users user, int i)
+//            {
+//               TextView text1_id =(TextView) view.findViewById(android.R.id.text1);
+//               TextView text2_id =(TextView) view.findViewById(android.R.id.text2);
+//                text1_id.setPaddingRelative(30,5,10,5);
+//                text2_id.setPaddingRelative(30, 5, 10, 20);
+//                String dFname= user.getFullName();
+//                double dLat = user.getLat();
+//                double dLng = user.getLng();
+//                locationB.setLatitude(dLat);
+//                locationB.setLongitude(dLng);
+//                float distanceInMeters =0;
+//                 distanceInMeters = locationA.distanceTo(locationB);
+//                Log.e("TESTING", " dist :"+distanceInMeters);
+//
+//                text1_id.setTextAppearance(view.getContext(), android.R.style.TextAppearance_Large);
+////                if(distanceInMeters<10)
+////                {
+//                    DecimalFormat df = new DecimalFormat("####0.0");
+//
+//                    text1_id.setText(dFname);
+//                    text2_id.setText(user.getInterests()+"  ("+df.format(getMiles(distanceInMeters))+ " mi. )");
+////                }
 //            }
 //        };
-//        drawerLayout.setDrawerListener(drawerListner);
-//        getSupportActionBar().setHomeButtonEnabled(true);
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        //Bind the list adapter to  listView
+//        tutorList_id.setAdapter(adapter);
 //
-//////      for the tutors list
-////        final ListView tutorList_id = (ListView)findViewById(R.id.studentActivity_tutorList_listView);
-////
-////
-////        // to find distance between two lat longs
-////        // users lat long
-////        final Location locationA = new Location("point A");
-////        final Location locationB = new Location("point B");
-////
-//////        locationA.setLatitude(uLat);
-//////        locationA.setLongitude(uLong);
-////
-////        // 37.352804, -121.963429
-////        locationA.setLatitude( 37.352804);
-////        locationA.setLongitude(-121.963429);
-////        listRole=1000;
-////
-////        // if the logged in user is a student show a the list of tutors
-////        if (uRole ==1)
-////        {
-////             ref = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Tutor");
-////            ref1 = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Student");
-////
-////            // if it is a student List role should be 0 as we will be sing list of tutors
-////            listRole=0;
-////        }
-////        // if he is a tutor show list of students
-////        else if (uRole==0)
-////        {
-////            ref = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Student");
-////            ref1 = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Tutor");
-////            // if it is a tutor List role should be 1 as we will be sing list of students
-////            listRole=1;
-////        }
-////
-////        Query queryRef1 = ref.orderByChild("pincode").equalTo("95050");
+//        // item click action
+//        tutorList_id.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 //
-////        FirebaseListAdapter<Users> adapter = new FirebaseListAdapter<Users>(this, Users.class,android.R.layout.two_line_list_item, ref)
-////        {
-////            @Override
-////            protected void populateView(View view, Users user, int i)
-////            {
-////               TextView text1_id =(TextView) view.findViewById(android.R.id.text1);
-////               TextView text2_id =(TextView) view.findViewById(android.R.id.text2);
-////                text1_id.setPaddingRelative(30,5,10,5);
-////                text2_id.setPaddingRelative(30, 5, 10, 20);
-////                String dFname= user.getFullName();
-////                double dLat = user.getLat();
-////                double dLng = user.getLng();
-////                locationB.setLatitude(dLat);
-////                locationB.setLongitude(dLng);
-////                float distanceInMeters =0;
-////                 distanceInMeters = locationA.distanceTo(locationB);
-////                Log.e("TESTING", " dist :"+distanceInMeters);
-////
-////                text1_id.setTextAppearance(view.getContext(), android.R.style.TextAppearance_Large);
-//////                if(distanceInMeters<10)
-//////                {
-////                    DecimalFormat df = new DecimalFormat("####0.0");
-////
-////                    text1_id.setText(dFname);
-////                    text2_id.setText(user.getInterests()+"  ("+df.format(getMiles(distanceInMeters))+ " mi. )");
-//////                }
-////            }
-////        };
-////        //Bind the list adapter to  listView
-////        tutorList_id.setAdapter(adapter);
-////
-////        // item click action
-////        tutorList_id.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-////            @Override
-////            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-////
-////                String name = ((TextView)view.findViewById(android.R.id.text1)).getText().toString();
-////                String interest = ((TextView)view.findViewById(android.R.id.text2)).getText().toString();
-////                Log.e("TESTING", " name "+name+" is interested in "+interest);
-////                //Toast.makeText(StudentsListActivity.this," name "+name+" is interested in "+interest, Toast.LENGTH_SHORT).show();
-////
-////                Intent tutorDetailIntent = new Intent(StudentsListActivity.this, TutorDetailActivity.class);
-////                // creating bundle
-////                Bundle extra = new Bundle();
-////                extra.putString("name", name);
-////                extra.putInt("listRole",listRole);
-////                tutorDetailIntent.putExtras(extra);
-////                startActivity(tutorDetailIntent);
-////            }
-////        });
+//                String name = ((TextView)view.findViewById(android.R.id.text1)).getText().toString();
+//                String interest = ((TextView)view.findViewById(android.R.id.text2)).getText().toString();
+//                Log.e("TESTING", " name "+name+" is interested in "+interest);
+//                //Toast.makeText(StudentsListActivity.this," name "+name+" is interested in "+interest, Toast.LENGTH_SHORT).show();
+//
+//                Intent tutorDetailIntent = new Intent(StudentsListActivity.this, TutorDetailActivity.class);
+//                // creating bundle
+//                Bundle extra = new Bundle();
+//                extra.putString("name", name);
+//                extra.putInt("listRole",listRole);
+//                tutorDetailIntent.putExtras(extra);
+//                startActivity(tutorDetailIntent);
+//            }
+//        });
 
 
     }
@@ -430,69 +433,69 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 //        // this causes the drawer icon to appear
-//        drawerListner.syncState();
+        drawerListner.syncState();
     }
 
     // change the navigation drawer when the configuration changes
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-//        drawerListner.onConfigurationChanged(newConfig);
+        drawerListner.onConfigurationChanged(newConfig);
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//        selectTitle(navOptions[position]);
-//
-//        if(position == 0)
-//        {
-//            Intent editProfilePage = new Intent(StudentsListActivity.this, StudentsListActivity.class);
-//            startActivity(editProfilePage);
-//        }
-//
-//        if(position == 1)
-//        {
-//            Intent editProfilePage = new Intent(StudentsListActivity.this, EditProfile.class);
-//            startActivity(editProfilePage);
-//        }
-//
-//        if(position == 2)
-//        {
-//            Intent discoverySettingsPage = new Intent(StudentsListActivity.this, DiscoverySettingsPage.class);
-//            startActivity(discoverySettingsPage);
-//        }
-//
-//        if(position == 5)
-//        {
-//            Intent changePasswordPage = new Intent(StudentsListActivity.this, changePassword.class);
-//            startActivity(changePasswordPage);
-//        }
-//
-//        if(position == 6) {
-//
-//            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-//                @Override
-//                public void onClick(DialogInterface dialog, int which) {
-//                    switch (which)
-//                    {
-//                        case DialogInterface.BUTTON_POSITIVE:
-//                            ref1.unauth();
-//                            editor.clear();
-//                            editor.commit();
-//                            Intent login = new Intent(StudentsListActivity.this, Login.class);
-//                            startActivity(login);
-//                            break;
-//
-//                        case DialogInterface.BUTTON_NEGATIVE:
-//                            break;
-//                    }
-//                }
-//            };
-//            AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-//            builder.setTitle("CONFIRM");
-//            builder.setMessage("Are you sure ?").setPositiveButton("Yes", dialogClickListener)
-//                    .setNegativeButton("No", dialogClickListener).show();
-//        }
+        selectTitle(navOptions[position]);
+
+        if(position == 0)
+        {
+            Intent editProfilePage = new Intent(StudentsListActivity.this, StudentsListActivity.class);
+            startActivity(editProfilePage);
+        }
+
+        if(position == 1)
+        {
+            Intent editProfilePage = new Intent(StudentsListActivity.this, EditProfile.class);
+            startActivity(editProfilePage);
+        }
+
+        if(position == 2)
+        {
+            Intent discoverySettingsPage = new Intent(StudentsListActivity.this, DiscoverySettingsPage.class);
+            startActivity(discoverySettingsPage);
+        }
+
+        if(position == 5)
+        {
+            Intent changePasswordPage = new Intent(StudentsListActivity.this, changePassword.class);
+            startActivity(changePasswordPage);
+        }
+
+        if(position == 6) {
+
+            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    switch (which)
+                    {
+                        case DialogInterface.BUTTON_POSITIVE:
+                            ref1.unauth();
+                            editor.clear();
+                            editor.commit();
+                            Intent login = new Intent(StudentsListActivity.this, Login.class);
+                            startActivity(login);
+                            break;
+
+                        case DialogInterface.BUTTON_NEGATIVE:
+                            break;
+                    }
+                }
+            };
+            AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+            builder.setTitle("CONFIRM");
+            builder.setMessage("Are you sure ?").setPositiveButton("Yes", dialogClickListener)
+                    .setNegativeButton("No", dialogClickListener).show();
+        }
 
     }
 
@@ -511,7 +514,7 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
 
 
 
-    public void processDataForLoggedInUser(final String clientId, String clientName, int clientRole, double clientLat, double clientLng,String clientInterest,String interestedInClient)
+    public void processDataForLoggedInUser(final String clientId, String clientName, int clientRole, double clientLat, double clientLng,String clientInterest,final String interestedInClient)
     {
 
 //        for the tutors list
@@ -541,33 +544,33 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
             listRole=0;
         }
         // if he is a tutor show list of students
-        else if (clientRole==0)
-        {
-            ref = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Student");
-            ref1 = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Tutor");
-            // if it is a tutor List role should be 1 as we will be sing list of students
-            Intent tutorIntent = new Intent(StudentsListActivity.this, TutorsListActivity.class);
-            Bundle extra = new Bundle();
-            extra.putDouble("lat",clientLat);
-            extra.putDouble("lng",clientLng);
-            extra.putString("uID", clientId);
-            extra.putString("interest", clientInterest);
-            extra.putString("interestedPeople", interestedInClient);
-            extra.putInt("role", clientRole);
-
-            tutorIntent.putExtras(extra);
-            startActivity(tutorIntent);
-            listRole=1;
-        }
+//        else if (clientRole==0)
+//        {
+//            ref = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Student");
+//            ref1 = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Tutor");
+//            // if it is a tutor List role should be 1 as we will be sing list of students
+//            Intent tutorIntent = new Intent(StudentsListActivity.this, TutorsListActivity.class);
+//            Bundle extra = new Bundle();
+//            extra.putDouble("lat",clientLat);
+//            extra.putDouble("lng",clientLng);
+//            extra.putString("uID", clientId);
+//            extra.putString("interest", clientInterest);
+//            extra.putString("interestedPeople", interestedInClient);
+//            extra.putInt("role", clientRole);
+//
+//            tutorIntent.putExtras(extra);
+//            startActivity(tutorIntent);
+//            listRole=1;
+//        }
 
         if(clientRole==1)
         {
-            interestedInClient  = interestedInClient.replace("idVal", "");
-            interestedInClient  = interestedInClient.replace("=", "");
-            interestedInClient  = interestedInClient.replace("{", "");
-            interestedInClient = interestedInClient.replace("}", "");
-            final String[] interestedInClientArray = interestedInClient.split(",");
-            Log.e("Interest without braces", "ello:: "+interestedInClient);
+//            interestedInClient  = interestedInClient.replace("idVal", "");
+//            interestedInClient  = interestedInClient.replace("=", "");
+//            interestedInClient  = interestedInClient.replace("{", "");
+//            interestedInClient = interestedInClient.replace("}", "");
+//            final String[] interestedInClientArray = interestedInClient.split(",");
+//            Log.e("Interest without braces", "ello:: "+interestedInClient);
             Toast.makeText(StudentsListActivity.this, clientInterest, Toast.LENGTH_LONG).show();
             Query queryRef1 = ref.orderByChild("interests").equalTo(clientInterest);
             FirebaseListAdapter<Users> adapter = new FirebaseListAdapter<Users>(this, Users.class,android.R.layout.two_line_list_item, queryRef1)
@@ -590,16 +593,37 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
                     DecimalFormat df = new DecimalFormat("####0.0");
                     String dist_in_mile= df.format(getMiles(distanceInMeters));
                     Boolean flag=false;
-                    for(i=0; i<interestedInClientArray.length; i++)
+                    if(interestedInClient!=null)
                     {
-                        Log.e("TESTING", "ello:: dist :"+interestedInClientArray[i]+":1010:"+ user.getUserID());
-                        if(interestedInClientArray[i].equals(user.getUserID()))
+                        String copyOfIIC= interestedInClient;
+                        copyOfIIC  = copyOfIIC.replace("idVal", "");
+                        copyOfIIC  = copyOfIIC.replace("=", "");
+                        copyOfIIC  = copyOfIIC.replace("{", "");
+                        copyOfIIC = copyOfIIC.replace("}", "");
+                        String[] interestedInClientArray= copyOfIIC.split(",");
+
+                        for(i=0; i<interestedInClientArray.length; i++)
                         {
+
+                            if(interestedInClientArray[i].equals(user.getUserID()))
+                            {
 //                        text1_id.setTextColor(Color.BLUE);
 //                        text2_id.setTextColor(Color.GREEN);
-                            flag = true;
+                                Log.e("TESTING", "ello:: dist :"+interestedInClientArray[i]+":1010:"+ user.getUserID());
+                                flag = true;
+                            }
                         }
                     }
+//                    for(i=0; i<interestedInClientArray.length; i++)
+//                    {
+//                        Log.e("TESTING", "ello:: dist :"+interestedInClientArray[i]+":1010:"+ user.getUserID());
+//                        if(interestedInClientArray[i].equals(user.getUserID()))
+//                        {
+////                        text1_id.setTextColor(Color.BLUE);
+////                        text2_id.setTextColor(Color.GREEN);
+//                            flag = true;
+//                        }
+//                    }
 
                     if(flag == true)
                     {

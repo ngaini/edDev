@@ -3,6 +3,7 @@ package edu.scu.levelup;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -87,6 +88,7 @@ public class TutorDetailActivity extends Activity {
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
                     Users user = dataSnapshot.getValue(Users.class);
+                    tutorName_id.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_WORDS);
                     tutorName_id.setText(name);
                     tutorExpertize_id.setText("Gender: " + user.getInterests());
                     tutorAge_id.setText(user.getAge() + " yrs");

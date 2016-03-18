@@ -99,9 +99,88 @@ public class Login extends AppCompatActivity {
             public void onAuthStateChanged(AuthData authData) {
                 if (authData != null)
                 {
-                    Intent mainPage = new Intent(Login.this, StudentsListActivity.class);
-                    startActivity(mainPage);
+                    checkForClient();
 //                    sessionUserName = pref.getString(key_email, null);
+//                    userRef1 = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Student/");
+//                    queryRef = userRef1.orderByChild("emailID").equalTo(uname);
+//                    queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
+//                        @Override
+//                        public void onDataChange(DataSnapshot dataSnapshot) {
+//                            //Toast.makeText(getApplicationContext(), "INSIDE MAIN", Toast.LENGTH_SHORT).show();
+//                            if (dataSnapshot.getChildrenCount() != 0) {
+//                                Intent mainPage = new Intent(Login.this, StudentsListActivity.class);
+//                                startActivity(mainPage);
+//                            }
+//                            else {
+//                                Intent mainPage = new Intent(Login.this, TutorsListActivity.class);
+//                                startActivity(mainPage);
+//
+//                            }
+//                        }
+//
+//                        @Override
+//                        public void onCancelled(FirebaseError firebaseError) {
+//
+//                        }
+//                    });
+////                    sessionUserName = pref.getString(key_email, null);
+
+                    session.createUserLoginSession("session stored", uname);
+                    userRef1 = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Student/");
+                    queryRef = userRef1.orderByChild("emailID").equalTo(uname);
+                    queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            //Toast.makeText(getApplicationContext(), "INSIDE MAIN", Toast.LENGTH_SHORT).show();
+                            if (dataSnapshot.getChildrenCount() != 0) {
+                                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                                    Users userData = postSnapshot.getValue(Users.class);
+                                    //Toast.makeText(getApplicationContext(), "INSIDE", Toast.LENGTH_SHORT).show();
+//                                            uRole = userData.getRole();
+//                                            userID = userData.getUserID();
+//                                            session.createUserLoginSession("session stored", uname);
+//                                            Toast.makeText(getApplicationContext(), "user email ID is - "+pref.getString(key_email, null), Toast.LENGTH_SHORT).show();
+                                    //Toast.makeText(getApplicationContext(), "user role is - "+uRole, Toast.LENGTH_SHORT).show();
+                                    //Toast.makeText(getApplicationContext(), "user ID is - "+userID, Toast.LENGTH_SHORT).show();
+                                    Intent mainPage = new Intent(Login.this, StudentsListActivity.class);
+                                    startActivity(mainPage);
+
+                                }
+                            }else
+                            {
+                                userRef1 = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Tutor");
+                                queryRef = userRef1.orderByChild("emailID").equalTo(uname);
+                                queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                                            Users userData = postSnapshot.getValue(Users.class);
+//                                                    uRole = userData.getRole();
+//                                                    userID = userData.getUserID();
+//                                                    session.createUserLoginSession("session stored", uname);
+                                            //Toast.makeText(getApplicationContext(), "user email ID is - "+pref.getString(key_email, null), Toast.LENGTH_SHORT).show();
+                                            //Toast.makeText(getApplicationContext(), "user role is - "+uRole, Toast.LENGTH_SHORT).show();
+                                            //Toast.makeText(getApplicationContext(), "user ID is - "+userID, Toast.LENGTH_SHORT).show();
+                                            Intent mainPage = new Intent(Login.this, TutorsListActivity.class);
+                                            startActivity(mainPage);
+
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(FirebaseError firebaseError) {
+
+                                    }
+                                });
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {
+
+                        }
+                    });
+
                 }
             }
         });
@@ -119,6 +198,7 @@ public class Login extends AppCompatActivity {
 
                         public void onAuthenticated(AuthData authData)
                         {
+//                            checkForClient();
                             session.createUserLoginSession("session stored", uname);
                             userRef1 = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Student/");
                             queryRef = userRef1.orderByChild("emailID").equalTo(uname);
@@ -175,9 +255,9 @@ public class Login extends AppCompatActivity {
                                 }
                             });
 
-                            session.createUserLoginSession("session stored", uname);
-                            Intent mainPage = new Intent(Login.this, StudentsListActivity.class);
-                            startActivity(mainPage);
+//                            session.createUserLoginSession("session stored", uname);
+//                            Intent mainPage = new Intent(Login.this, StudentsListActivity.class);
+//                            startActivity(mainPage);
 
 
                         }
@@ -214,4 +294,68 @@ public class Login extends AppCompatActivity {
         return false;
     }
 
+
+    public void checkForClient()
+    {
+        session.createUserLoginSession("session stored", uname);
+        userRef1 = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Student/");
+        queryRef = userRef1.orderByChild("emailID").equalTo(uname);
+        queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //Toast.makeText(getApplicationContext(), "INSIDE MAIN", Toast.LENGTH_SHORT).show();
+                if (dataSnapshot.getChildrenCount() != 0) {
+                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                        Users userData = postSnapshot.getValue(Users.class);
+                        //Toast.makeText(getApplicationContext(), "INSIDE", Toast.LENGTH_SHORT).show();
+//                                            uRole = userData.getRole();
+//                                            userID = userData.getUserID();
+//                                            session.createUserLoginSession("session stored", uname);
+//                                            Toast.makeText(getApplicationContext(), "user email ID is - "+pref.getString(key_email, null), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(), "user role is - "+uRole, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(), "user ID is - "+userID, Toast.LENGTH_SHORT).show();
+                        Intent mainPage = new Intent(Login.this, StudentsListActivity.class);
+                        startActivity(mainPage);
+
+                    }
+                }else
+                {
+                    userRef1 = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Tutor");
+                    queryRef = userRef1.orderByChild("emailID").equalTo(uname);
+                    queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                                Users userData = postSnapshot.getValue(Users.class);
+//                                                    uRole = userData.getRole();
+//                                                    userID = userData.getUserID();
+//                                                    session.createUserLoginSession("session stored", uname);
+                                //Toast.makeText(getApplicationContext(), "user email ID is - "+pref.getString(key_email, null), Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(getApplicationContext(), "user role is - "+uRole, Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(getApplicationContext(), "user ID is - "+userID, Toast.LENGTH_SHORT).show();
+                                Intent mainPage = new Intent(Login.this, TutorsListActivity.class);
+                                startActivity(mainPage);
+
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+
+//                            session.createUserLoginSession("session stored", uname);
+//                            Intent mainPage = new Intent(Login.this, StudentsListActivity.class);
+//                            startActivity(mainPage);
+
+    }
 }

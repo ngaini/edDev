@@ -34,7 +34,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
 
             android:textSize="30dp"
-            android:capitalize="words"
+            android:inputType="textCapWords"
             android:layout_gravity="center_vertical"
             />
         />

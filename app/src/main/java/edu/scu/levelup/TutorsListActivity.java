@@ -32,6 +32,7 @@ import static edu.scu.levelup.R.id.tutorToolbar;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
+import com.firebase.client.ValueEventListener;
 import com.firebase.ui.FirebaseListAdapter;
 
 import java.text.DecimalFormat;
@@ -43,50 +44,71 @@ public class TutorsListActivity extends AppCompatActivity implements AdapterView
     private ActionBarDrawerToggle drawerListner;
     private CustomAdapter myCustomAdapter;
     private String[] navOptions;
-    SharedPreferences pref;
-    SharedPreferences.Editor editor;
+
     private static Firebase ref1;
     private static Firebase ref;
+    SharedPreferences pref;
+    SharedPreferences.Editor editor;
+    private static final String preferName = "AndriodSession";
+    public static final String key_email = "email";
+    private String sessionUserName;
+    private static Firebase userRef1;
+    private static Query userQueryRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tutors_list);
-//        Toolbar myToolbar = (Toolbar) findViewById(R.id.tutorToolbar);
-//        setSupportActionBar(myToolbar);
-//        getSupportActionBar().setTitle("Tutor");
-//        DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.tutorDrawerLayout);
-//        ListView list = (ListView)findViewById(R.id.tutorDrawerList);
-//        myCustomAdapter = new CustomAdapter(this);
-//        list.setAdapter(myCustomAdapter);
-//        navOptions =getResources().getStringArray(R.array.navOptions);
-//        list.setOnItemClickListener(this);
+//        getSupportActionBar().setTitle("tutor");
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.tutorToolbar);
+        setSupportActionBar(myToolbar);
+        getSupportActionBar().setTitle("Tutor");
+
+
+        sessionUserName ="t@t.com";
+        pref = getApplicationContext().getSharedPreferences(preferName, 0);
+        editor = pref.edit();
+        sessionUserName = pref.getString(key_email, null);
+        //for fetching the global variables
+        MyApplication app =(MyApplication)getApplication();
+
+
+
+
+
+        // drawer layout code
+        DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.tutorDrawerLayout);
+        ListView list = (ListView)findViewById(R.id.tutorDrawerList);
+        myCustomAdapter = new CustomAdapter(this);
+        list.setAdapter(myCustomAdapter);
+        navOptions =getResources().getStringArray(R.array.navOptions);
+        list.setOnItemClickListener(this);
+
+
 //
-//
-////
-//
-//        drawerListner = new ActionBarDrawerToggle(this,drawerLayout,myToolbar, R.string.navigation_drawer_open,R.string.navigation_drawer_close)
-//        {
-//
-//            /** Called when a drawer has settled in a completely closed state. */
-//            public void onDrawerClosed(View view) {
-////                super.onDrawerClosed(view);
-////                getActionBar().setTitle(R.string.title_activity_drawer_test);
-////                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-//            }
-//
-//            /** Called when a drawer has settled in a completely open state. */
-//            public void onDrawerOpened(View drawerView) {
-////                super.onDrawerOpened(drawerView);
-////                getActionBar().setTitle("Menu");
-////                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-//            }
-//        };
-//        drawerLayout.setDrawerListener(drawerListner);
-////        getSupportActionBar().setHomeButtonEnabled(true);
-////        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//
-//
+
+        drawerListner = new ActionBarDrawerToggle(this,drawerLayout,myToolbar, R.string.navigation_drawer_open,R.string.navigation_drawer_close)
+        {
+
+            /** Called when a drawer has settled in a completely closed state. */
+            public void onDrawerClosed(View view) {
+//                super.onDrawerClosed(view);
+//                getActionBar().setTitle(R.string.title_activity_drawer_test);
+//                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+
+            /** Called when a drawer has settled in a completely open state. */
+            public void onDrawerOpened(View drawerView) {
+//                super.onDrawerOpened(drawerView);
+//                getActionBar().setTitle("Menu");
+//                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+        };
+        drawerLayout.setDrawerListener(drawerListner);
+//        getSupportActionBar().setHomeButtonEnabled(true);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
 //        Bundle extra = getIntent().getExtras();
 //
 ////        String appUserName = extra.getString("");
@@ -96,8 +118,76 @@ public class TutorsListActivity extends AppCompatActivity implements AdapterView
 //        double appUserLng = extra.getDouble("lng");
 //        String interest = extra.getString("interest");
 //        String shownInterest = extra.getString("interestedPeople");
+
+
+        userRef1 = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Tutor");
+                    userQueryRef = userRef1.orderByChild("emailID").equalTo(sessionUserName);
+                    userQueryRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        String appUserName, appUserID,appUserInterest;
+                        int appUserRole;
+                        double appUserLat,appUserLng;
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                                Users userData = postSnapshot.getValue(Users.class);
+
+                                appUserName = userData.getFullName();
+                                appUserRole = userData.getRole();
+                                appUserID= userData.getUserID();
+                                appUserLat =userData.getLat();
+                                appUserLng=userData.getLng();
+                                appUserInterest=userData.getInterests();
+//                                Query q1 = userRef1.child(appUserID).child("tempList").orderByChild("idVal");
+                                Query q1 = userRef1.child(appUserID).child("tempList");
+                                q1.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    String interestStringArray = null;
+
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+//                                        if(dataSnapshot.getChildrenCount()!=0)
+//                                        {
+                                        Log.e("interesded string", "ello::before for");
+                                        for (DataSnapshot interestSnapshot : dataSnapshot.getChildren()) {
+                                            Log.e("interesded string", "ello::inside for");
+                                            Map<String, Object> value = (Map<String, Object>) dataSnapshot.getValue();
+                                            if (interestStringArray == null) {
+
+                                                interestStringArray = String.valueOf(interestSnapshot.getValue());
+                                            } else {
+
+
+                                                interestStringArray = interestStringArray + "," + String.valueOf(interestSnapshot.getValue());
+
+                                            }
+                                        }
+
+//                                        }
+                                        Log.e("interesded string2", "ello::" + interestStringArray);
+                                        Log.e("LOGVAL Tutor", "ello::" + appUserName + "::" + appUserRole + "::" + appUserID + "::" + appUserLat);
+                                        populateList(appUserID, appUserName, appUserRole, appUserLat, appUserLng, appUserInterest,interestStringArray);
+                                    }
+
+                                    @Override
+                                    public void onCancelled(FirebaseError firebaseError) {
+
+                                    }
+                                });
+//                                processDataForLoggedInUser(appUserID,appUserName,appUserRole,appUserLat,appUserLng,appUserInterest);
+
+                                Log.e("LOGVAL STUDENT", "ello::" + appUserName + "::" + appUserRole + "::" + appUserID + "::" + appUserLat);
 //
+
 //
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {
+
+                        }
+                    });
+
 //        Log.e("TutList STUDENT", "ello::" + appUserLng + "::" + appUserRole + "::" + appUserID + "::" + interest+"::"+shownInterest);
 //        Toast.makeText(TutorsListActivity.this, "ello::" + appUserLng + "::" + appUserRole + "::" + appUserID + "::" + appUserLat, Toast.LENGTH_SHORT).show();
 //        populateList(appUserID,"somename",appUserRole,appUserLat,appUserLng,interest,shownInterest);
@@ -107,14 +197,14 @@ public class TutorsListActivity extends AppCompatActivity implements AdapterView
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         // this causes the drawer icon to appear
-//        drawerListner.syncState();
+        drawerListner.syncState();
     }
 
     // change the navigation drawer when the configuration changes
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-//        drawerListner.onConfigurationChanged(newConfig);
+        drawerListner.onConfigurationChanged(newConfig);
     }
 
 
@@ -174,14 +264,14 @@ public class TutorsListActivity extends AppCompatActivity implements AdapterView
     }
 
 
-    public void populateList(final String clientId, String clientName, int clientRole, double clientLat, double clientLng,String clientInterest,String interestedInClient)
+    public void populateList(final String clientId, String clientName, int clientRole, double clientLat, double clientLng,String clientInterest, final String interestedInClient)
     {
-        interestedInClient  = interestedInClient.replace("idVal", "");
-        interestedInClient  = interestedInClient.replace("=", "");
-        interestedInClient  = interestedInClient.replace("{", "");
-        interestedInClient = interestedInClient.replace("}", "");
-        final String[] interestedInClientArray = interestedInClient.split(",");
-        Log.e("Interest without braces", "ello:: "+interestedInClient);
+//        interestedInClient  = interestedInClient.replace("idVal", "");
+//        interestedInClient  = interestedInClient.replace("=", "");
+//        interestedInClient  = interestedInClient.replace("{", "");
+//        interestedInClient = interestedInClient.replace("}", "");
+//        final String[] interestedInClientArray = interestedInClient.split(",");
+//        Log.e("Interest without braces", "ello:: "+interestedInClient);
 
         final ListView studentList_id = (ListView)findViewById(R.id.tutorActivity_studentList_listView);
         final Location locationA = new Location("point A");
@@ -224,16 +314,37 @@ public class TutorsListActivity extends AppCompatActivity implements AdapterView
                 DecimalFormat df = new DecimalFormat("####0.0");
                 String dist_in_mile= df.format(getMiles(distanceInMeters));
                 Boolean flag=false;
-                for(i=0; i<interestedInClientArray.length; i++)
+                if(interestedInClient!=null)
                 {
-                    Log.e("TESTING", "ello:: dist :"+interestedInClientArray[i]+":1010:"+ user.getUserID());
-                    if(interestedInClientArray[i].equals(user.getUserID()))
+                    String copyOfIIC= interestedInClient;
+                    copyOfIIC  = copyOfIIC.replace("idVal", "");
+                    copyOfIIC  = copyOfIIC.replace("=", "");
+                    copyOfIIC  = copyOfIIC.replace("{", "");
+                    copyOfIIC = copyOfIIC.replace("}", "");
+                    String[] interestedInClientArray= copyOfIIC.split(",");
+
+                    for(i=0; i<interestedInClientArray.length; i++)
                     {
+
+                        if(interestedInClientArray[i].equals(user.getUserID()))
+                        {
 //                        text1_id.setTextColor(Color.BLUE);
 //                        text2_id.setTextColor(Color.GREEN);
-                        flag = true;
+                            Log.e("TESTING", "ello:: dist :"+interestedInClientArray[i]+":1010:"+ user.getUserID());
+                            flag = true;
+                        }
                     }
                 }
+//                for(i=0; i<interestedInClientArray.length; i++)
+//                {
+//                    Log.e("TESTING", "ello:: dist :"+interestedInClientArray[i]+":1010:"+ user.getUserID());
+//                    if(interestedInClientArray[i].equals(user.getUserID()))
+//                    {
+//                        text1_id.setTextColor(Color.BLUE);
+//                        text2_id.setTextColor(Color.GREEN);
+//                        flag = true;
+//                    }
+//                }
 
                 if(flag == true)
                 {
