@@ -9,11 +9,9 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-<<<<<<< HEAD
+
 import android.view.KeyEvent;
-=======
 import android.util.Log;
->>>>>>> fb22bca39b0b41b93d2a9c20b0d72b1846c9af46
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -122,68 +120,66 @@ public class Login extends AppCompatActivity {
                         public void onAuthenticated(AuthData authData)
                         {
 
-<<<<<<< HEAD
-                            userRef1 = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Student/");
-                            queryRef = userRef1.orderByChild("emailID").equalTo(uname);
-                            queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                    //Toast.makeText(getApplicationContext(), "INSIDE MAIN", Toast.LENGTH_SHORT).show();
-                                    if (dataSnapshot.getChildrenCount() != 0) {
-                                        for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                                            Users userData = postSnapshot.getValue(Users.class);
-                                            //Toast.makeText(getApplicationContext(), "INSIDE", Toast.LENGTH_SHORT).show();
-                                            uRole = userData.getRole();
-                                            userID = userData.getUserID();
-                                            session.createUserLoginSession("session stored", uname);
-//                                            Toast.makeText(getApplicationContext(), "user email ID is - "+pref.getString(key_email, null), Toast.LENGTH_SHORT).show();
-                                            //Toast.makeText(getApplicationContext(), "user role is - "+uRole, Toast.LENGTH_SHORT).show();
-                                            //Toast.makeText(getApplicationContext(), "user ID is - "+userID, Toast.LENGTH_SHORT).show();
-                                            Intent mainPage = new Intent(Login.this, StudentsListActivity.class);
-                                            startActivity(mainPage);
+//                            userRef1 = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Student/");
+//                            queryRef = userRef1.orderByChild("emailID").equalTo(uname);
+//                            queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
+//                                @Override
+//                                public void onDataChange(DataSnapshot dataSnapshot) {
+//                                    //Toast.makeText(getApplicationContext(), "INSIDE MAIN", Toast.LENGTH_SHORT).show();
+//                                    if (dataSnapshot.getChildrenCount() != 0) {
+//                                        for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+//                                            Users userData = postSnapshot.getValue(Users.class);
+//                                            //Toast.makeText(getApplicationContext(), "INSIDE", Toast.LENGTH_SHORT).show();
+//                                            uRole = userData.getRole();
+//                                            userID = userData.getUserID();
+//                                            session.createUserLoginSession("session stored", uname);
+////                                            Toast.makeText(getApplicationContext(), "user email ID is - "+pref.getString(key_email, null), Toast.LENGTH_SHORT).show();
+//                                            //Toast.makeText(getApplicationContext(), "user role is - "+uRole, Toast.LENGTH_SHORT).show();
+//                                            //Toast.makeText(getApplicationContext(), "user ID is - "+userID, Toast.LENGTH_SHORT).show();
+//                                            Intent mainPage = new Intent(Login.this, StudentsListActivity.class);
+//                                            startActivity(mainPage);
+//
+//                                        }
+//                                    }else
+//                                    {
+//                                        userRef1 = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Tutor");
+//                                        queryRef = userRef1.orderByChild("emailID").equalTo(uname);
+//                                        queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
+//                                            @Override
+//                                            public void onDataChange(DataSnapshot dataSnapshot) {
+//                                                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+//                                                    Users userData = postSnapshot.getValue(Users.class);
+//                                                    uRole = userData.getRole();
+//                                                    userID = userData.getUserID();
+//                                                    session.createUserLoginSession("session stored", uname);
+//                                                    //Toast.makeText(getApplicationContext(), "user email ID is - "+pref.getString(key_email, null), Toast.LENGTH_SHORT).show();
+//                                                    //Toast.makeText(getApplicationContext(), "user role is - "+uRole, Toast.LENGTH_SHORT).show();
+//                                                    //Toast.makeText(getApplicationContext(), "user ID is - "+userID, Toast.LENGTH_SHORT).show();
+//                                                    Intent mainPage = new Intent(Login.this, StudentsListActivity.class);
+//                                                    startActivity(mainPage);
+//
+//                                                }
+//                                            }
+//
+//                                            @Override
+//                                            public void onCancelled(FirebaseError firebaseError) {
+//
+//                                            }
+//                                        });
+//                                    }
+//                                }
+//
+//                                @Override
+//                                public void onCancelled(FirebaseError firebaseError) {
+//
+//                                }
+//                            });
 
-                                        }
-                                    }else
-                                    {
-                                        userRef1 = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Tutor");
-                                        queryRef = userRef1.orderByChild("emailID").equalTo(uname);
-                                        queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                                                    Users userData = postSnapshot.getValue(Users.class);
-                                                    uRole = userData.getRole();
-                                                    userID = userData.getUserID();
-                                                    session.createUserLoginSession("session stored", uname);
-                                                    //Toast.makeText(getApplicationContext(), "user email ID is - "+pref.getString(key_email, null), Toast.LENGTH_SHORT).show();
-                                                    //Toast.makeText(getApplicationContext(), "user role is - "+uRole, Toast.LENGTH_SHORT).show();
-                                                    //Toast.makeText(getApplicationContext(), "user ID is - "+userID, Toast.LENGTH_SHORT).show();
-                                                    Intent mainPage = new Intent(Login.this, StudentsListActivity.class);
-                                                    startActivity(mainPage);
-
-                                                }
-                                            }
-
-                                            @Override
-                                            public void onCancelled(FirebaseError firebaseError) {
-
-                                            }
-                                        });
-                                    }
-                                }
-
-                                @Override
-                                public void onCancelled(FirebaseError firebaseError) {
-
-                                }
-                            });
-=======
                             session.createUserLoginSession("session stored", uname);
                             Intent mainPage = new Intent(Login.this, StudentsListActivity.class);
                             startActivity(mainPage);
 
 
->>>>>>> fb22bca39b0b41b93d2a9c20b0d72b1846c9af46
                         }
 
                         @Override

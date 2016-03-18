@@ -35,7 +35,7 @@ public class TutorDetailActivity extends Activity {
 
     static int listRole;
     private final String API_KEY = "DEV56E7BC3BA4A1F6DF11D0CAB6148";
-    Button interestedButtonId;
+    Button interestedButtonId,contactButtonId;
     //is the id value of the user whose details are being displayed
     static String detailIdValue;
 
@@ -52,6 +52,7 @@ public class TutorDetailActivity extends Activity {
         MyApplication app =(MyApplication)getApplication();
         setContentView(R.layout.activity_tutor_detail);
         interestedButtonId =(Button)findViewById(R.id.TDA_interested_button);
+        contactButtonId =(Button)findViewById(R.id.TDA_contact_button);
         Bundle extra = getIntent().getExtras();
         final String name = extra.getString("name");
         listRole = extra.getInt("listRole");
@@ -64,9 +65,7 @@ public class TutorDetailActivity extends Activity {
         final TextView tutorDescription_id = (TextView)this.findViewById(R.id.TDA_tutorDescription_textView);
         final TextView tutorGender_id = (TextView)this.findViewById(R.id.TDA_tutorGender_textView);
         final TextView tutorEducation_id = (TextView)this.findViewById(R.id.TDA_tutorEducation_textView);
-        //Setting name to textView
-//        ((TextView)this.findViewById(R.id.TDA_tutorName_textView)).setText(name);
-//        tutorName_id.setText(name);
+
 
 
         if(!name.isEmpty())
@@ -99,6 +98,7 @@ public class TutorDetailActivity extends Activity {
 
                     //enable or disable button
                     //if user has already clicked interested for a tutor the button will stay disabled
+                    disableContactButton();
                     Log.e("CHECK THIS", "ello::detailsvalue: " + user.getUserID() + " ::" + detailIdValue);
                     Query q1 =ref.child(detailIdValue).child("tempList").orderByChild("idVal").equalTo(clientIdValue);
                     q1.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -109,6 +109,19 @@ public class TutorDetailActivity extends Activity {
                             {
                                 Log.e("CHECK THIS", "inside query data change ");
                                 disableInterestedButton();
+                                Query q2 =ref.child(clientIdValue).child("tempList").orderByChild("idVal").equalTo(detailIdValue);
+                                q2.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        Log.e("CHECK THIS", "in students tree, childnode contains listed tutor  ");
+                                        enableContactButton();
+                                    }
+
+                                    @Override
+                                    public void onCancelled(FirebaseError firebaseError) {
+
+                                    }
+                                });
                             }
 //                            enableInterestedButton();
                         }
@@ -233,6 +246,16 @@ public class TutorDetailActivity extends Activity {
 
     public static int getListRole() {
         return listRole;
+    }
+
+    public void enableContactButton()
+    {
+        contactButtonId.setEnabled(true);
+    }
+
+    public void disableContactButton()
+    {
+        contactButtonId.setEnabled(false);
     }
 
 }

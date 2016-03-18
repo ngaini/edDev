@@ -14,9 +14,7 @@
     <permission android:name="edu.scu.levelup.permission.C2D_MESSAGE" android:protectionLevel="signature"/>
     <uses-permission android:name="edu.scu.levelup.gcm.permission.C2D_MESSAGE"/>
 
-    <permission
-        android:name="edu.scu.levelup.permission.C2D_MESSAGE"
-        android:protectionLevel="signature" />
+
     <uses-permission android:name="edu.scu.levelup.gcm.permission.C2D_MESSAGE" />
 
 
@@ -160,12 +158,10 @@
              <!--</intent-filter>-->
 
         </activity>
-        <activity
-            android:label="@string/title_activity_edit_profile"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
         <activity
             android:name=".SignUpPage3"
             android:label="@string/title_activity_sign_up_page3"></activity>
-</application>
+    </application>
 
 </manifest>
