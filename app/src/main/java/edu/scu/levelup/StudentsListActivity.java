@@ -175,28 +175,7 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
 
                             }
                         });
-//                        for(DataSnapshot getInterestedSnapshot: postSnapshot.child("tempList"))
-//                        processDataForLoggedInUser(appUserID, appUserName, appUserRole, appUserLat, appUserLng, appUserInterest);
-//                        Log.e("LOGVAL STUDENT", "ello::" + appUserName + "::" + appUserRole + "::" + appUserID + "::" + appUserLat);
-//
-
-//                        uRole = userData.getRole();
-//                        userID = userData.getUserID();
-//                        hmap = new HashMap<String, String>();
-//                        hmap.put("role", String.valueOf(userData.getRole()));
-//                        hmap.put("userID", userData.getUserID());
-//                        hmap.put("lat", String.valueOf(userData.getLat()));
-//                        hmap.put("lng", String.valueOf(userData.getLng()));
-//                        session.createUserLoginSession(userData.getFullName(), sessionUserName, userData.getRole(), userData.getUserID());
-
-
-//                        Log.e("LOGVAL STUDENT", "ello::" + userData.getRole() + "::" + userData.getUserID() + "::" + userData.getLng()+"::"+userData.getFullName());
-////                        session.createUserLoginSession("session stored", sessionUserName, uRole, userID);
-////                                            Toast.makeText(getApplicationContext(), "user email ID is - "+pref.getString(key_email, null), Toast.LENGTH_SHORT).show();
-//                        Toast.makeText(getApplicationContext(), "user role is - "+uRole, Toast.LENGTH_SHORT).show();
-//                        Toast.makeText(getApplicationContext(), "user ID is - "+userID, Toast.LENGTH_SHORT).show();
-//                        Intent mainPage = new Intent(StudentsListActivity.this, StudentsListActivity.class);
-//                        startActivity(mainPage);
+//                       
 
 
                     }
@@ -257,23 +236,7 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
                                 Log.e("LOGVAL STUDENT", "ello::" + appUserName + "::" + appUserRole + "::" + appUserID + "::" + appUserLat);
 //
 
-//                                uRole = userData.getRole();
-//                                userID = userData.getUserID();
-//                                hmap = new HashMap<String, String>();
-//                                hmap.put("role",String.valueOf(userData.getRole()));
-//                                hmap.put("userID",userData.getUserID());
-//                                hmap.put("lat",String.valueOf(userData.getLat()));
-//                                hmap.put("lng",String.valueOf(userData.getLng()));
-//                                session.createUserLoginSession(userData.getFullName(), sessionUserName, userData.getRole(), userData.getUserID());
-//                                session.createUserLoginSession("session stored", uname, uRole, userID);
-                                //Toast.makeText(getApplicationContext(), "user email ID is - "+pref.getString(key_email, null), Toast.LENGTH_SHORT).show();
-//                                Log.e("LOGVAL STUDENT", "ello::" + userData.getRole() + "::" + userData.getUserID() + "::" + userData.getLng());
-//                                Toast.makeText(getApplicationContext(), "user role is - "+uRole, Toast.LENGTH_SHORT).show();
-//                                Toast.makeText(getApplicationContext(), "user ID is - "+userID, Toast.LENGTH_SHORT).show();
-////                                Intent mainPage = new Intent(Login.this, StudentsListActivity.class);
-////                                startActivity(mainPage);
-//                                Log.e("LOGVAL TUTOR", "ello::" +uRole+"::"+userID +"::" +sessionUserName);
-
+//
                             }
                         }
 
@@ -387,57 +350,57 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
 //        }
 //
 //        Query queryRef1 = ref.orderByChild("pincode").equalTo("95050");
-<<<<<<< HEAD
-        FirebaseListAdapter<Users> adapter = new FirebaseListAdapter<Users>(this, Users.class,android.R.layout.two_line_list_item, ref)
-        {
-            @Override
-            protected void populateView(View view, Users user, int i)
-            {
-               TextView text1_id =(TextView) view.findViewById(android.R.id.text1);
-               TextView text2_id =(TextView) view.findViewById(android.R.id.text2);
-                text1_id.setPaddingRelative(30,5,10,5);
-                text2_id.setPaddingRelative(30, 5, 10, 20);
-                String dFname= user.getFullName();
-                double dLat = user.getLat();
-                double dLng = user.getLng();
-                locationB.setLatitude(dLat);
-                locationB.setLongitude(dLng);
-                float distanceInMeters =0;
-                 distanceInMeters = locationA.distanceTo(locationB);
-                Log.e("TESTING", " dist :"+distanceInMeters);
 
-                text1_id.setTextAppearance(view.getContext(), android.R.style.TextAppearance_Large);
-//                if(distanceInMeters<10)
-//                {
-                    DecimalFormat df = new DecimalFormat("####0.0");
-
-                    text1_id.setText(dFname);
-                    text2_id.setText(user.getInterests()+"  ("+df.format(getMiles(distanceInMeters))+ " mi. )");
-//                }
-            }
-        };
-        //Bind the list adapter to  listView
-        tutorList_id.setAdapter(adapter);
-
-        // item click action
-        tutorList_id.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                String name = ((TextView)view.findViewById(android.R.id.text1)).getText().toString();
-                String interest = ((TextView)view.findViewById(android.R.id.text2)).getText().toString();
-                Log.e("TESTING", " name "+name+" is interested in "+interest);
-                //Toast.makeText(StudentsListActivity.this," name "+name+" is interested in "+interest, Toast.LENGTH_SHORT).show();
-
-                Intent tutorDetailIntent = new Intent(StudentsListActivity.this, TutorDetailActivity.class);
-                // creating bundle
-                Bundle extra = new Bundle();
-                extra.putString("name", name);
-                extra.putInt("listRole",listRole);
-                tutorDetailIntent.putExtras(extra);
-                startActivity(tutorDetailIntent);
-            }
-        });
+//        FirebaseListAdapter<Users> adapter = new FirebaseListAdapter<Users>(this, Users.class,android.R.layout.two_line_list_item, ref)
+//        {
+//            @Override
+//            protected void populateView(View view, Users user, int i)
+//            {
+//               TextView text1_id =(TextView) view.findViewById(android.R.id.text1);
+//               TextView text2_id =(TextView) view.findViewById(android.R.id.text2);
+//                text1_id.setPaddingRelative(30,5,10,5);
+//                text2_id.setPaddingRelative(30, 5, 10, 20);
+//                String dFname= user.getFullName();
+//                double dLat = user.getLat();
+//                double dLng = user.getLng();
+//                locationB.setLatitude(dLat);
+//                locationB.setLongitude(dLng);
+//                float distanceInMeters =0;
+//                 distanceInMeters = locationA.distanceTo(locationB);
+//                Log.e("TESTING", " dist :"+distanceInMeters);
+//
+//                text1_id.setTextAppearance(view.getContext(), android.R.style.TextAppearance_Large);
+////                if(distanceInMeters<10)
+////                {
+//                    DecimalFormat df = new DecimalFormat("####0.0");
+//
+//                    text1_id.setText(dFname);
+//                    text2_id.setText(user.getInterests()+"  ("+df.format(getMiles(distanceInMeters))+ " mi. )");
+////                }
+//            }
+//        };
+//        //Bind the list adapter to  listView
+//        tutorList_id.setAdapter(adapter);
+//
+//        // item click action
+//        tutorList_id.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//
+//                String name = ((TextView)view.findViewById(android.R.id.text1)).getText().toString();
+//                String interest = ((TextView)view.findViewById(android.R.id.text2)).getText().toString();
+//                Log.e("TESTING", " name "+name+" is interested in "+interest);
+//                //Toast.makeText(StudentsListActivity.this," name "+name+" is interested in "+interest, Toast.LENGTH_SHORT).show();
+//
+//                Intent tutorDetailIntent = new Intent(StudentsListActivity.this, TutorDetailActivity.class);
+//                // creating bundle
+//                Bundle extra = new Bundle();
+//                extra.putString("name", name);
+//                extra.putInt("listRole",listRole);
+//                tutorDetailIntent.putExtras(extra);
+//                startActivity(tutorDetailIntent);
+//            }
+//        });
 
 
     }
