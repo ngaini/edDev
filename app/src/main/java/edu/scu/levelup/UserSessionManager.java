@@ -23,8 +23,8 @@ public class UserSessionManager {
     public static final String key_email = "email";
 //    public static final String key_lat = "lattitude";
 //    public static final String key_lng = "longitude";
-    public static final String key_role = "userRole";
-    public static final String key_userID = "userID";
+//    public static final String key_role = "userRole";
+//    public static final String key_userID = "userID";
 
     public UserSessionManager(Context context)
     {
@@ -37,7 +37,13 @@ public class UserSessionManager {
     {
 //        editor.putBoolean(isUserLogin, true);
         editor.putString(key_name, name);
+<<<<<<< HEAD
+        editor.putString(key_email, email);
+//        editor.putInt(key_role, userRole);
+//        editor.putString(key_userID, userID);
+=======
         editor.putString(key_email, email );
+>>>>>>> fb22bca39b0b41b93d2a9c20b0d72b1846c9af46
         editor.commit();
     }
 
@@ -57,6 +63,11 @@ public class UserSessionManager {
         HashMap<String, String> user = new HashMap<String, String>();
         user.put(key_name, pref.getString(key_name, null));
         user.put(key_email, pref.getString(key_email, null));
+<<<<<<< HEAD
+//        user.put(key_role, pref.getString(key_role, null));
+//        user.put(key_userID, pref.getString(key_userID, null));
+=======
+>>>>>>> fb22bca39b0b41b93d2a9c20b0d72b1846c9af46
         return user;
     }
 

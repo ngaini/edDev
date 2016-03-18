@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private String uEmailID;
     private String uPassword;
     Firebase mref;
+    private String tempPassword;
 
 
     @Override
@@ -46,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         Firebase.setAndroidContext(this);
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
@@ -57,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        });
 
-        Firebase.setAndroidContext(this);
+        //Firebase.setAndroidContext(this);
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
@@ -79,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
         next = (Button) findViewById(R.id.main_Next);
         userRole = (TextView) findViewById(R.id.txt_userrole);
         mref = new Firebase("https://scorching-inferno-7039.firebaseio.com");
-
+        tempPassword = "1QASW#$%^&()#################";
         Bundle extras = getIntent().getExtras();
         uRole = extras.getInt("userRole");
 
@@ -130,30 +131,42 @@ public class MainActivity extends AppCompatActivity {
                     rePassword.setError("Password does not match");
                 }
                 else {
-                      //Firebase newUserRef = mref.child("users").child(uFullName);
-                      //Users newUser = new Users(uRole, uFullName, uAge, uPhoneNumber, uPassword);
-                      Intent mainPage = new Intent(MainActivity.this, SignUpPage2.class);
-                      Bundle bundle = new Bundle();
-                      bundle.putInt("userRole", uRole);
-                      bundle.putString("uAge", uAge);
-                      bundle.putString("uPhoneNumber", uPhoneNumber);
-                      bundle.putString("uFullName", uFullName);
-                      bundle.putString("uPassword", uPassword);
-                      bundle.putString("uEmailID", uEmailID);
-                      mainPage.putExtras(bundle);
-                      startActivity(mainPage);
-//                      newUserRef.setValue(newUser);
-//                      mref.createUser(uEmailID, uPassword, new Firebase.ValueResultHandler<Map<String, Object>>() {
-//                          @Override
-//                          public void onSuccess(Map<String, Object> stringObjectMap) {
-//                              Toast.makeText(getApplicationContext(), uRole, Toast.LENGTH_SHORT).show();
-//                          }
-//
-//                          @Override
-//                          public void onError(FirebaseError firebaseError) {
-//
-//                          }
-//                      });
+                        mref.authWithPassword(uEmailID,tempPassword, new Firebase.AuthResultHandler() {
+                            @Override
+                            public void onAuthenticated(AuthData authData) {
+                                emailID.setError("Already registered User");
+                                Toast.makeText(getApplicationContext(), "Already Registered User", Toast.LENGTH_SHORT).show();
+                                mref.unauth();
+                            }
+
+                            @Override
+                            public void onAuthenticationError(FirebaseError firebaseError) {
+                                //Toast.makeText(getApplicationContext(), "INSIDE", Toast.LENGTH_SHORT).show();
+                                switch (firebaseError.getCode()){
+
+                                    case FirebaseError.INVALID_PASSWORD: {
+                                        Toast.makeText(getApplicationContext(), "Already registered User", Toast.LENGTH_SHORT).show();
+                                        emailID.setError("Already registered User");
+                                        break;
+                                    }
+
+                                    case FirebaseError.USER_DOES_NOT_EXIST: {
+                                        Toast.makeText(getApplicationContext(), "SORT MKC!", Toast.LENGTH_SHORT).show();
+                                        Intent mainPage = new Intent(MainActivity.this, SignUpPage2.class);
+                                        Bundle bundle = new Bundle();
+                                        bundle.putInt("userRole", uRole);
+                                        bundle.putString("uAge", uAge);
+                                        bundle.putString("uPhoneNumber", uPhoneNumber);
+                                        bundle.putString("uFullName", uFullName);
+                                        bundle.putString("uPassword", uPassword);
+                                        bundle.putString("uEmailID", uEmailID);
+                                        mainPage.putExtras(bundle);
+                                        startActivity(mainPage);
+                                        break;
+                                    }
+                                }
+                            }
+                        });
 
                 }
 
@@ -194,15 +207,15 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void moveToDetailsActivity(View view)
-    {
-        Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
-        startActivity(intent);
-    }
-
-    public void moveToLoginActivity(View view)
-    {
-        Intent intent = new Intent(MainActivity.this, Login.class);
-        startActivity(intent);
-    }
+//    public void moveToDetailsActivity(View view)
+//    {
+//        Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
+//        startActivity(intent);
+//    }
+//
+//    public void moveToLoginActivity(View view)
+//    {
+//        Intent intent = new Intent(MainActivity.this, Login.class);
+//        startActivity(intent);
+//    }
 }

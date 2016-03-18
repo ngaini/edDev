@@ -1,12 +1,20 @@
 package edu.scu.levelup;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.app.Activity;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -16,7 +24,7 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 
-public class EditProfile extends Activity {
+public class EditProfile extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     private EditText streetAdrress;
     private EditText city;
@@ -33,7 +41,7 @@ public class EditProfile extends Activity {
     Firebase mref,href,xref, userRef;
     private String uEmailID1, uFullName;
     Query queryRef;
-    private String userStreetAddress, userpinCode, userphoneNumber, userDescription, userRole, userID, userFullName, userAge, userEmailID, userPassword, userGender;
+    private String userImage, userStreetAddress, userpinCode, userphoneNumber, userDescription, userRole, userID, userFullName, userAge, userEmailID, userPassword, userGender;
     private String uAddress, uPincode, uPhoneNumber, uEducation, uInterests, uDescription, uID, uFUllName, uAge, uEmailID, uPassword, uGender;
     private int uRole, userRoleInt;
     private String userStatement;
@@ -42,12 +50,19 @@ public class EditProfile extends Activity {
     public static final String key_userid = "name";
     public static final String key_email = "email";
     SharedPreferences pref;
+    private Firebase ref2;
     SharedPreferences.Editor editor;
+    private android.support.v7.app.ActionBarDrawerToggle drawerListner;
+    private CustomAdapter myCustomAdapter;
+    private String[] navOptions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_drawer_test);
         setContentView(R.layout.activity_edit_profile);
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(myToolbar);
         Firebase.setAndroidContext(this);
         pref = getApplicationContext().getSharedPreferences(preferName, 0);
         editor = pref.edit();
@@ -63,6 +78,30 @@ public class EditProfile extends Activity {
         back = (Button) findViewById(R.id.update_Back);
         city = (EditText) findViewById(R.id.update_City);
         state = (EditText) findViewById(R.id.update_State);
+        ref2 = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Student");
+        DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.drawerLayout);
+        ListView list = (ListView)findViewById(R.id.drawerList);
+        myCustomAdapter = new CustomAdapter(this);
+        list.setAdapter(myCustomAdapter);
+        navOptions = getResources().getStringArray(R.array.navOptions);
+
+        //setting item lister for nav drawer item click
+        list.setOnItemClickListener(this);
+
+        //drawerListner = new ActionBarDrawerToggle(this,drawerLayout,myToolbar, R.string.navigation_drawer_open,R.string.navigation_drawer_close)
+        drawerListner = new android.support.v7.app.ActionBarDrawerToggle(this, drawerLayout, myToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+        {
+            /** Called when a drawer has settled in a completely closed state. */
+            public void onDrawerClosed(View view) {
+            }
+            /** Called when a drawer has settled in a completely open state. */
+            public void onDrawerOpened(View drawerView) {
+            }
+        };
+        drawerLayout.setDrawerListener(drawerListner);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
         userRef = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Student/");
         queryRef = userRef.orderByChild("emailID").equalTo(sessionUserName);
@@ -82,6 +121,7 @@ public class EditProfile extends Activity {
                         userEmailID = userData.getEmailID();
                         userPassword = userData.getPassword();
                         userGender = userData.getGender();
+                        userImage = userData.getImage();
                         streetAdrress.setText("1234 Benton Street");
                         pinCode.setText("95050");
                         city.setText("Fremont");
@@ -166,7 +206,7 @@ public class EditProfile extends Activity {
                       }
                         mref = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/"+userRole);
                         Firebase newUserRef = mref.child(uID);
-                        Users newUser = new Users(uID, uRole, uFullName, uAge, uEmailID, uPhoneNumber, uPassword, uEducation, uDescription, uGender, uInterests, lat, lng);
+                        Users newUser = new Users(uID, uRole, uFullName, uAge, uEmailID, uPhoneNumber, uPassword, uEducation, uDescription, uGender, uInterests, lat, lng, userImage);
                         newUserRef.setValue(newUser);
                         Intent mainPage = new Intent(EditProfile.this, StudentsListActivity.class);
                         startActivity(mainPage);
@@ -177,6 +217,73 @@ public class EditProfile extends Activity {
 
     }
 
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // this causes the drawer icon to appear
+        drawerListner.syncState();
+    }
+
+    // change the navigation drawer when the configuration changes
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        drawerListner.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        if(position == 0)
+        {
+            Intent editProfilePage = new Intent(EditProfile.this, StudentsListActivity.class);
+            startActivity(editProfilePage);
+        }
 
 
+        if(position == 1)
+        {
+            Intent editProfilePage = new Intent(EditProfile.this, EditProfile.class);
+            startActivity(editProfilePage);
+        }
+
+        if(position == 2)
+        {
+            Intent discoverySettingsPage = new Intent(EditProfile.this, DiscoverySettingsPage.class);
+            startActivity(discoverySettingsPage);
+        }
+
+        if(position == 5)
+        {
+            Intent changePasswordPage = new Intent(EditProfile.this, changePassword.class);
+            startActivity(changePasswordPage);
+        }
+
+        if(position == 6) {
+
+            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    switch (which)
+                    {
+                        case DialogInterface.BUTTON_POSITIVE:
+                            ref2.unauth();
+                            editor.clear();
+                            editor.commit();
+                            Intent login = new Intent(EditProfile.this, Login.class);
+                            startActivity(login);
+                            break;
+
+                        case DialogInterface.BUTTON_NEGATIVE:
+                            break;
+                    }
+                }
+            };
+            AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+            builder.setTitle("CONFIRM");
+            builder.setMessage("Are you sure ?").setPositiveButton("Yes", dialogClickListener)
+                    .setNegativeButton("No", dialogClickListener).show();
+        }
+
+
+    }
 }

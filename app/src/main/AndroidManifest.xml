@@ -5,17 +5,22 @@
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="20" />
-
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA"></uses-permission>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <!-- <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> -->
-    <uses-permission android:name="android.permission.CAMERA" />
+    <permission android:name="edu.scu.levelup.permission.C2D_MESSAGE" android:protectionLevel="signature"/>
+    <uses-permission android:name="edu.scu.levelup.gcm.permission.C2D_MESSAGE"/>
 
     <permission
         android:name="edu.scu.levelup.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
-
     <uses-permission android:name="edu.scu.levelup.gcm.permission.C2D_MESSAGE" />
+
+
+
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
@@ -126,19 +131,20 @@
             android:label="@string/title_activity_drawer_test"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
+             <!--<intent-filter> -->
+             <!--<action android:name="android.intent.action.MAIN" /> -->
 
 
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
+             <!--<category android:name="android.intent.category.LAUNCHER" /> -->
+             <!--</intent-filter> -->
         </activity>
         <activity
             android:name=".DiscoverySettingsPage"
             android:label="@string/title_activity_discovery_settings_page" />
         <activity
             android:name=".changePassword"
-            android:label="@string/title_activity_change_password" />
+            android:label="@string/title_activity_change_password"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".EditProfile"
             android:label="@string/title_activity_edit_profile" />
@@ -154,6 +160,12 @@
              <!--</intent-filter>-->
 
         </activity>
-    </application>
+        <activity
+            android:label="@string/title_activity_edit_profile"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".SignUpPage3"
+            android:label="@string/title_activity_sign_up_page3"></activity>
+</application>
 
 </manifest>

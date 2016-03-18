@@ -21,6 +21,10 @@ public class Users {
     private String emailID;
     private String gender;
     private String interests;
+<<<<<<< HEAD
+    private String image;
+=======
+>>>>>>> fb22bca39b0b41b93d2a9c20b0d72b1846c9af46
 
     private double lat;
     private double lng;
@@ -30,7 +34,7 @@ public class Users {
     private String userID;
 
 
-    public Users(String userID, int role, String fullName, String age,String emailID, String phoneNumber, String password, String education, String description, String gender, String interests, double lat, double lng ){
+    public Users(String userID, int role, String fullName, String age,String emailID, String phoneNumber, String password, String education, String description, String gender, String interests, double lat, double lng, String image ){
         this.userID = userID;
         this.role = role;
         this.fullName = fullName;
@@ -44,27 +48,21 @@ public class Users {
         this.interests = interests;
         this.lat=lat;
         this.lng = lng;
-
-//        this.address = address;
-//        this.pincode = pincode;
+        this.image = image;
     }
-
-//    public Users(String address, String pincode, String phoneNumber, String education, String interests, String description, int role ){
-////        this.address = address;
-////        this.pincode = pincode;
-//        this.phoneNumber = phoneNumber;
-//        this.education = education;
-//        this.interests = interests;
-//        this.description = description;
-//        this.role = role;
-//
-//    }
-
-
     // constructor without parameters essential for firebase to work
     public Users() {
     }
 
+    public String getImage()
+    {
+        return  this.image;
+    }
+
+    public void setImage(String image)
+    {
+        this.image = image;
+    }
     public int getRole()
     {
         return this.role;

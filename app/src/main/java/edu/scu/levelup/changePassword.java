@@ -1,10 +1,16 @@
 package edu.scu.levelup;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.app.Activity;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -41,6 +47,7 @@ public class changePassword extends AppCompatActivity implements AdapterView.OnI
     Firebase mref;
     SharedPreferences pref;
     SharedPreferences.Editor editor;
+    private Firebase ref2;
     Query qref;
     Firebase userRef, userRef1;
     private static final String preferName = "AndriodSession";
@@ -52,9 +59,11 @@ public class changePassword extends AppCompatActivity implements AdapterView.OnI
     private String[] navOptions;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_drawer_test);
         setContentView(R.layout.activity_change_password);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
@@ -69,6 +78,7 @@ public class changePassword extends AppCompatActivity implements AdapterView.OnI
         confirmPassword = (EditText) findViewById(R.id.change_ConfirmPassword);
         confirm = (Button) findViewById(R.id.change_Confirm);
         back = (Button) findViewById(R.id.change_Back);
+        ref2 = new Firebase("https://scorching-inferno-7039.firebaseio.com/users/Student");
 
         DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.drawerLayout);
         ListView list = (ListView)findViewById(R.id.drawerList);
@@ -157,7 +167,7 @@ public class changePassword extends AppCompatActivity implements AdapterView.OnI
                         @Override
                         public void onSuccess() {
                             Toast.makeText(changePassword.this, "Password Changed!", Toast.LENGTH_SHORT).show();
-                            userRef1.child("password").setValue(userConfirmPassword);
+                            //userRef1.child("password").setValue(userConfirmPassword);
                             editor.clear();
                             editor.commit();
                             mref.unauth();
@@ -179,8 +189,81 @@ public class changePassword extends AppCompatActivity implements AdapterView.OnI
         });
     }
 
+
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // this causes the drawer icon to appear
+        drawerListner.syncState();
+    }
+
+    // change the navigation drawer when the configuration changes
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        drawerListner.onConfigurationChanged(newConfig);
+    }
+
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        selectTitle(navOptions[position]);
 
+        if(position == 0)
+        {
+            Intent editProfilePage = new Intent(changePassword.this, StudentsListActivity.class);
+            startActivity(editProfilePage);
+        }
+
+
+        if(position == 1)
+        {
+            Intent editProfilePage = new Intent(changePassword.this, EditProfile.class);
+            startActivity(editProfilePage);
+        }
+
+        if(position == 2)
+        {
+            Intent discoverySettingsPage = new Intent(changePassword.this, DiscoverySettingsPage.class);
+            startActivity(discoverySettingsPage);
+        }
+
+        if(position == 5)
+        {
+            Intent changePasswordPage = new Intent(changePassword.this, changePassword.class);
+            startActivity(changePasswordPage);
+        }
+
+        if(position == 6) {
+
+            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    switch (which)
+                    {
+                        case DialogInterface.BUTTON_POSITIVE:
+                            ref2.unauth();
+                            editor.clear();
+                            editor.commit();
+                            Intent login = new Intent(changePassword.this, Login.class);
+                            startActivity(login);
+                            break;
+
+                        case DialogInterface.BUTTON_NEGATIVE:
+                            break;
+                    }
+                }
+            };
+            AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+            builder.setTitle("CONFIRM");
+            builder.setMessage("Are you sure ?").setPositiveButton("Yes", dialogClickListener)
+                    .setNegativeButton("No", dialogClickListener).show();
+        }
+
+    }
+
+    private void selectTitle(String navOption) {
+        //to change the nave bar name
+        getSupportActionBar().setTitle(navOption);
     }
 }

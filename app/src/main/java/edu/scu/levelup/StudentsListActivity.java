@@ -72,6 +72,9 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
     private String uFullName;
 //    private String uDescription;
     private String sessionUserName;
+
+    private String userROle, userIDD;
+
     private static int uRole;
     private static int listRole;
     private double uLat;
@@ -79,7 +82,6 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
     SharedPreferences.Editor editor;
     private double uLong;
     private static final String preferName = "AndriodSession";
-    public static final String key_userid = "name";
     public static final String key_email = "email";
     private final String TUTOR_TABLE_URL = "https://scorching-inferno-7039.firebaseio.com/users/Tutor";
     private final String STUDENT_TABLE_URL = "https://scorching-inferno-7039.firebaseio.com/users/Student";
@@ -103,11 +105,6 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
         pref = getApplicationContext().getSharedPreferences(preferName, 0);
         editor = pref.edit();
         sessionUserName = pref.getString(key_email, null);
-//
-
-//        Toast.makeText(StudentsListActivity.this, "Session user name is - " +sessionUserName, Toast.LENGTH_SHORT).show();
-
-
         //for fetching the global variables
         MyApplication app =(MyApplication)getApplication();
 
@@ -390,56 +387,57 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
 //        }
 //
 //        Query queryRef1 = ref.orderByChild("pincode").equalTo("95050");
-//        FirebaseListAdapter<Users> adapter = new FirebaseListAdapter<Users>(this, Users.class,android.R.layout.two_line_list_item, ref)
-//        {
-//            @Override
-//            protected void populateView(View view, Users user, int i)
-//            {
-//               TextView text1_id =(TextView) view.findViewById(android.R.id.text1);
-//               TextView text2_id =(TextView) view.findViewById(android.R.id.text2);
-//                text1_id.setPaddingRelative(30,5,10,5);
-//                text2_id.setPaddingRelative(30, 5, 10, 20);
-//                String dFname= user.getFullName();
-//                double dLat = user.getLat();
-//                double dLng = user.getLng();
-//                locationB.setLatitude(dLat);
-//                locationB.setLongitude(dLng);
-//                float distanceInMeters =0;
-//                 distanceInMeters = locationA.distanceTo(locationB);
-//                Log.e("TESTING", " dist :"+distanceInMeters);
-//
-//                text1_id.setTextAppearance(view.getContext(), android.R.style.TextAppearance_Large);
-////                if(distanceInMeters<10)
-////                {
-//                    DecimalFormat df = new DecimalFormat("####0.0");
-//
-//                    text1_id.setText(dFname);
-//                    text2_id.setText(user.getInterests()+"  ("+df.format(getMiles(distanceInMeters))+ " mi. )");
-////                }
-//            }
-//        };
-//        //Bind the list adapter to  listView
-//        tutorList_id.setAdapter(adapter);
-//
-//        // item click action
-//        tutorList_id.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//
-//                String name = ((TextView)view.findViewById(android.R.id.text1)).getText().toString();
-//                String interest = ((TextView)view.findViewById(android.R.id.text2)).getText().toString();
-//                Log.e("TESTING", " name "+name+" is interested in "+interest);
-//                Toast.makeText(StudentsListActivity.this," name "+name+" is interested in "+interest, Toast.LENGTH_SHORT).show();
-//
-//                Intent tutorDetailIntent = new Intent(StudentsListActivity.this, TutorDetailActivity.class);
-//                // creating bundle
-//                Bundle extra = new Bundle();
-//                extra.putString("name", name);
-//                extra.putInt("listRole",listRole);
-//                tutorDetailIntent.putExtras(extra);
-//                startActivity(tutorDetailIntent);
-//            }
-//        });
+<<<<<<< HEAD
+        FirebaseListAdapter<Users> adapter = new FirebaseListAdapter<Users>(this, Users.class,android.R.layout.two_line_list_item, ref)
+        {
+            @Override
+            protected void populateView(View view, Users user, int i)
+            {
+               TextView text1_id =(TextView) view.findViewById(android.R.id.text1);
+               TextView text2_id =(TextView) view.findViewById(android.R.id.text2);
+                text1_id.setPaddingRelative(30,5,10,5);
+                text2_id.setPaddingRelative(30, 5, 10, 20);
+                String dFname= user.getFullName();
+                double dLat = user.getLat();
+                double dLng = user.getLng();
+                locationB.setLatitude(dLat);
+                locationB.setLongitude(dLng);
+                float distanceInMeters =0;
+                 distanceInMeters = locationA.distanceTo(locationB);
+                Log.e("TESTING", " dist :"+distanceInMeters);
+
+                text1_id.setTextAppearance(view.getContext(), android.R.style.TextAppearance_Large);
+//                if(distanceInMeters<10)
+//                {
+                    DecimalFormat df = new DecimalFormat("####0.0");
+
+                    text1_id.setText(dFname);
+                    text2_id.setText(user.getInterests()+"  ("+df.format(getMiles(distanceInMeters))+ " mi. )");
+//                }
+            }
+        };
+        //Bind the list adapter to  listView
+        tutorList_id.setAdapter(adapter);
+
+        // item click action
+        tutorList_id.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                String name = ((TextView)view.findViewById(android.R.id.text1)).getText().toString();
+                String interest = ((TextView)view.findViewById(android.R.id.text2)).getText().toString();
+                Log.e("TESTING", " name "+name+" is interested in "+interest);
+                //Toast.makeText(StudentsListActivity.this," name "+name+" is interested in "+interest, Toast.LENGTH_SHORT).show();
+
+                Intent tutorDetailIntent = new Intent(StudentsListActivity.this, TutorDetailActivity.class);
+                // creating bundle
+                Bundle extra = new Bundle();
+                extra.putString("name", name);
+                extra.putInt("listRole",listRole);
+                tutorDetailIntent.putExtras(extra);
+                startActivity(tutorDetailIntent);
+            }
+        });
 
 
     }
@@ -482,6 +480,12 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         selectTitle(navOptions[position]);
+
+        if(position == 0)
+        {
+            Intent editProfilePage = new Intent(StudentsListActivity.this, StudentsListActivity.class);
+            startActivity(editProfilePage);
+        }
 
         if(position == 1)
         {

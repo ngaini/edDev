@@ -61,5 +61,6 @@
     <string name="title_activity_change_password">changePassword</string>
     <string name="title_activity_edit_profile">EditProfile</string>
     <string name="title_activity_tutors_list">TutorsListActivity</string>
+    <string name="title_activity_sign_up_page3">SignUpPage3</string>
 
 </resources>
