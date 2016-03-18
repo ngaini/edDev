@@ -52,69 +52,69 @@ public class TutorsListActivity extends AppCompatActivity implements AdapterView
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tutors_list);
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.tutorToolbar);
-        setSupportActionBar(myToolbar);
-        getSupportActionBar().setTitle("Tutor");
-        DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.tutorDrawerLayout);
-        ListView list = (ListView)findViewById(R.id.tutorDrawerList);
-        myCustomAdapter = new CustomAdapter(this);
-        list.setAdapter(myCustomAdapter);
-        navOptions =getResources().getStringArray(R.array.navOptions);
-        list.setOnItemClickListener(this);
-
-
+//        Toolbar myToolbar = (Toolbar) findViewById(R.id.tutorToolbar);
+//        setSupportActionBar(myToolbar);
+//        getSupportActionBar().setTitle("Tutor");
+//        DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.tutorDrawerLayout);
+//        ListView list = (ListView)findViewById(R.id.tutorDrawerList);
+//        myCustomAdapter = new CustomAdapter(this);
+//        list.setAdapter(myCustomAdapter);
+//        navOptions =getResources().getStringArray(R.array.navOptions);
+//        list.setOnItemClickListener(this);
 //
-
-        drawerListner = new ActionBarDrawerToggle(this,drawerLayout,myToolbar, R.string.navigation_drawer_open,R.string.navigation_drawer_close)
-        {
-
-            /** Called when a drawer has settled in a completely closed state. */
-            public void onDrawerClosed(View view) {
-//                super.onDrawerClosed(view);
-//                getActionBar().setTitle(R.string.title_activity_drawer_test);
-//                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
-
-            /** Called when a drawer has settled in a completely open state. */
-            public void onDrawerOpened(View drawerView) {
-//                super.onDrawerOpened(drawerView);
-//                getActionBar().setTitle("Menu");
-//                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
-        };
-        drawerLayout.setDrawerListener(drawerListner);
-//        getSupportActionBar().setHomeButtonEnabled(true);
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-
-        Bundle extra = getIntent().getExtras();
-
-//        String appUserName = extra.getString("");
-        String appUserID = extra.getString("uID");
-        int appUserRole =extra.getInt("role");
-        double appUserLat= extra.getDouble("lat");
-        double appUserLng = extra.getDouble("lng");
-        String interest = extra.getString("interest");
-        String shownInterest = extra.getString("interestedPeople");
-
-
-        Log.e("TutList STUDENT", "ello::" + appUserLng + "::" + appUserRole + "::" + appUserID + "::" + interest+"::"+shownInterest);
-        Toast.makeText(TutorsListActivity.this, "ello::" + appUserLng + "::" + appUserRole + "::" + appUserID + "::" + appUserLat, Toast.LENGTH_SHORT).show();
-        populateList(appUserID,"somename",appUserRole,appUserLat,appUserLng,interest,shownInterest);
+//
+////
+//
+//        drawerListner = new ActionBarDrawerToggle(this,drawerLayout,myToolbar, R.string.navigation_drawer_open,R.string.navigation_drawer_close)
+//        {
+//
+//            /** Called when a drawer has settled in a completely closed state. */
+//            public void onDrawerClosed(View view) {
+////                super.onDrawerClosed(view);
+////                getActionBar().setTitle(R.string.title_activity_drawer_test);
+////                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+//            }
+//
+//            /** Called when a drawer has settled in a completely open state. */
+//            public void onDrawerOpened(View drawerView) {
+////                super.onDrawerOpened(drawerView);
+////                getActionBar().setTitle("Menu");
+////                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+//            }
+//        };
+//        drawerLayout.setDrawerListener(drawerListner);
+////        getSupportActionBar().setHomeButtonEnabled(true);
+////        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//
+//
+//        Bundle extra = getIntent().getExtras();
+//
+////        String appUserName = extra.getString("");
+//        String appUserID = extra.getString("uID");
+//        int appUserRole =extra.getInt("role");
+//        double appUserLat= extra.getDouble("lat");
+//        double appUserLng = extra.getDouble("lng");
+//        String interest = extra.getString("interest");
+//        String shownInterest = extra.getString("interestedPeople");
+//
+//
+//        Log.e("TutList STUDENT", "ello::" + appUserLng + "::" + appUserRole + "::" + appUserID + "::" + interest+"::"+shownInterest);
+//        Toast.makeText(TutorsListActivity.this, "ello::" + appUserLng + "::" + appUserRole + "::" + appUserID + "::" + appUserLat, Toast.LENGTH_SHORT).show();
+//        populateList(appUserID,"somename",appUserRole,appUserLat,appUserLng,interest,shownInterest);
     }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         // this causes the drawer icon to appear
-        drawerListner.syncState();
+//        drawerListner.syncState();
     }
 
     // change the navigation drawer when the configuration changes
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        drawerListner.onConfigurationChanged(newConfig);
+//        drawerListner.onConfigurationChanged(newConfig);
     }
 
 
