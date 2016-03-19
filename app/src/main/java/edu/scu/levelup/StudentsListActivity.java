@@ -111,7 +111,7 @@ public class StudentsListActivity extends AppCompatActivity implements AdapterVi
         MyApplication app =(MyApplication)getApplication();
 
 
-//        Toast.makeText(StudentsListActivity.this,"email- "+sessionUserName, Toast.LENGTH_SHORT).show();
+        Toast.makeText(StudentsListActivity.this,"email- "+sessionUserName, Toast.LENGTH_LONG).show();
 
 
         //get the loggein user details

@@ -81,6 +81,8 @@ public class TutorDetailActivity extends Activity {
                 ref= new Firebase(STUDENT_TABLE_URL);
                 ref1 = new Firebase(TUTOR_TABLE_URL);
             }
+
+            final int detailRole =listRole;
             enableInterestedButton();
             Query queryRef = ref.orderByChild("fullName").equalTo(name);
             queryRef.addChildEventListener(new ChildEventListener() {
@@ -90,9 +92,16 @@ public class TutorDetailActivity extends Activity {
                     Users user = dataSnapshot.getValue(Users.class);
                     tutorName_id.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_WORDS);
                     tutorName_id.setText(name);
-                    tutorExpertize_id.setText("Gender: " + user.getInterests());
+                    if(detailRole ==1)
+                    {
+                        tutorExpertize_id.setText("Interest: " + user.getInterests());
+                    }
+                    else if( detailRole ==0)
+                    {
+                        tutorExpertize_id.setText("Expertise: " + user.getInterests());
+                    }
                     tutorAge_id.setText(user.getAge() + " yrs");
-                    tutorEducation_id.setText("Highest Education:\n" + user.getEducation());
+                    tutorEducation_id.setText("Highest Education:  " + user.getEducation());
                     tutorGender_id.setText("Gender: " + user.getGender());
                     tutorDescription_id.setText("Description:\n" + user.getDescription());
                     Log.e("CHECK THIS", "ello::before the detailIdvalue ");

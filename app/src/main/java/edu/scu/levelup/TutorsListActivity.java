@@ -71,7 +71,7 @@ public class TutorsListActivity extends AppCompatActivity implements AdapterView
         sessionUserName = pref.getString(key_email, null);
         //for fetching the global variables
         MyApplication app =(MyApplication)getApplication();
-
+        Toast.makeText(TutorsListActivity.this,"email- "+sessionUserName, Toast.LENGTH_LONG).show();
 
 
 
